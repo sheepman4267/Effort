@@ -1,0 +1,8 @@
+<div class="list-item" id="newitem">
+    {% if action == 'new-list' %} <form method="post" action="{% url action %}">{% csrf_token %}
+    {% else %} <form method="post" action="{% url action parent %}">{% csrf_token %}
+    {% endif %}
+        {{ form.title }}
+        <input type="submit">
+    </form>
+</div>

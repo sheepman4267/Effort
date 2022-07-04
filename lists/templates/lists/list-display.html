@@ -1,0 +1,15 @@
+<div class="list", id="listdisplay">
+    {% if current_list %}
+        {% for item in todo_list_items %}
+            {% include 'lists/list-item.html' with item=item %}
+        {% endfor %}
+            <div class="list-item add-button" id="newitem" hx-trigger="click" hx-get="{% url 'new-item' current_list.pk %}" hx-select="#newitem" hx-target="closest #newitem" hx-swap="outerHTML">
+                +
+            </div>
+        {% for item in completed_list_items %}
+            {% include 'lists/list-item.html' with item=item %}
+        {% endfor %}
+    {% else %}
+        <div class="list-item">Select a List to get started</div>
+    {% endif %}
+</div>

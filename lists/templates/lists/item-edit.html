@@ -1,0 +1,10 @@
+<div class="list-item edit" id="newitem">
+    <form method="post" action="{% url "new-item" list_pk %}">{% csrf_token %}
+        {{ list.pk }}
+        name:{{ form.name }}<br>
+        details:{{ form.details }}<br>
+        due date:{{ form.due_date }}
+        {{ form.errors }}
+        <input type="submit">
+    </form>
+</div>

@@ -1,0 +1,9 @@
+{% load lists_extras %}
+<div class="sidebar">
+    {% for list in lists %}
+        {% list_selection_display list current_list request %}
+    {% endfor %}
+    <button value="New Sublist" id="newitem" hx-trigger="click" hx-get="{% url "new-list" %}" hx-swap="outerHTML">
+        New List
+    </button>
+</div>

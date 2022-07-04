@@ -1,0 +1,59 @@
+
+.sidebar {
+    display: inline-block;
+    background: aqua;
+    height: 100vh;
+    width: 30%;
+    padding: 0;
+    overflow: scroll;
+}
+
+.list {
+    display: inline-block;
+    background: blueviolet;
+    height: 100vh;
+    width: 70%;
+    padding: 0;
+    overflow: scroll;
+}
+
+.list-item {
+    background: aliceblue;
+    min-height: 50px;
+    width: available;
+    margin: 5px;
+    border: 1px solid black;
+}
+.list-item .completed {
+    background: darkgrey;
+    color: grey;
+}
+
+.list-item .list-item {
+    margin-left: 20px;
+}
+
+.list-item .sidebar {
+    background: antiquewhite;
+    height: auto;
+}
+
+.list-item .button {
+    margin: 5px;
+    border: 0;
+}
+
+.list-item .add-button {
+    text-align: center;
+}
+
+
+
+.list-item .edit {
+    height: 125px;
+}
+
+.main-body {
+    margin: 0;
+    display: flex;
+}

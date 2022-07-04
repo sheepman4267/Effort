@@ -1,0 +1,10 @@
+<div class="list-item edit" id="newitem">
+    <form method="post" action="{% url "new-list" parent_list_pk %}">{% csrf_token %}
+        title:{{ form.title }}<br>
+        {{ form.errors }}
+        <input type="submit">
+    </form>
+</div>
+
+<!--this file saved for future use, will be displayed in the lidt info div (not there yet) at the top of list-display.
+Using new-list.html for now, as the two are truly different enough to merit separate views.

@@ -10,13 +10,19 @@ import datetime
 class List(models.Model):
     title = models.CharField(max_length=200)
     description = MarkdownxField(blank=True)
-    owner = models.ForeignKey(User, unique=False)
+    owner = models.ForeignKey(User, unique=False, on_delete=models.CASCADE)
+    parent = models.ForeignKey('self', null=True, unique=False, on_delete=models.CASCADE, related_name="children")
+
+    def __str__(self):
+        return self.title
 
 class ListItem(models.Model):
     name = MarkdownxField()
-    details = MarkdownxField()
-    due_date = models.DateTimeField()
-    created_date = models.DateTimeField(default=datetime.datetime.now(), editable=False)
+    details = MarkdownxField(null=True, blank=True)
+    due_date = models.DateTimeField(null=True, blank=True)
+    created_date = models.DateTimeField(default=datetime.datetime.now, editable=False)
+    completed = models.BooleanField(default=False)
+    list = models.ManyToManyField(List, unique=False)
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

@@ -1,0 +1,21 @@
+{% load lists_extras %}
+<div class="list-item">
+    <a href="{% url 'list' list.pk %}">
+        <div class="list-item button">
+            <div class="list-title-sidebar">
+                {{ list.title }}
+            </div>
+        </div>
+    </a>
+    <button value="New Sublist" id="newitem" hx-trigger="click" hx-get="{% url "new-sublist" list.pk %}" hx-swap="outerHTML">
+        New Sublist
+    </button>
+    {% if expand_tree %}
+        {% if list_has_children %}
+            {% for list in list.children.all %}
+                {% list_selection_display list=list selected_list=selected_list request=request %}
+            {% endfor %}
+        {% endif %}
+    {% endif %}
+</div>
+

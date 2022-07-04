@@ -1,0 +1,10 @@
+<a href="{% url 'list' list.pk %}">
+    <div class="list-item"> <!-- hx-trigger="click" hx-get="{% url 'list' list.pk %}" hx-select="#listdisplay" hx-target="#listdisplay">-->
+        {{ list.title }}
+        {% if current_list == list %}
+            {% if current_list.children %}
+                {% include  "lists/list-sidebar.html" with lists=current_list.children.all %}
+            {% endif %}
+        {% endif %}
+    </div>
+</a>
