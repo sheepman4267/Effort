@@ -2,9 +2,9 @@
     {{ item.name }}
     <button hx-trigger="click" hx-get="{% url 'toggle-item' item.pk %}" hx-target="closest #list-item" hx-swap="outerHTML">
         {% if item.completed %}
-            Uncheck :( {{ item.pk }}
+            Uncheck :(
         {% else %}
-            Check! :) {{ item.pk }}
+            Check! :)
         {% endif %}
     </button>
 </div>

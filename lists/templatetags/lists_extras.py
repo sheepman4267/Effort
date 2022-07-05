@@ -9,7 +9,6 @@ register = template.Library()
 # 'selected_list' is the list that is currently being displayed.
 @register.inclusion_tag('lists/list-selection-display.html')
 def list_selection_display(list, selected_list, request):
-    print(f'displaylist{list}')
     if len(list.children.all()) > 0:
         list_has_children = True
     else:
@@ -33,11 +32,9 @@ def list_selection_display(list, selected_list, request):
 #Return a list of all parents of a passed List object
 def get_list_tree(list):
     list_tree = []
-    print(f'LIST{type(list)}END')
     if type(list) != List:
         return [] #this is awful, but should work
     while list.parent:
         list_tree.append(list.parent)
         list = list.parent
-    print(f'list_tree: {list_tree}')
     return list_tree

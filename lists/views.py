@@ -1,6 +1,5 @@
-from django.shortcuts import render
+import datetime
 
-# Create your views here.
 from django.shortcuts import render, get_object_or_404, reverse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
@@ -17,27 +16,23 @@ def index(request):
 
 @login_required
 def display_list(request, list): #TODO: No folders, just parent lists. Any list can have any number of child lists, and items can be promoted up the chain of lists.
-    #list = List.objects.get(pk=list)
     list = get_object_or_404(List, pk=list)
     if list.owner != request.user:
         raise PermissionDenied()
     lists = List.objects.filter(owner=request.user, parent=None)
-    #print(list.children.all())
     return render(request, 'lists/index.html', {
         'current_list': list,
         'lists': lists,
         'todo_list_items': ListItem.objects.filter(list=list, completed=False),
-        'completed_list_items': ListItem.objects.filter(list=list, completed=True),
+        'completed_list_items': ListItem.objects.filter(list=list, completed=True).order_by("-checked_date"),
     })
 
 @login_required
 def toggle_item(request, item):
     item = ListItem.objects.get(pk=item)
-    print(item.completed)
     item.completed = not item.completed
+    item.checked_date = datetime.datetime.now()
     item.save()
-    print(item.completed)
-    print(item.pk)
     return render(request, 'lists/list-item.html', {
         'item': item
     })
@@ -54,7 +49,6 @@ def item_edit(request, list_pk, item=None):
             item.save()
             item.list.add(List.objects.get(pk=list_pk))
             return HttpResponseRedirect(reverse('list', args=[list_pk]))
-        print(form.errors)
     else: #as in, if request.method != 'POST'...
         if item:
             item = ListItem.objects.get(pk=item)

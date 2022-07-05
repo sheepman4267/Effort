@@ -21,6 +21,7 @@ class ListItem(models.Model):
     details = MarkdownxField(null=True, blank=True)
     due_date = models.DateTimeField(null=True, blank=True)
     created_date = models.DateTimeField(default=datetime.datetime.now, editable=False)
+    checked_date = models.DateTimeField(default=datetime.datetime.now)
     completed = models.BooleanField(default=False)
     list = models.ManyToManyField(List, unique=False)
 
