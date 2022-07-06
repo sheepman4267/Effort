@@ -1,0 +1,10 @@
+<!--Display a quick-access button to add a given item to another list-->
+{% if enabled %}
+    <button id="addbutton" hx-trigger="click" hx-get="{% url "add-item-to-list" item.pk list.pk %}" hx-swap="outerHTML">
+        Add to "{{ list.title }}"
+    </button>
+{% else %}
+    <button id="addbutton" disabled>
+        Already on "{{ list.title }}"
+    </button>
+{% endif %}

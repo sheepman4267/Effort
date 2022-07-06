@@ -10,6 +10,7 @@
     <button value="New Sublist" id="newitem" hx-trigger="click" hx-get="{% url "new-sublist" list.pk %}" hx-swap="outerHTML">
         New Sublist
     </button>
+    {% star request=request list=list %}
     {% if expand_tree %}
         {% if list_has_children %}
             {% for list in list.children.all %}

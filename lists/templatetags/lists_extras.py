@@ -25,6 +25,7 @@ def list_selection_display(list, selected_list, request):
         'expand_tree': expand_tree,
         'selected_list': selected_list,
         'list_has_children': list_has_children,
+        'request': request,
     })
 
 #if expand_tree, htmx set whole tree visible on load, else htmx set visible on button click
@@ -38,3 +39,30 @@ def get_list_tree(list):
         list_tree.append(list.parent)
         list = list.parent
     return list_tree
+
+@register.inclusion_tag('lists/quick-access-list-button.html')
+def quick_access_list_button(request, item, list):
+    #item = ListItem.objects.get(item)
+    #list = List.objects.get(list)
+    if list in item.list.filter():
+        enabled = False
+    else:
+        enabled = True
+    return ({
+        'item': item,
+        'list': list,
+        'enabled': enabled,
+    })
+
+@register.inclusion_tag('lists/star.html')
+def star(request, list):
+    if request.user in list.starred.filter():
+        star_button_text = "Unstar"
+    else:
+        star_button_text = "Star"
+    return({
+        'star_button_text': star_button_text,
+        'list': list,
+    })
+
+

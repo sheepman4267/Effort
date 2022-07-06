@@ -1,7 +1,7 @@
 <div class="list", id="listdisplay">
     {% if current_list %}
         {% for item in todo_list_items %}
-            {% include 'lists/list-item.html' with item=item %}
+            {% include 'lists/list-item.html' with item=item quick_access=quick_access %}
         {% endfor %}
             <div class="list-item add-button" id="newitem" hx-trigger="click" hx-get="{% url 'new-item' current_list.pk %}" hx-select="#newitem" hx-target="closest #newitem" hx-swap="outerHTML">
                 +

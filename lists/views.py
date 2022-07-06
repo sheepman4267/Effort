@@ -25,6 +25,7 @@ def display_list(request, list): #TODO: No folders, just parent lists. Any list 
         'lists': lists,
         'todo_list_items': ListItem.objects.filter(list=list, completed=False),
         'completed_list_items': ListItem.objects.filter(list=list, completed=True).order_by("-checked_date"),
+        'quick_access': request.user.starred.filter()
     })
 
 @login_required
@@ -73,6 +74,33 @@ def list_edit(request, list=None): #for future use, see note in list-edit.html
         else:
             form = ListForm()
         return render(request, 'lists/list-edit.html')
+
+@login_required()
+def add_item_to_list(request, item, list):
+    item = ListItem.objects.get(pk=item)
+    list = List.objects.get(pk=list)
+    item.list.add(list)
+    item.save()
+    return render(request, 'lists/quick-access-list-button.html', {
+        'item': item,
+        'list': list,
+        'enabled': False,
+    })
+
+@login_required()
+def toggle_starred(request, list):
+    list = List.objects.get(pk=list)
+    if request.user in list.starred.filter():
+        list.starred.remove(request.user)
+        star_button_text = 'Star'
+    else:
+        list.starred.add(request.user)
+        star_button_text = 'Unstar'
+    list.save()
+    return render(request, 'lists/star.html', {
+        'list': list,
+        'star_button_text': star_button_text,
+    })
 
 @login_required()
 def new_list(request, parent=None):

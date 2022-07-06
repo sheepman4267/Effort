@@ -1,0 +1,4 @@
+<!--Display a button to star or unstar a list-->
+<button id="addbutton" hx-trigger="click" hx-get="{% url "toggle-starred" list.pk %}" hx-swap="outerHTML">
+    {{ star_button_text }}
+</button>

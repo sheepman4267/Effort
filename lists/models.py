@@ -12,6 +12,7 @@ class List(models.Model):
     description = MarkdownxField(blank=True)
     owner = models.ForeignKey(User, unique=False, on_delete=models.CASCADE)
     parent = models.ForeignKey('self', null=True, unique=False, on_delete=models.CASCADE, related_name="children")
+    starred = models.ManyToManyField(User, unique=False, related_name='starred')
 
     def __str__(self):
         return self.title
@@ -27,7 +28,7 @@ class ListItem(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    quick_access = models.ManyToManyField(List, related_name='quick_access')
+    #quick_access = models.ManyToManyField(List, related_name='quick_access')
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

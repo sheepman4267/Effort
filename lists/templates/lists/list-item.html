@@ -1,3 +1,4 @@
+{% load lists_extras %}
 <div id="list-item" class="list-item {% if item.completed %}completed{% endif %}">
     {{ item.name }}
     <button hx-trigger="click" hx-get="{% url 'toggle-item' item.pk %}" hx-target="closest #list-item" hx-swap="outerHTML">
@@ -7,4 +8,7 @@
             Check! :)
         {% endif %}
     </button>
+    {% for list in quick_access %}
+        {% quick_access_list_button request=request list=list item=item %}
+    {% endfor %}
 </div>
