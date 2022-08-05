@@ -9,8 +9,10 @@ from .forms import ListForm, ListItemForm
 
 @login_required
 def index(request):
+    starred_lists = List.objects.filter(owner=request.user, parent=None, starred=request.user)
     lists = List.objects.filter(owner=request.user, parent=None)
     return render(request, 'lists/index.html', {
+        'starred_lists': starred_lists,
         'lists': lists,
     })
 
@@ -19,10 +21,12 @@ def display_list(request, list): #TODO: No folders, just parent lists. Any list 
     list = get_object_or_404(List, pk=list)
     if list.owner != request.user:
         raise PermissionDenied()
+    starred_lists = List.objects.filter(owner=request.user, parent=None, starred=request.user)
     lists = List.objects.filter(owner=request.user, parent=None)
     return render(request, 'lists/index.html', {
         'current_list': list,
         'lists': lists,
+        'starred_lists': starred_lists,
         'todo_list_items': ListItem.objects.filter(list=list, completed=False),
         'completed_list_items': ListItem.objects.filter(list=list, completed=True).order_by("-checked_date"),
         'quick_access': request.user.starred.filter()

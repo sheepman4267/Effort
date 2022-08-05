@@ -17,6 +17,12 @@ class List(models.Model):
     def __str__(self):
         return self.title
 
+    def is_starred(self, user):
+        if user in self.starred:
+            return True
+        else:
+            return False
+
 class ListItem(models.Model):
     name = MarkdownxField()
     details = MarkdownxField(null=True, blank=True)
