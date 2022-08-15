@@ -23,6 +23,14 @@ class List(models.Model):
         else:
             return False
 
+    def short_title(self):
+        logger.debug(len(self.title))
+        if len(self.title) <= 6:
+            return self.title
+        else:
+            return f'{self.title[:5]}...'
+
+
 class ListItem(models.Model):
     name = MarkdownxField()
     details = MarkdownxField(null=True, blank=True)
