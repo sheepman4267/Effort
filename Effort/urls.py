@@ -20,6 +20,6 @@ from lists import urls as listsUrls
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('lists/', include('lists.urls')),
-    path('accounts/', include('django.contrib.auth.urls')),
+    path('accounts/', include('allauth.urls')),
     path('markdownx/', include('markdownx.urls'))
 ]
