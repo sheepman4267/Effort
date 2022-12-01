@@ -21,7 +21,7 @@ def display_list(request, list): #TODO: No folders, just parent lists. Any list 
     list = get_object_or_404(List, pk=list)
     if list.owner != request.user:
         raise PermissionDenied()
-    starred_lists = List.objects.filter(owner=request.user, parent=None, starred=request.user)
+    starred_lists = List.objects.filter(owner=request.user, starred=request.user)
     lists = List.objects.filter(owner=request.user, parent=None)
     return render(request, 'lists/index.html', {
         'current_list': list,
