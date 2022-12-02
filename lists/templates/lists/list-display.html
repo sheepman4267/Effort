@@ -3,9 +3,9 @@
         {% for item in todo_list_items %}
             {% include 'lists/list-item.html' with item=item quick_access=quick_access %}
         {% endfor %}
-            <div class="list-item add-button" id="newitem" hx-trigger="click" hx-get="{% url 'new-item' current_list.pk %}" hx-select="#newitem" hx-target="closest #newitem" hx-swap="outerHTML">
+            <button class="list-item add-button" id="newitem" hx-trigger="click" hx-get="{% url 'new-item' current_list.pk %}" hx-select="#newitem" hx-target="closest #newitem" hx-swap="outerHTML">
                 +
-            </div>
+            </button>
         {% for item in completed_list_items %}
             {% include 'lists/list-item.html' with item=item %}
         {% endfor %}

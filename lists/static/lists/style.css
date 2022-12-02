@@ -1,56 +1,72 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
 
 .sidebar {
     display: inline-block;
     background: aqua;
     height: 100vh;
     width: 30%;
-    padding: 0;
+    padding: 6px;
     overflow: scroll;
 }
 
 .list {
     display: inline-block;
-    background: blueviolet;
+    background: #d3bfe0;
     height: 100vh;
     width: 70%;
-    padding: 0;
+    padding: 6px;
+    margin: 0;
     overflow: scroll;
 }
 
 .list-item {
     background: aliceblue;
     min-height: 50px;
-    width: available;
-    margin: 5px;
+    margin: 0;
+    margin-bottom: 5px;
     border: 1px solid black;
+    padding: 3px;
+    border-radius: 5px;
 }
-.list-item .completed {
+.list-item.completed {
     background: darkgrey;
     color: grey;
 }
 
 .list-item .list-item {
-    margin-left: 20px;
+    margin-top: 5px;
+    margin-left: 5px;
+    margin-bottom: 0;
+    border-bottom: 0;
+    border-right: 0;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 0;
 }
 
-.list-item .sidebar {
+.list-item.sidebar {
     background: antiquewhite;
     height: auto;
 }
 
-.list-item .button {
-    margin: 5px;
+.list-item .button-container {
+    float: right;
+}
+
+.list-item.button {
+    margin: 0;
     border: 0;
+    display: flex;
 }
 
-.list-item .add-button {
+.list-item.add-button {
     text-align: center;
-}
-
-
-
-.list-item .edit {
-    height: 125px;
+    font-size: xx-large;
+    width: 100%;
+    display: block;
 }
 
 .main-body {
