@@ -12,11 +12,9 @@
     </button>
     {% star request=request list=list %}
     {% if expand_tree %}
-        {% if list.children.all %}
-            {% for list in list.children.all %}
-                {% list_selection_display list=list selected_list=selected_list request=request %}
-            {% endfor %}
-        {% endif %}
+        {% for list in list.children.all %}
+            {% list_selection_display list=list selected_list=selected_list request=request %}
+        {% endfor %}
     {% endif %}
 </div>
 
