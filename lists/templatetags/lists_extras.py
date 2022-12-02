@@ -9,10 +9,6 @@ register = template.Library()
 # 'selected_list' is the list that is currently being displayed.
 @register.inclusion_tag('lists/list-selection-display.html')
 def list_selection_display(list, selected_list, request):
-    if len(list.children.all()) > 0:
-        list_has_children = True
-    else:
-        list_has_children = False
     if list in get_list_tree(selected_list):
         print('itsthere')
         expand_tree = True
@@ -24,7 +20,6 @@ def list_selection_display(list, selected_list, request):
         'list': list,
         'expand_tree': expand_tree,
         'selected_list': selected_list,
-        'list_has_children': list_has_children,
         'request': request,
     })
 
