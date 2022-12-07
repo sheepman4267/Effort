@@ -20,6 +20,7 @@ from lists import urls as listsUrls
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('lists/', include('lists.urls')),
+    path('notes/', include('notes.urls')),
     path('accounts/', include('allauth.urls')),
     path('markdownx/', include('markdownx.urls'))
 ]

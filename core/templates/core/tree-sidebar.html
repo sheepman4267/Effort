@@ -1,0 +1,16 @@
+{% load core_extras %}
+<div class="sidebar">
+    {% for item in starred %}
+        {% item_selection_display item current_item request new_item_url new_child_item_button_text display_url %}
+    {% endfor %}
+    <hr>
+    {% for item in items %}
+        {% if item in starred %}
+        {% else %}
+            {% item_selection_display item current_item request new_item_url new_child_item_button_text display_url %}
+        {% endif %}
+    {% endfor %}
+    <button class="list-item add-button" value="New Sublist" id="newitem" hx-trigger="click" hx-get="{% url new_item_url %}" hx-swap="outerHTML">
+        +
+    </button>
+</div>

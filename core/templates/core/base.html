@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'lists/style.css' %}">
+<script src="https://unpkg.com/htmx.org@1.6.1"></script><!--integrity="sha384-tvG/2mnCFmGQzYC1Oh3qxQ7CkQ9kMzYjWZSNtrRZygHPDDqottzEJsqS4oUVodhW" crossorigin="anonymous"></script>-->
+
+{% block head %}
+    <head>
+        <meta charset="UTF-8">
+        <title>Effort!</title>
+    </head>
+{% endblock %}
+
+<body id="body" class="main-body" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+    {% block body %}
+    {% endblock %}
+</body>
+</html>

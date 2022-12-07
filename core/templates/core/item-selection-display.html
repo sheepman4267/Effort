@@ -1,0 +1,20 @@
+{% load core_extras %}
+<div class="list-item">
+    <a href="{% url display_url item.pk %}">
+        <div class="list-item button">
+            <div class="list-title-sidebar">
+                {{ item.title }}
+            </div>
+        </div>
+    </a>
+    <button value="{{ new_child_item_button_text }}" id="newitem" hx-trigger="click" hx-get="{% url new_item_url item.pk %}" hx-swap="outerHTML">
+        {{ new_child_item_button_text }}
+    </button>
+{#    {% star request=request list=list %}#}
+    {% if expand_tree %}
+        {% for item in item.children.all %}
+            {% item_selection_display item selected request new_item_url new_child_item_button_text display_url %}
+        {% endfor %}
+    {% endif %}
+</div>
+
