@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 
 from .models import Profile, List, ListItem
 
+from notes import models
+
 class ProfileInline(admin.StackedInline):
     model = Profile
     can_delete = False
