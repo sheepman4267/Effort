@@ -1,17 +1,19 @@
 {% load lists_extras %}
 <div id="list-item" class="list-item {% if item.completed %}completed{% endif %}">
-    {{ item.name }}
-    <br>
-    <div class="button-container">
-        <button hx-trigger="click" hx-get="{% url 'toggle-item' item.pk %}" hx-target="closest #list-item" hx-swap="outerHTML">
-            {% if item.completed %}
-                Uncheck :(
-            {% else %}
-                Check! :)
-            {% endif %}
-        </button>
-        {% for list in quick_access %}
-            {% quick_access_list_button request=request list=list item=item %}
-        {% endfor %}
+    <button class="check" hx-trigger="click" hx-get="{% url 'toggle-item' item.pk %}" hx-target="closest #list-item" hx-swap="outerHTML">
+        {% if item.completed %}
+            <i class="fa-regular fa-square-check"></i>
+        {% else %}
+            <i class="fa-regular fa-square"></i>
+        {% endif %}
+    </button>
+    <div class="list-item-internal">
+        {{ item.name }}
+        <br>
+        <div class="button-container">
+            {% for list in quick_access %}
+                {% quick_access_list_button request=request list=list item=item %}
+            {% endfor %}
+        </div>
     </div>
 </div>

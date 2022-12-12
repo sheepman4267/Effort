@@ -64,7 +64,7 @@
 
 .list-item.add-button {
     text-align: center;
-    font-size: xx-large;
+    font-size: x-large;
     width: 100%;
     display: block;
 }
@@ -73,3 +73,27 @@
     margin: 0;
     display: flex;
 }
+
+.star-button {
+    float: right;
+    margin-right: 5px;
+    background: transparent;
+    border: 0;
+}
+
+.star-button .fa-solid {
+    color: #ffd500;
+}
+
+.check {
+    margin: 10px;
+    margin-left: 15px;
+    background: transparent;
+    border: 0;
+    font-size: x-large;
+    float: right;
+}
+
+/*.check .fa-square-check {*/
+/*    color: #000000;*/
+/*}*/

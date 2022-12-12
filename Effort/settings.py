@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-
+import pathlib
 from pathlib import Path
 import os
 import logging
@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'allauth',
     'allauth.account',
-    'allauth.socialaccount'
+    'allauth.socialaccount',
+    'fontawesomefree',
 ]
 
 MIDDLEWARE = [
@@ -145,3 +146,5 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 SITE_ID = 1
+
+STATIC_ROOT = pathlib.Path('./static_root')
