@@ -1,6 +1,6 @@
 {% load lists_extras %}
 <div id="list-item" class="list-item {% if item.completed %}completed{% endif %}">
-    <button class="check" hx-trigger="click" hx-get="{% url 'toggle-item' item.pk %}" hx-target="closest #list-item" hx-swap="outerHTML">
+    <button class="check" hx-trigger="click" hx-get="{% url 'toggle-item' item=item.pk list_pk=list_pk %}" hx-target="closest #list-item" hx-swap="outerHTML">
         {% if item.completed %}
             <i class="fa-regular fa-square-check"></i>
         {% else %}
@@ -16,4 +16,8 @@
             {% endfor %}
         </div>
     </div>
+    <button hx-trigger="click" hx-get="{% url 'new-item' list_pk=list_pk parent_item_pk=item.pk %}" hx-swap="outerHTML">New sub-item</button>
+    {% for child_item in item.children.filter %}
+        {% include 'lists/list-item.html' with list_pk=list_pk item=child_item quick_access=quick_access %}
+    {% endfor %}
 </div>

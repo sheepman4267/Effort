@@ -1,5 +1,9 @@
 <div class="list-item edit" id="newitem">
-    <form method="post" action="{% url "new-item" list_pk %}">{% csrf_token %}
+    <form method="post" action="{% if parent %}
+                                    {% url "new-item" list_pk=list_pk parent_item_pk=parent.pk %}
+                                {% else %}
+                                    {% url "new-item" list_pk %}
+                                {% endif %}">{% csrf_token %}
         {{ list.pk }}
         name:{{ form.name }}<br>
         details:{{ form.details }}<br>

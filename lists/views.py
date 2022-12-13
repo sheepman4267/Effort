@@ -33,24 +33,33 @@ def display_list(request, list): #TODO: No folders, just parent lists. Any list 
     })
 
 @login_required
-def toggle_item(request, item):
+def toggle_item(request, item, list_pk):
     item = ListItem.objects.get(pk=item)
     item.completed = not item.completed
     item.checked_date = datetime.datetime.now()
     item.save()
     return render(request, 'lists/list-item.html', {
-        'item': item
+        'item': item,
+        'quick_access': request.user.starred.filter(),
     })
 
 @login_required
-def item_edit(request, list_pk, item=None):
+def item_edit(request, list_pk, item=None, parent_item_pk=None):
+    if parent_item_pk:
+        parent = ListItem.objects.get(pk=parent_item_pk)
+        list_pk = parent.list.filter()[0].pk
+    else:
+        parent = False
     if request.method == 'POST':
         form = ListItemForm(request.POST)
+        print(request.POST)
         if form.is_valid():
             item = ListItem(
                 name=form.cleaned_data['name'],
                 details=form.cleaned_data['details'],
             )
+            if parent:
+                item.parent = parent
             item.save()
             item.list.add(List.objects.get(pk=list_pk))
             return HttpResponseRedirect(reverse('list', args=[list_pk]))
@@ -63,6 +72,7 @@ def item_edit(request, list_pk, item=None):
         return render(request, 'lists/item-edit.html', {
             'form': form,
             'list_pk': list_pk,
+            'parent': parent,
         })
 
 @login_required()
@@ -91,15 +101,17 @@ def add_item_to_list(request, item, list):
         'enabled': False,
     })
 
+
+
 @login_required()
 def toggle_starred(request, list):
     list = List.objects.get(pk=list)
     if request.user in list.starred.filter():
         list.starred.remove(request.user)
-        star_button_text = 'Star'
+        star_button_text = '<i class="fa-regular fa-star"></i>'
     else:
         list.starred.add(request.user)
-        star_button_text = 'Unstar'
+        star_button_text = '<i class="fa-solid fa-star"></i>'
     list.save()
     return render(request, 'lists/star.html', {
         'list': list,

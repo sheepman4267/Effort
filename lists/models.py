@@ -45,6 +45,7 @@ class ListItem(models.Model):
     checked_date = models.DateTimeField(default=datetime.datetime.now)
     completed = models.BooleanField(default=False)
     list = models.ManyToManyField(List, unique=False)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
