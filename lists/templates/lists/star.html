@@ -1,4 +1,6 @@
+{% load icon %}
 <!--Display a button to star or unstar a list-->
 <button class="star-button" id="addbutton" hx-trigger="click" hx-get="{% url "toggle-starred" list.pk %}" hx-swap="outerHTML">
-    {{ star_button_text | safe }}
+{#    {{ star_button_text | safe }}#}
+    {% icon "star" height="20" width="20" fill=star_button_fill %}
 </button>

@@ -54,11 +54,11 @@ def quick_access_list_button(request, item, list, current_list=None):
 @register.inclusion_tag('lists/star.html')
 def star(request, list):
     if request.user in list.starred.filter():
-        star_button_text = '<i class="fa-solid fa-star"></i>'
+        star_button_fill = '#ffd500'
     else:
-        star_button_text = '<i class="fa-regular fa-star"></i>'
+        star_button_fill = 'transparent'
     return({
-        'star_button_text': star_button_text,
+        'star_button_fill': star_button_fill,
         'list': list,
     })
 

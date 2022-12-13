@@ -1,10 +1,12 @@
 {% load lists_extras %}
+{% load icon %}
 <div id="list-item" class="list-item {% if item.completed %}completed{% endif %}">
     <button class="check" hx-trigger="click" hx-get="{% url 'toggle-item' item=item.pk list_pk=list_pk %}" hx-select="#listdisplay" hx-target="closest #listdisplay" hx-swap="outerHTML">
         {% if item.completed %}
+            {% icon "square-check" %}
             <i class="fa-regular fa-square-check"></i>
         {% else %}
-            <i class="fa-regular fa-square"></i>
+            {% icon "square" %}
         {% endif %}
     </button>
     <div class="list-item-internal">
