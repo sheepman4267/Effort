@@ -3,3 +3,4 @@ django-markdownx>=4.0.0b1
 django-colorfield
 fontawesomefree==6.1.1
 django-allauth==0.51.0
+django-feather==0.3.0
