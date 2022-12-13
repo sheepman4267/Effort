@@ -1,6 +1,6 @@
 {% load lists_extras %}
 <div id="list-item" class="list-item {% if item.completed %}completed{% endif %}">
-    <button class="check" hx-trigger="click" hx-get="{% url 'toggle-item' item=item.pk list_pk=list_pk %}" hx-target="closest #list-item" hx-swap="outerHTML">
+    <button class="check" hx-trigger="click" hx-get="{% url 'toggle-item' item=item.pk list_pk=list_pk %}" hx-select="#listdisplay" hx-target="closest #listdisplay" hx-swap="outerHTML">
         {% if item.completed %}
             <i class="fa-regular fa-square-check"></i>
         {% else %}
@@ -12,7 +12,7 @@
         <br>
         <div class="button-container">
             {% for list in quick_access %}
-                {% quick_access_list_button request=request list=list item=item %}
+                {% quick_access_list_button request=request list=list item=item current_list=list.pk %}
             {% endfor %}
         </div>
     </div>

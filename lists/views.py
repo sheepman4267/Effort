@@ -38,10 +38,18 @@ def toggle_item(request, item, list_pk):
     item.completed = not item.completed
     item.checked_date = datetime.datetime.now()
     item.save()
-    return render(request, 'lists/list-item.html', {
-        'item': item,
-        'quick_access': request.user.starred.filter(),
-    })
+    for child_item in item.children.all():
+        if item.completed and not child_item.completed:
+            toggle_item(request, child_item.pk, list_pk)
+    if item.parent != None:
+         if (not item.completed) and item.parent.completed:
+            toggle_item(request, item.parent.pk, list_pk)
+    return HttpResponseRedirect(reverse('list', args=[list_pk]))
+    # return render(request, 'lists/list-item.html', {
+    #     'item': item,
+    #     'quick_access': request.user.starred.filter(),
+    #     'list_pk': list_pk,
+    # })
 
 @login_required
 def item_edit(request, list_pk, item=None, parent_item_pk=None):
@@ -101,7 +109,21 @@ def add_item_to_list(request, item, list):
         'enabled': False,
     })
 
-
+@login_required()
+def remove_item_from_list(request, item, list, current_list):
+    current_list = List.objects.get(pk=current_list)
+    item = ListItem.objects.get(pk=item)
+    list = List.objects.get(pk=list)
+    item.list.remove(list)
+    if len(item.list) == 0:
+        item.list.add(current_list)
+    item.save()
+    return render(request, 'lists/quick-access-list-button.html', {
+        'item': item,
+        'list': list,
+        'enabled': True,
+        'current_list': current_list.pk
+    })
 
 @login_required()
 def toggle_starred(request, list):

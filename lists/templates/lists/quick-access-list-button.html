@@ -4,7 +4,7 @@
         <i class="fa-solid fa-forward"></i> "{{ list.short_title }}"
     </button>
 {% else %}
-    <button id="addbutton" disabled>
+    <button id="addbutton" hx-trigger="click" hx-get="{% url "remove-item-from-list" current_list=current_list item=item.pk list=list.pk %}" hx-swap="outerHTML">
         <i class="fa-solid fa-backward"></i> "{{ list.short_title }}"
     </button>
 {% endif %}

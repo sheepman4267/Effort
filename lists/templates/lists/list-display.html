@@ -1,4 +1,4 @@
-<div class="list", id="listdisplay">
+<div class="list" id="listdisplay">
     {% if current_list %}
         {% for item in todo_list_items %}
             {% if item.parent in todo_list_items %}
@@ -10,7 +10,10 @@
                 +
             </button>
         {% for item in completed_list_items %}
+            {% if item.parent in completed_list_items %}
+            {% else %}
             {% include 'lists/list-item.html' with item=item list_pk=current_list.pk quick_access=quick_access %}
+            {% endif %}
         {% endfor %}
     {% else %}
         <div class="list-item">Select a List to get started</div>
