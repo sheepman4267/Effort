@@ -3,7 +3,7 @@
 {% load static %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'lists/style.css' %}">
-<script src="https://unpkg.com/htmx.org@1.6.1"></script><!--integrity="sha384-tvG/2mnCFmGQzYC1Oh3qxQ7CkQ9kMzYjWZSNtrRZygHPDDqottzEJsqS4oUVodhW" crossorigin="anonymous"></script>-->
+<script src="https://unpkg.com/htmx.org@1.6.1"></script>
 <link href="{% static 'fontawesomefree/css/all.min.css' %}" rel="stylesheet" type="text/css">
 
 {% block head %}
@@ -13,7 +13,9 @@
     </head>
 {% endblock %}
 
-<body id="body" class="main-body" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' <!--hx-boost="true"-->>
+<body id="body" class="main-body" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-boost="true"  >
+    {% block navbar %}
+    {% endblock %}
     {% block body %}
     {% endblock %}
 </body>
