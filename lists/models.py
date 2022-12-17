@@ -3,8 +3,10 @@ from django.db import models
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.conf import settings
-
+from recurrence.fields import RecurrenceField
 from markdownx.models import MarkdownxField
+
+from django.utils import timezone
 
 import datetime
 
@@ -38,14 +40,18 @@ class List(models.Model):
 
 
 class ListItem(models.Model):
-    name = MarkdownxField()
+    name = models.CharField(max_length=500)
     details = MarkdownxField(null=True, blank=True)
     due_date = models.DateTimeField(null=True, blank=True)
-    created_date = models.DateTimeField(default=datetime.datetime.now, editable=False)
-    checked_date = models.DateTimeField(default=datetime.datetime.now)
+    created_date = models.DateTimeField(default=timezone.now, editable=False)
+    checked_date = models.DateTimeField(default=timezone.now)
     completed = models.BooleanField(default=False)
     list = models.ManyToManyField(List, unique=False)
     parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
+    uncheck_every = RecurrenceField(null=True, blank=True)
+    last_unchecked = models.DateTimeField(null=True, blank=True,)
+    def __str__(self):
+        return(self.name)
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

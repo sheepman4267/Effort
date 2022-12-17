@@ -7,6 +7,8 @@ from django.core.exceptions import PermissionDenied
 from .models import List, ListItem
 from .forms import ListForm, ListItemForm
 
+from lists import cron
+
 @login_required
 def index(request):
     starred_lists = List.objects.filter(owner=request.user, parent=None, starred=request.user)
@@ -64,7 +66,7 @@ def item_edit(request, list_pk, item=None, parent_item_pk=None):
         if form.is_valid():
             item = ListItem(
                 name=form.cleaned_data['name'],
-                details=form.cleaned_data['details'],
+                #details=form.cleaned_data['details'],
             )
             if parent:
                 item.parent = parent
@@ -166,3 +168,7 @@ def new_list(request, parent=None):
             'action': action,
             'parent': parent,
         })
+
+
+def run_cron(request): # Run jobs that need to happen regularly
+    cron.uncheck_recurring_items()

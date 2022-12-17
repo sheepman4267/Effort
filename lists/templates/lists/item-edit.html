@@ -5,10 +5,8 @@
                                     {% url "new-item" list_pk %}
                                 {% endif %}">{% csrf_token %}
         {{ list.pk }}
-        name:{{ form.name }}<br>
-        details:{{ form.details }}<br>
-        due date:{{ form.due_date }}
+        name:{{ form.name }}
+        <input type="submit"><br>
         {{ form.errors }}
-        <input type="submit">
     </form>
 </div>
