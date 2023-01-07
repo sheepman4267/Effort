@@ -1,25 +1,30 @@
 {% load lists_extras %}
 {% load icon %}
-<div id="list-item" class="list-item {% if item.completed %}completed{% endif %}">
-    <button class="check" hx-trigger="click" hx-get="{% url 'toggle-item' item=item.pk list_pk=list_pk %}" hx-select="#listdisplay" hx-target="closest #listdisplay" hx-swap="outerHTML">
-        {% if item.completed %}
-            {% icon "square-check" %}
-            <i class="fa-regular fa-square-check"></i>
-        {% else %}
-            {% icon "square" %}
-        {% endif %}
-    </button>
-    <div class="list-item-internal">
-        {{ item.name }}
-        <br>
-        <div class="button-container">
-            {% for list in quick_access %}
-                {% quick_access_list_button request=request list=list item=item current_list=list.pk %}
-            {% endfor %}
+<li id="list-item" class="list-item {% if item.completed %}completed{% endif %}">
+    <div class="li-internal">
+        <div class="li-right">
+            <h2>{{ item.name }}</h2>
+            <div class="li-button-container">
+                <button hx-trigger="click" hx-get="{% url 'new-item' list_pk=list_pk parent_item_pk=item.pk %}" hx-select="form" hx-swap="outerHTML">New sub-item</button>
+                <div class="li-buttons-left">
+                    {% for list in quick_access %}
+                    {% quick_access_list_button request=request list=list item=item current_list=list.pk %}
+                {% endfor %}
+                </div>
+            </div>
         </div>
+        <button class="check" hx-trigger="click" hx-get="{% url 'toggle-item' item=item.pk list_pk=list_pk %}" hx-select="#listdisplay" hx-target="closest #listdisplay" hx-swap="outerHTML">
+            {% if item.completed %}
+                {% icon "square-check" %}
+                <i class="fa-regular fa-square-check"></i>
+            {% else %}
+                {% icon "square" %}
+            {% endif %}
+        </button>
     </div>
-    <button hx-trigger="click" hx-get="{% url 'new-item' list_pk=list_pk parent_item_pk=item.pk %}" hx-swap="outerHTML">New sub-item</button>
+    <ul>
     {% for child_item in item.children.filter %}
         {% include 'lists/list-item.html' with list_pk=list_pk item=child_item quick_access=quick_access %}
     {% endfor %}
-</div>
+    </ul>
+</li>

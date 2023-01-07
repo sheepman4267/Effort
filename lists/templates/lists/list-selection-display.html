@@ -1,20 +1,22 @@
 {% load lists_extras %}
-<div class="list-item">
-    <a href="{% url 'list' list.pk %}">
-        <div class="list-item button">
-            <div class="list-title-sidebar">
-                {{ list.title }}
-            </div>
+<li class="list-item">
+    <div class="li-internal">
+        <div class="li-right">
+            <a href="{% url 'list' list.pk %}">
+            {{ list.title }}
+            </a>
+            <button value="New Sublist" id="newitem" hx-trigger="click" hx-get="{% url "new-sublist" list.pk %}" hx-select="form" hx-swap="outerHTML">
+                New Sublist
+            </button>
         </div>
-    </a>
-    <button value="New Sublist" id="newitem" hx-trigger="click" hx-get="{% url "new-sublist" list.pk %}" hx-swap="outerHTML">
-        New Sublist
-    </button>
-    {% star request=request list=list %}
+        {% star request=request list=list %}
+    </div>
     {% if expand_tree %}
+        <ul>
         {% for list in list.children.all %}
             {% list_selection_display list=list selected_list=selected_list request=request %}
         {% endfor %}
+        </ul>
     {% endif %}
-</div>
+</li>
 

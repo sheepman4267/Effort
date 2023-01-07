@@ -1,4 +1,4 @@
-<div class="list" id="listdisplay">
+<ul class="list" id="listdisplay">
     {% if current_list %}
         {% for item in todo_list_items %}
             {% if item.parent in todo_list_items %}
@@ -18,4 +18,4 @@
     {% else %}
         <div class="list-item">Select a List to get started</div>
     {% endif %}
-</div>
+</ul>

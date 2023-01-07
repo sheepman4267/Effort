@@ -13,10 +13,9 @@
     padding: 6px;
 }
 
-
-
 .list {
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
     background: #d3bfe0;
     height: 100vh;
     width: 70%;
@@ -35,10 +34,38 @@
     padding-bottom: 0;
     border-radius: 5px;
     margin-top: 5px;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
 }
+
+.list-item .li-internal {
+    display: flex;
+    flex-direction: row;
+}
+
 .list-item.completed {
     background: darkgrey;
     color: grey;
+}
+
+.list-item .li-right {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-bottom: 5px;
+}
+
+.list-item .li-button-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.list-item .li-buttons-left {
+    display: flex;
+    flex-direction: row;
+    margin: 0 0 0 auto;
+    padding-right: 10px;
 }
 
 .list-item .list-item {
@@ -63,21 +90,16 @@
     height: auto;
 }
 
-.list-item .button-container {
-    float: right;
-}
-
-.list-item.button {
-    margin: 0;
-    border: 0;
-    display: flex;
-}
-
 .list-item.add-button {
     text-align: center;
     font-size: x-large;
     width: 100%;
-    display: block;
+    align-self: center;
+    background: yellow;
+}
+
+.list-item .new {
+    /*display: none;*/
 }
 
 .main-body {
@@ -97,19 +119,12 @@
 }
 
 .check {
-    margin-top: 10px;
-    margin-right: 10px;
     background: transparent;
     border: 0;
     font-size: x-large;
-    float: right;
+    margin: 0 10px 0 auto;
+    align-self: center;
 }
-
-.list-item-internal {
-}
-/*.check .fa-square-check {*/
-/*    color: #000000;*/
-/*}*/
 
 @media screen and (max-width: 1100px) {
     .sidebar {
