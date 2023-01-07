@@ -15,8 +15,7 @@
         </div>
         <button class="check" hx-trigger="click" hx-get="{% url 'toggle-item' item=item.pk list_pk=list_pk %}" hx-select="#listdisplay" hx-target="closest #listdisplay" hx-swap="outerHTML">
             {% if item.completed %}
-                {% icon "square-check" %}
-                <i class="fa-regular fa-square-check"></i>
+                {% icon "check-square" %}
             {% else %}
                 {% icon "square" %}
             {% endif %}

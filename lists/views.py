@@ -131,11 +131,9 @@ def toggle_starred(request, list):
     if request.user in list.starred.filter():
         list.starred.remove(request.user)
         star_button_fill = 'transparent'
-        # star_button_text = '<i class="fa-regular fa-star"></i>'
     else:
         list.starred.add(request.user)
         star_button_fill = '#ffd500'
-        # star_button_text = '<i class="fa-solid fa-star"></i>'
     list.save()
     return render(request, 'lists/star.html', {
         'list': list,

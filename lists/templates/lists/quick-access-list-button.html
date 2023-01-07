@@ -1,10 +1,11 @@
 <!--Display a quick-access button to add a given item to another list-->
+{% load icon %}
 {% if enabled %}
     <button id="addbutton" hx-trigger="click" hx-get="{% url "add-item-to-list" item.pk list.pk %}" hx-swap="outerHTML">
-        <i class="fa-solid fa-forward"></i> "{{ list.short_title }}"
+        Add to "{{ list.short_title }}"
     </button>
 {% else %}
     <button id="addbutton" hx-trigger="click" hx-get="{% url "remove-item-from-list" current_list=current_list item=item.pk list=list.pk %}" hx-swap="outerHTML">
-        <i class="fa-solid fa-backward"></i> "{{ list.short_title }}"
+        Remove from "{{ list.short_title }}"
     </button>
 {% endif %}
