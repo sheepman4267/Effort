@@ -8,9 +8,12 @@ from markdownx.models import MarkdownxField
 
 from django.utils import timezone
 
+from django_q.models import Schedule
+
 import datetime
 
 import logging
+
 logger = logging.getLogger('effort.lists.models')
 logger.setLevel(settings.LOG_LEVEL)
 print(settings.LOG_LEVEL)
@@ -19,8 +22,21 @@ class List(models.Model):
     title = models.CharField(max_length=200)
     description = MarkdownxField(blank=True)
     owner = models.ForeignKey(User, unique=False, on_delete=models.CASCADE)
-    parent = models.ForeignKey('self', null=True, unique=False, on_delete=models.CASCADE, related_name="children")
+    parent = models.ForeignKey('self', null=True, blank=True, unique=False, on_delete=models.CASCADE, related_name="children")
     starred = models.ManyToManyField(User, unique=False, related_name='starred')
+    collect_items = models.BooleanField(default=False)
+    collect_next_days = models.IntegerField(default=1)
+    collect_on = RecurrenceField(null=True, blank=True)
+    
+    def save(self, *args, **kwargs):
+        if self.collect_items:
+            Schedule.objects.create(
+                func='lists.tasks.collect_items',
+                args=self.pk,
+                schedule_type=Schedule.ONCE,
+                next_run=self.collect_on.after(datetime.datetime.now())
+            )
+        super(List, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.title
@@ -50,8 +66,25 @@ class ListItem(models.Model):
     parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
     uncheck_every = RecurrenceField(null=True, blank=True)
     last_unchecked = models.DateTimeField(null=True, blank=True,)
+    due_again_in = models.IntegerField(null=True, blank=True)
     def __str__(self):
         return(self.name)
+
+    def save(self, *args, **kwargs):
+        if self.completed and self.uncheck_every:
+            next_uncheck = self.uncheck_every.after(datetime.datetime.now())
+            if next_uncheck:
+                Schedule.objects.create(
+                    func='lists.tasks.uncheck_recurring_item',
+                    args=self.pk,
+                    schedule_type=Schedule.ONCE,
+                    next_run=timezone.make_aware(
+                        datetime.datetime.combine(next_uncheck.date() - datetime.timedelta(days=1),
+                                                 datetime.time(hour=0, minute=1)
+                                                 )
+                    )
+                )
+        super(ListItem, self).save(*args, **kwargs)
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

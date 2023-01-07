@@ -13,5 +13,4 @@ urlpatterns = [
     path('item/<int:item>/add/<int:list>', views.add_item_to_list, name='add-item-to-list'),
     path('item/<int:current_list>/<int:item>/remove/<int:list>', views.remove_item_from_list, name='remove-item-from-list'),
     path('list/star/<int:list>', views.toggle_starred, name='toggle-starred'),
-    path('runcron', views.run_cron, name='run-cron'),
 ]

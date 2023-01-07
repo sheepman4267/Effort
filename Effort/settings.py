@@ -51,6 +51,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'fontawesomefree',
     'django_feather',
+    'recurrence',
+    'django_q',
 ]
 
 MIDDLEWARE = [
@@ -125,7 +127,7 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
+RECURRENCE_USE_TZ=True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
@@ -149,3 +151,10 @@ AUTHENTICATION_BACKENDS = [
 SITE_ID = 1
 
 STATIC_ROOT = pathlib.Path('./static_root')
+
+Q_CLUSTER = {
+    "name": "effort",
+    "orm": "default",  # Use Django's ORM + database for broker
+    "retry": 10,
+    "timeout": 5,
+}
