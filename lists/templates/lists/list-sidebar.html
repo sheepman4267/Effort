@@ -11,7 +11,7 @@
             {% list_selection_display list current_list request %}
         {% endif %}
     {% endfor %}
-    <button class="list-item add-button" value="New Sublist" id="newitem" hx-trigger="click" hx-get="{% url "new-list" %}" hx-swap="outerHTML">
+    <button class="list-item add-button" value="New Sublist" hx-trigger="click" hx-get="{% url "new-list" %}" hx-swap="outerHTML">
         {% icon "plus" %}
     </button>
 </ul>

@@ -2,17 +2,20 @@
 {% load icon %}
 <li id="list-item" class="list-item {% if item.completed %}completed{% endif %}">
     <div class="li-internal">
-        <div class="li-right">
+        <div class="li-left">
             <h2>{{ item.name }}</h2>
             <div class="li-button-container">
-                <button hx-trigger="click" hx-get="{% url 'new-item' list_pk=list_pk parent_item_pk=item.pk %}" hx-select="form" hx-swap="outerHTML">New sub-item</button>
-                <div class="li-buttons-left">
+                <button hx-trigger="click" hx-get="{% url 'new-item' list_pk=list_pk parent_item_pk=item.pk %}" hx-select=".new-item-form-container" hx-swap="outerHTML">New sub-item</button>
+                <div class="li-buttons-right">
                     {% for list in quick_access %}
                     {% quick_access_list_button request=request list=list item=item current_list=list.pk %}
                 {% endfor %}
                 </div>
             </div>
         </div>
+        <button class="check">
+            {% icon "menu" %}
+        </button>
         <button class="check" hx-trigger="click" hx-get="{% url 'toggle-item' item=item.pk list_pk=list_pk %}" hx-select="#listdisplay" hx-target="closest #listdisplay" hx-swap="outerHTML">
             {% if item.completed %}
                 {% icon "check-square" %}

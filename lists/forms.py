@@ -15,6 +15,13 @@ class ListItemForm(forms.ModelForm):
                   # 'list'
                   # 'due_date'
                   )
+        widgets = {
+            'name': forms.TextInput(attrs = {'placeholder': 'What do you need to do?',
+                                             'class': 'new-item-input',
+                                             'autofocus': True,
+                                             'autocomplete': 'off',
+                                             })
+        }
 
 class DetailedListItemForm(forms.ModelForm):
     class Meta:

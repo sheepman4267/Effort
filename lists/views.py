@@ -98,7 +98,7 @@ def list_edit(request, list=None): #for future use, see note in list-edit.html
         return render(request, 'lists/list-edit.html')
 
 @login_required()
-def add_item_to_list(request, item, list):
+def add_item_to_list(request, item, list, current_list):
     item = ListItem.objects.get(pk=item)
     list = List.objects.get(pk=list)
     item.list.add(list)
@@ -107,6 +107,7 @@ def add_item_to_list(request, item, list):
         'item': item,
         'list': list,
         'enabled': False,
+        'current_list': current_list,
     })
 
 @login_required()
@@ -115,7 +116,7 @@ def remove_item_from_list(request, item, list, current_list):
     item = ListItem.objects.get(pk=item)
     list = List.objects.get(pk=list)
     item.list.remove(list)
-    if len(item.list) == 0:
+    if len(item.list.all()) == 0:
         item.list.add(current_list)
     item.save()
     return render(request, 'lists/quick-access-list-button.html', {

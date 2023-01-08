@@ -1,12 +1,19 @@
-<div class="list-item edit" id="newitem">
-    <form method="post" action="{% if parent %}
-                                    {% url "new-item" list_pk=list_pk parent_item_pk=parent.pk %}
-                                {% else %}
-                                    {% url "new-item" list_pk %}
-                                {% endif %}">{% csrf_token %}
-        {{ list.pk }}
-        name:{{ form.name }}
-        <input type="submit"><br>
-        {{ form.errors }}
-    </form>
+{% load icon %}
+<div class="new-item-button expanded" id="newitem">
+    <h2>New Item</h2>
+    <div class="new-item-form-container">
+        <form method="post" action="{% if parent %}
+                                        {% url "new-item" list_pk=list_pk parent_item_pk=parent.pk %}
+                                    {% else %}
+                                        {% url "new-item" list_pk %}
+                                    {% endif %}">{% csrf_token %}
+            {{ list.pk }}
+            {{ form.name }}
+            <label>
+                <input type="submit" value="Submit" hidden>
+                {% icon "corner-down-left" %}
+            </label>
+            {{ form.errors }}
+        </form>
+    </div>
 </div>

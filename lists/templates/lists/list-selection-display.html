@@ -1,11 +1,11 @@
 {% load lists_extras %}
 <li class="list-item">
     <div class="li-internal">
-        <div class="li-right">
+        <div class="li-left">
             <a href="{% url 'list' list.pk %}">
-            {{ list.title }}
+                <h2>{{ list.title }}</h2>
             </a>
-            <button value="New Sublist" id="newitem" hx-trigger="click" hx-get="{% url "new-sublist" list.pk %}" hx-select="form" hx-swap="outerHTML">
+            <button value="New Sublist" hx-trigger="click" hx-get="{% url "new-sublist" list.pk %}" hx-select="form"  hx-target="this" hx-swap="outerHTML">
                 New Sublist
             </button>
         </div>
