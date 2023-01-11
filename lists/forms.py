@@ -1,4 +1,5 @@
 from django import forms
+from django.db.models import fields
 
 from markdownx.fields import MarkdownxFormField
 
@@ -6,11 +7,13 @@ from .models import List, ListItem
 
 
 class ListItemForm(forms.ModelForm):
+    parent_pk = forms.IntegerField(required=False)
     class Meta:
         model = ListItem
         # name = MarkdownxFormField
         name = forms.TextInput()
         fields = ('name',
+                  'parent_pk',
                   # 'details',
                   # 'list'
                   # 'due_date'
@@ -22,6 +25,14 @@ class ListItemForm(forms.ModelForm):
                                              'autocomplete': 'off',
                                              })
         }
+
+    def save(self, commit=True, *args, **kwargs):
+        instance = super(ListItemForm, self).save(commit=False, *args, **kwargs)
+        instance.parent = ListItem.objects.filter(pk=self.cleaned_data.get('parent_pk')).first()
+        if commit:
+            instance.save()
+            self.save_m2m()
+        return instance
 
 class DetailedListItemForm(forms.ModelForm):
     class Meta:

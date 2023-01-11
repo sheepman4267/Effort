@@ -60,24 +60,13 @@ def item_edit(request, list_pk, item=None, parent_item_pk=None):
     else:
         parent = False
     if request.method == 'POST':
-        form = ListItemForm(request.POST)
-        print(request.POST)
+        form = ListItemForm(request.POST, instance=ListItem.objects.filter(pk=item).first())
         if form.is_valid():
-            item = ListItem(
-                name=form.cleaned_data['name'],
-                #details=form.cleaned_data['details'],
-            )
-            if parent:
-                item.parent = parent
-            item.save()
+            item = form.save()
             item.list.add(List.objects.get(pk=list_pk))
             return HttpResponseRedirect(reverse('list', args=[list_pk]))
     else: #as in, if request.method != 'POST'...
-        if item:
-            item = ListItem.objects.get(pk=item)
-            form = ListItemForm(instance=item)
-        else:
-            form = ListItemForm()
+        form = ListItemForm(instance=ListItem.objects.filter(pk=item).first())
         return render(request, 'lists/item-edit.html', {
             'form': form,
             'list_pk': list_pk,
