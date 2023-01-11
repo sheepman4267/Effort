@@ -1,0 +1,20 @@
+{% load lists_extras %}
+{% load icon %}
+<div id="item-details-{{ item.pk }}" class="details-container">
+    {{ form.media }}
+    <div>
+        <div class="field-container">
+            <h4>Details:</h4>
+            {{ form.details }}
+        </div>
+    </div>
+    <div>
+        <div class="field-container">
+            <h4>Due Date:</h4>
+            {{ form.due_date }}
+        </div>
+        <div class="field-container">
+            <h4>Configure repetition in admin due to bugs</h4>
+        </div>
+    </div>
+</div>

@@ -4,8 +4,10 @@
     <div class="new-item-form-container">
         <form method="post" action="{% if parent %}
                                         {% url "new-item" list_pk=list_pk parent_item_pk=parent.pk %}
+                                    {% elif item_pk %}
+                                        {% url "edit-item" item=item_pk list_pk=list_pk%}
                                     {% else %}
-                                        {% url "new-item" list_pk %}
+                                        {% url "new-item" list_pk=list_pk %}
                                     {% endif %}">{% csrf_token %}
             {{ list.pk }}
             {{ form.name }}

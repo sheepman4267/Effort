@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 
 from .models import List, ListItem
-from .forms import ListForm, ListItemForm
+from .forms import ListForm, ListItemForm, DetailedListItemForm
 
 @login_required
 def index(request):
@@ -53,6 +53,7 @@ def toggle_item(request, item, list_pk):
 
 @login_required
 def item_edit(request, list_pk, item=None, parent_item_pk=None):
+    item_pk = None
     if parent_item_pk:
         parent = ListItem.objects.get(pk=parent_item_pk)
         list_pk = parent.list.filter()[0].pk
@@ -81,6 +82,7 @@ def item_edit(request, list_pk, item=None, parent_item_pk=None):
             'form': form,
             'list_pk': list_pk,
             'parent': parent,
+            'item_pk': item_pk,
         })
 
 @login_required()
@@ -165,3 +167,12 @@ def new_list(request, parent=None):
             'action': action,
             'parent': parent,
         })
+
+@login_required
+def item_details(request, item_pk):
+    item = ListItem.objects.get(pk=item_pk)
+    form = DetailedListItemForm(instance=item)
+    return render(request, 'lists/list-item-details.html', {
+        'item': item,
+        'form': form,
+    })

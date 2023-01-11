@@ -1,9 +1,9 @@
 {% load lists_extras %}
 {% load icon %}
-<li id="list-item" class="list-item {% if item.completed %}completed{% endif %}">
+<li id="list-item-{{ item.pk }}" class="list-item {% if item.completed %}completed{% endif %}">
     <div class="li-internal">
         <div class="li-left">
-            <h2>{{ item.name }}</h2>
+            <h2>{{ item.name }}<button class="edit-button" hx-get="{% url 'edit-item' item=item.pk list_pk=list_pk %}" hx-select="form" hx-target="closest h2" hx-swap="outerHTML">{% icon "edit-3" %}</button></h2>
             <div class="li-button-container">
                 <button hx-trigger="click" hx-get="{% url 'new-item' list_pk=list_pk parent_item_pk=item.pk %}" hx-select=".new-item-form-container" hx-swap="outerHTML">New sub-item</button>
                 <div class="li-buttons-right">
@@ -13,7 +13,10 @@
                 </div>
             </div>
         </div>
-        <button class="check">
+{#        <button id="list-details-button{{ item.pk }}" class="check" hx-trigger="click" hx-get="{% url 'item-details' item_pk=item.pk list_pk=list_pk %}" hx-target="closest .li-internal" hx-swap="afterend">#}
+{#            {% icon "menu" %}#}
+{#        </button>#}
+        <button class="check" _="on click toggle .details on #list-item-{{ item.pk }}">
             {% icon "menu" %}
         </button>
         <button class="check" hx-trigger="click" hx-get="{% url 'toggle-item' item=item.pk list_pk=list_pk %}" hx-select="#listdisplay" hx-target="closest #listdisplay" hx-swap="outerHTML">
@@ -23,6 +26,9 @@
                 {% icon "square" %}
             {% endif %}
         </button>
+    </div>
+    <div id="item-details-{{ item.pk }}" class="li-internal" hx-trigger="revealed" hx-get="{% url "item-details" item_pk=item.pk %}">
+    <h2>Item Details</h2>
     </div>
     <ul>
     {% for child_item in item.children.filter %}

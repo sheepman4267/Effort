@@ -27,10 +27,14 @@ class DetailedListItemForm(forms.ModelForm):
     class Meta:
         model = ListItem
         details = MarkdownxFormField
-        fields = ('name',
-                  'details',
-                  'due_date',
+        fields = (
+            'details',
+            'due_date',
+            # 'uncheck_every', #Disabled due to JS bugs in django-recurrence widget
         )
+        widgets = {
+            'due_date': forms.DateInput()
+        }
 
 class ListForm(forms.ModelForm):
     class Meta:

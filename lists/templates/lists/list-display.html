@@ -18,6 +18,8 @@
         <div class="list-item">Select a List to get started</div>
     {% endif %}
 </ul>
-<button class="new-item-button" id="newitem" hx-trigger="click" hx-get="{% url 'new-item' list_pk=current_list.pk %}" hx-select="#newitem" hx-swap="outerHTML">
-    {% icon "plus" %}
-</button>
+{% if current_list %}
+    <button class="new-item-button" id="newitem" hx-trigger="click" hx-get="{% url 'new-item' list_pk=current_list.pk %}" hx-select="#newitem" hx-swap="outerHTML">
+        {% icon "plus" %}
+    </button>
+{% endif %}
