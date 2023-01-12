@@ -8,15 +8,14 @@ from .models import List, ListItem
 
 class ListItemForm(forms.ModelForm):
     parent_pk = forms.IntegerField(required=False)
+    list_pk = forms.IntegerField(required=False)
     class Meta:
         model = ListItem
         # name = MarkdownxFormField
         name = forms.TextInput()
         fields = ('name',
                   'parent_pk',
-                  # 'details',
-                  # 'list'
-                  # 'due_date'
+                  'list_pk',
                   )
         widgets = {
             'name': forms.TextInput(attrs = {'placeholder': 'What do you need to do?',
@@ -32,6 +31,7 @@ class ListItemForm(forms.ModelForm):
         if commit:
             instance.save()
             self.save_m2m()
+        instance.list.add(List.objects.get(pk=self.cleaned_data.get('list_pk')))
         return instance
 
 class DetailedListItemForm(forms.ModelForm):

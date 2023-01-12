@@ -1,5 +1,5 @@
 {% load icon %}
-<ul class="list" id="listdisplay">
+<ul class="list" id="listdisplay" data-list-pk="{{ current_list.pk }}">
     {% if current_list %}
         {% for item in todo_list_items %}
             {% if item.parent in todo_list_items %}
@@ -19,7 +19,7 @@
     {% endif %}
 </ul>
 {% if current_list %}
-    <button class="new-item-button" id="newitem" hx-trigger="click" hx-get="{% url 'new-item' list_pk=current_list.pk %}" hx-select="#newitem" hx-swap="outerHTML">
+    <button class="new-item-button" id="newitem" hx-trigger="click" hx-get="{% url 'item-edit' %}" hx-select="#newitem" hx-swap="outerHTML">
         {% icon "plus" %}
     </button>
 {% endif %}

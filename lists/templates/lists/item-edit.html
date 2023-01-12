@@ -2,20 +2,15 @@
 <div class="new-item-button expanded" id="newitem">
     <h2>New Item</h2>
     <div class="new-item-form-container">
-        <form method="post" action="{% if parent %}
-                                        {% url "new-item" list_pk=list_pk parent_item_pk=parent.pk %}
-                                    {% elif item_pk %}
-                                        {% url "edit-item" item=item_pk list_pk=list_pk%}
-                                    {% else %}
-                                        {% url "new-item" list_pk=list_pk %}
-                                    {% endif %}">{% csrf_token %}
+        <form method="post" action="{% url 'item-edit' item_pk %}">{% csrf_token %}
             {{ list.pk }}
             {{ form.name }}
             <label>
                 <input type="submit" value="Submit" hidden>
                 {% icon "corner-down-left" %}
             </label>
-            <input type="hidden" name="parent_pk" value="{{ parent.pk }}">
+            <input type="hidden" name="parent_pk" _="on load set my @value to @data-item-pk of closest parent <li/>">
+            <input type="hidden" name="list_pk" _="on load set my @value to @data-list-pk of #listdisplay">
             {{ form.errors }}
         </form>
     </div>

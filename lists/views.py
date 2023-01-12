@@ -52,25 +52,16 @@ def toggle_item(request, item, list_pk):
     # })
 
 @login_required
-def item_edit(request, list_pk, item=None, parent_item_pk=None):
-    item_pk = None
-    if parent_item_pk:
-        parent = ListItem.objects.get(pk=parent_item_pk)
-        list_pk = parent.list.filter()[0].pk
-    else:
-        parent = False
+def item_edit(request, item_pk=0):
     if request.method == 'POST':
-        form = ListItemForm(request.POST, instance=ListItem.objects.filter(pk=item).first())
+        form = ListItemForm(request.POST, instance=ListItem.objects.filter(pk=item_pk).first())
         if form.is_valid():
             item = form.save()
-            item.list.add(List.objects.get(pk=list_pk))
-            return HttpResponseRedirect(reverse('list', args=[list_pk]))
+            return HttpResponseRedirect(reverse('list', args=[item.list.filter().first().pk]))
     else: #as in, if request.method != 'POST'...
-        form = ListItemForm(instance=ListItem.objects.filter(pk=item).first())
+        form = ListItemForm(instance=ListItem.objects.filter(pk=item_pk).first())
         return render(request, 'lists/item-edit.html', {
             'form': form,
-            'list_pk': list_pk,
-            'parent': parent,
             'item_pk': item_pk,
         })
 

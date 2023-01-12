@@ -1,11 +1,11 @@
 {% load lists_extras %}
 {% load icon %}
-<li id="list-item-{{ item.pk }}" class="list-item {% if item.completed %}completed{% endif %}">
+<li id="list-item-{{ item.pk }}" data-item-pk="{{ item.pk }}" data-list-pk="{{ list_pk }}" class="list-item {% if item.completed %}completed{% endif %}">
     <div class="li-internal">
         <div class="li-left">
-            <h2>{{ item.name }}<button class="edit-button" hx-get="{% url 'edit-item' item=item.pk list_pk=list_pk %}" hx-select="form" hx-target="closest h2" hx-swap="outerHTML">{% icon "edit-3" %}</button></h2>
+            <h2>{{ item.name }}<button class="edit-button" hx-get="{% url 'item-edit' item_pk=item.pk %}" hx-select="form" hx-target="closest h2" hx-swap="outerHTML">{% icon "edit-3" %}</button></h2>
             <div class="li-button-container">
-                <button hx-trigger="click" hx-get="{% url 'new-item' list_pk=list_pk parent_item_pk=item.pk %}" hx-select=".new-item-form-container" hx-swap="outerHTML">New sub-item</button>
+                <button hx-trigger="click" hx-get="{% url 'item-edit' %}" hx-select=".new-item-form-container" hx-swap="outerHTML">New sub-item</button>
                 <div class="li-buttons-right">
                     {% for list in quick_access %}
                     {% quick_access_list_button request=request list=list item=item current_list=list.pk %}
