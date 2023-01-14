@@ -21,7 +21,7 @@ print(settings.LOG_LEVEL)
 class List(models.Model):
     title = models.CharField(max_length=200)
     description = MarkdownxField(blank=True)
-    owner = models.ForeignKey(User, unique=False, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, unique=False, on_delete=models.CASCADE, related_name='lists')
     parent = models.ForeignKey('self', null=True, blank=True, unique=False, on_delete=models.CASCADE, related_name="children")
     starred = models.ManyToManyField(User, unique=False, related_name='starred')
     collect_items = models.BooleanField(default=False)
@@ -34,7 +34,11 @@ class List(models.Model):
                 func='lists.tasks.collect_items',
                 args=self.pk,
                 schedule_type=Schedule.ONCE,
-                next_run=self.collect_on.after(datetime.datetime.now())
+                next_run=timezone.make_aware(datetime.datetime.combine(self.collect_on.after(datetime.datetime.now()).date(),
+                                              datetime.time(hour=0, minute=1
+                                                            )
+                                              )
+                    )
             )
         super(List, self).save(*args, **kwargs)
 
@@ -66,11 +70,11 @@ class List(models.Model):
 class ListItem(models.Model):
     name = models.CharField(max_length=500)
     details = MarkdownxField(null=True, blank=True)
-    due_date = models.DateTimeField(null=True, blank=True)
+    due_date = models.DateField(null=True, blank=True)
     created_date = models.DateTimeField(default=timezone.now, editable=False)
     checked_date = models.DateTimeField(default=timezone.now)
     completed = models.BooleanField(default=False)
-    list = models.ManyToManyField(List, unique=False)
+    list = models.ManyToManyField(List, unique=False, related_name='items')
     parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
     uncheck_every = RecurrenceField(null=True, blank=True)
     last_unchecked = models.DateTimeField(null=True, blank=True,)

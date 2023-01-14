@@ -18,8 +18,11 @@ def uncheck_recurring_item(item_pk: int) -> None:
 
 def collect_items(list_pk: int) -> None:
     list = List.objects.get(pk=list_pk)
-    due_cutoff = datetime.date.today() - datetime.timedelta(days=list.collect_next_days)
-    potential_items = ListItem.objects.filter(user=list.owner, completed=False)
+    due_cutoff = datetime.date.today() + datetime.timedelta(days=list.collect_next_days)
+    # potential_items = ListItem.objects.filter(user=list.owner, completed=False)
+    potential_items = []
+    for owned_list in list.owner.lists.all():
+        potential_items += owned_list.items.all()
     for item in potential_items:
         if item.due_date < due_cutoff:
             item.list.add(list)
@@ -28,11 +31,10 @@ def collect_items(list_pk: int) -> None:
         func='lists.tasks.collect_items',
         args=list.pk,
         schedule_type=Schedule.ONCE,
-        next_run=timezone.make_aware(datetime.datetime.combine(list.collect_on.after(datetime.datetime.now()).date()
-                                                               datetime.datetime(hour=0, minute=1
+        next_run=timezone.make_aware(datetime.datetime.combine(list.collect_on.after(datetime.datetime.now()).date(),
+                                                               datetime.time(hour=0, minute=1
                                                                                     )
                                                                )
-
-
+                                     )
     )
 
