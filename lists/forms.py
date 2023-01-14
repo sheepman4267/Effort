@@ -27,7 +27,8 @@ class ListItemForm(forms.ModelForm):
 
     def save(self, commit=True, *args, **kwargs):
         instance = super(ListItemForm, self).save(commit=False, *args, **kwargs)
-        instance.parent = ListItem.objects.filter(pk=self.cleaned_data.get('parent_pk')).first()
+        if not instance.parent:
+            instance.parent = ListItem.objects.filter(pk=self.cleaned_data.get('parent_pk')).first()
         if commit:
             instance.save()
             self.save_m2m()
