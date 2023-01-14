@@ -1,6 +1,6 @@
 {% load lists_extras %}
 {% load icon %}
-<ul class="sidebar">
+<ul class="sidebar" id="sidebar">
     {% for list in starred_lists %}
         {% list_selection_display list current_list request %}
     {% endfor %}

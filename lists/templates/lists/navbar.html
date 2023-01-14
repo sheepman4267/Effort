@@ -1,0 +1,15 @@
+{% load icon %}
+<div class="navbar" id="navbar">
+    <div class="nav-container left">
+        <button class="check" _="on click toggle between .show-list and .show-sidebar on #body">
+            {% icon 'menu' %}
+        </button>
+    </div>
+    <div class="nav-container center">
+        <h1>Effort</h1>
+        <h4>lists/{% for list in current_list.tree %}{{ list.title }}/{% endfor %}{{ current_list.title }}</h4>
+    </div>
+    <div class="nav-container right">
+
+    </div>
+</div>

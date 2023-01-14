@@ -12,7 +12,7 @@ h2 {
 .sidebar {
     display: inline-block;
     background: aqua;
-    height: 100vh;
+    /*height: 100vh;*/
     width: 30%;
     overflow: scroll;
     padding: 6px;
@@ -30,11 +30,10 @@ h2 {
 }
 
 .list {
-    display: flex;
+    display: inline-block;
     flex-direction: column;
     background: #d3bfe0;
-    height: 100vh;
-    width: 70%;
+    width: 100%;
     padding: 6px;
     margin: 0;
     overflow: scroll;
@@ -134,6 +133,14 @@ h2:hover .edit-button {
 .main-body {
     margin: 0;
     display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.content-container {
+    width: 100%;
+    height: calc(100vh - 75px);
+    display: flex;
 }
 
 .edit-button,
@@ -150,27 +157,37 @@ h2:hover .edit-button {
 }
 
 @media screen and (max-width: 1100px) {
-    .sidebar {
-        width: 100%;
+    .list-item .li-buttons-right {
+        display: none;
+    }
+    .list-item.details .li-buttons-right {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+    #body.show-list .sidebar {
         visibility: hidden;
         display: none;
     }
-    .list {
+    #body.show-sidebar .sidebar {
         width: 100%;
+        display: inline-block;
     }
-    .list-item .li-buttons-right {
-        display: none;
+    #body.show-sidebar .list {
+        display: none
     }
 }
 
 button {
-    width: available;
+    width: fit-content;
+    min-width: fit-content;
     padding-left: 10px;
     padding-right: 10px;
     border-radius: 10px;
     height: 30px;
     border: 2px solid gray;
     display: block;
+    white-space: nowrap;
 }
 
 .li-buttons-right > button {
@@ -247,9 +264,9 @@ button {
     width: 100%;
 }
 
-.details-container > div {
+/*.details-container > div {*/
 
-}
+/*}*/
 
 .details-container .field-container {
     margin-bottom: 5px;
@@ -258,4 +275,27 @@ button {
 
 .field-container > h4 {
     color: gray;
+}
+
+.navbar {
+    height: 75px;
+    background: #b37bff;
+    display: flex;
+    flex-direction: row;
+}
+
+.nav-container.left {
+    margin: 0 auto 0 10px;
+    align-self: center;
+}
+
+.nav-container.right {
+    margin: 0 10px 0 auto;
+}
+
+.nav-container.center {
+    align-self: center;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
 }

@@ -54,6 +54,14 @@ class List(models.Model):
         else:
             return f'{self.title[:5]}...'
 
+    def tree(self):
+        list_tree = []
+        list = self
+        while list.parent:
+            list_tree.append(list.parent)
+            list = list.parent
+        return list_tree
+
 
 class ListItem(models.Model):
     name = models.CharField(max_length=500)
