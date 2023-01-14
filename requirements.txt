@@ -1,6 +1,5 @@
 Django~=4.0.2
 django-markdownx>=4.0.0b1
-django-colorfield
 django-allauth==0.51.0
 django-feather==0.3.0
 django-recurrence==1.11.1
