@@ -10,7 +10,6 @@ register = template.Library()
 @register.inclusion_tag('lists/list-selection-display.html')
 def list_selection_display(list, selected_list, request):
     if list in get_list_tree(selected_list):
-        print('itsthere')
         expand_tree = True
     elif list == selected_list:
         expand_tree = True
@@ -37,7 +36,6 @@ def get_list_tree(list):
 
 @register.inclusion_tag('lists/quick-access-list-button.html')
 def quick_access_list_button(request, item, list, current_list=None):
-    print(current_list)
     #item = ListItem.objects.get(item)
     #list = List.objects.get(list)
     if list in item.list.filter():

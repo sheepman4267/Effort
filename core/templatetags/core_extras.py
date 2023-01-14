@@ -10,7 +10,6 @@ register = template.Library()
 # 'selected' is the item that is currently being displayed.
 @register.inclusion_tag('core/item-selection-display.html')
 def item_selection_display(item, selected, request, new_item_url, new_child_item_button_text, display_url):
-    print('item selection display')
     if type(selected) == str:
         expand_tree = False
     elif list in get_tree(selected):
