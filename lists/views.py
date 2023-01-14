@@ -133,7 +133,7 @@ def new_list(request, parent=None):
                 title=form.cleaned_data['title'],
             )
             if parent:
-                list.parent = List(pk=parent)
+                list.parent = List.objects.get(pk=parent)
             list.save()
             return HttpResponseRedirect(reverse('list', args=[list.pk]))
     else: #as in, if request.method != 'POST'...
