@@ -22,13 +22,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-%dn2h4x)x-mag32-t1mjhmxv1!&@zi#=z@533z_gd)@xh!g%4t'
+SECRET_KEY = os.environ['EFFORT_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.getenv('EFFORT_DEBUG'))
+DEBUG = {'False': False, 'True': True}[os.environ['EFFORT_DEBUG']]
 LOG_LEVEL = logging.DEBUG
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ['EFFORT_ALLOWED_HOSTS'].split(',')
+
+print(ALLOWED_HOSTS)
 
 
 # Application definition
@@ -89,12 +91,23 @@ WSGI_APPLICATION = 'Effort.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if os.environ['EFFORT_DATABASE_ENGINE'] == 'sqlite3':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.environ['EFFORT_SQLITE3_PATH'],
+        }
     }
-}
+elif os.environ['EFFORT_DATABASE_ENGINE'] == 'postgres':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'OPTIONS': {
+                'service': os.environ['EFFORT_POSTGRES_SERVICE'],
+                'passfile': os.environ['EFFORT_POSTGRES_PASSFILE'],
+            },
+        }
+    }
 
 
 # Password validation
@@ -149,7 +162,7 @@ AUTHENTICATION_BACKENDS = [
 
 SITE_ID = 1
 
-STATIC_ROOT = pathlib.Path('./static_root')
+STATIC_ROOT = pathlib.Path(os.environ['EFFORT_STATIC_ROOT'])
 
 Q_CLUSTER = {
     "name": "effort",

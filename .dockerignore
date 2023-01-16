@@ -1,0 +1,7 @@
+.gitignore
+db.sqlite3
+Procfile.development
+.env.development
+.env.example
+docker-compose.yml
+scratch/
