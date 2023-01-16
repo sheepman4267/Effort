@@ -29,9 +29,7 @@ DEBUG = {'False': False, 'True': True}[os.environ['EFFORT_DEBUG']]
 LOG_LEVEL = logging.DEBUG
 
 ALLOWED_HOSTS = os.environ['EFFORT_ALLOWED_HOSTS'].split(',')
-
-print(ALLOWED_HOSTS)
-
+CSRF_TRUSTED_ORIGINS = ['https://'+host for host in ALLOWED_HOSTS]
 
 # Application definition
 
