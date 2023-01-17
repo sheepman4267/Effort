@@ -1,0 +1,7 @@
+services:
+  app:
+    image: docker.io/sheepman4267/effort:latest
+
+volumes:
+  static-root:
+
