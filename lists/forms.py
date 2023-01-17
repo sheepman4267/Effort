@@ -40,7 +40,6 @@ class DetailedListItemForm(forms.ModelForm):
         model = ListItem
         details = MarkdownxFormField
         fields = (
-            'details',
             'due_date',
             # 'uncheck_every', #Disabled due to JS bugs in django-recurrence widget
         )

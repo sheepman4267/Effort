@@ -2,7 +2,7 @@
     <form method="post" action="{% url "new-list" parent_list_pk %}">{% csrf_token %}
         title:{{ form.title }}<br>
         {{ form.errors }}
-        <input type="submit">
+        <input type="submit" class="submit-button">
     </form>
 </div>
 

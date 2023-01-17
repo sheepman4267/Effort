@@ -16,7 +16,7 @@
 {#        <button id="list-details-button{{ item.pk }}" class="check" hx-trigger="click" hx-get="{% url 'item-details' item_pk=item.pk list_pk=list_pk %}" hx-target="closest .li-internal" hx-swap="afterend">#}
 {#            {% icon "menu" %}#}
 {#        </button>#}
-        <button class="check details-button" _="on click toggle .details on #list-item-{{ item.pk }}">
+        <button class="check" _="on click toggle .details on #list-item-{{ item.pk }}">
             {% icon "menu" %}
         </button>
         <button class="check" hx-trigger="click" hx-get="{% url 'toggle-item' item=item.pk list_pk=list_pk %}" hx-select="#listdisplay" hx-target="closest #listdisplay" hx-swap="outerHTML">
