@@ -1,6 +1,8 @@
 {% load lists_extras %}
 {% load icon %}
-<div id="item-details-{{ item.pk }}" class="details-container">
+
+<form id="item-details-{{ item.pk }}" class="details-container" method="post" action="{% url 'item-details' item_pk=item.pk %}">
+    {% csrf_token %}
     {{ form.media }}
     <div>
         <div class="field-container">
@@ -15,6 +17,7 @@
         </div>
         <div class="field-container">
             <h4>Configure repetition in admin due to bugs</h4>
+            <input type="submit" class="submit-button" value="Submit Item Edits">
         </div>
     </div>
-</div>
+</form>

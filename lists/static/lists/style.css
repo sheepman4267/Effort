@@ -178,6 +178,15 @@ h2:hover .edit-button {
     }
 }
 
+.submit-button {
+    margin-left: auto;
+    margin-right: 0;
+    margin-top: auto;
+    margin-bottom: 10px;
+    align-self: end;
+}
+
+.submit-button,
 button {
     width: fit-content;
     min-width: fit-content;
@@ -264,13 +273,17 @@ button {
     width: 100%;
 }
 
-/*.details-container > div {*/
-
-/*}*/
+.details-container > div {
+    height: 100%;
+}
 
 .details-container .field-container {
     margin-bottom: 5px;
     margin-top: 5px;
+    width: fit-content;
+    gap: 5px;
+    display: flex;
+    flex-direction: column;
 }
 
 .field-container > h4 {
