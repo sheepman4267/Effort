@@ -24,6 +24,7 @@ js_info_dict = {
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('core.urls')),
     path('lists/', include('lists.urls')),
     path('notes/', include('notes.urls')),
     path('accounts/', include('allauth.urls')),

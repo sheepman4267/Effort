@@ -28,3 +28,39 @@
     margin-left: auto;
     margin-right: auto;
 }
+
+.center-content {
+    max-width: 11in;
+    margin-right: auto;
+    margin-left: auto;
+    background: #87b9d3;
+    height: calc(100vh - 75px);
+}
+
+.app-button-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 200px));
+    padding: 10px;
+    grid-gap: 10px;
+    align-items: start;
+    width: 100%;
+}
+
+#core-body > .content-container {
+    background: #417698;
+}
+
+.app-button {
+    width: 100%;
+    min-width: fit-content;
+    text-align: center;
+    border: 2px solid #5c6b79;
+    background: #bed1de;
+    border-radius: 10px;
+    height: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
+    white-space: nowrap;
+    text-decoration: 0;
+    color: black;
+}
