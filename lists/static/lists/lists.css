@@ -1,10 +1,3 @@
-* {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-    font-family: "sans-serif";
-}
-
 h2 {
     margin-bottom: 5px;
 }
@@ -289,25 +282,4 @@ button {
     color: gray;
 }
 
-.navbar {
-    height: 75px;
-    background: #b37bff;
-    display: flex;
-    flex-direction: row;
-}
 
-.nav-container.left {
-    margin: 0 auto 0 10px;
-    align-self: center;
-}
-
-.nav-container.right {
-    margin: 0 10px 0 auto;
-}
-
-.nav-container.center {
-    align-self: center;
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-}
