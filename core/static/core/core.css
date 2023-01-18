@@ -10,7 +10,8 @@
     background: #b37bff;
     display: flex;
     flex-direction: row;
-    box-shadow: 0 0 2px 0 #000000;
+    box-shadow: 0 0 5px 0 #000000;
+    z-index: 5;
 }
 
 .nav-container.left {
