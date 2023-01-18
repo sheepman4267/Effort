@@ -1,10 +1,3 @@
-* {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-    font-family: "sans-serif";
-}
-
 h2 {
     margin-bottom: 5px;
 }
@@ -178,6 +171,12 @@ h2:hover .edit-button {
     }
 }
 
+.field-container > input {
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.field-container > input,
 button {
     width: fit-content;
     min-width: fit-content;
@@ -188,6 +187,7 @@ button {
     border: 2px solid gray;
     display: block;
     white-space: nowrap;
+    background: #e3e3e3;
 }
 
 .li-buttons-right > button {
@@ -264,38 +264,22 @@ button {
     width: 100%;
 }
 
-/*.details-container > div {*/
-
-/*}*/
+.details-container > div {
+    height: 100%;
+    max-width: fit-content;
+}
 
 .details-container .field-container {
     margin-bottom: 5px;
     margin-top: 5px;
+    width: 100%;
+    gap: 5px;
+    display: flex;
+    flex-direction: row;
 }
 
 .field-container > h4 {
     color: gray;
 }
 
-.navbar {
-    height: 75px;
-    background: #b37bff;
-    display: flex;
-    flex-direction: row;
-}
 
-.nav-container.left {
-    margin: 0 auto 0 10px;
-    align-self: center;
-}
-
-.nav-container.right {
-    margin: 0 10px 0 auto;
-}
-
-.nav-container.center {
-    align-self: center;
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-}

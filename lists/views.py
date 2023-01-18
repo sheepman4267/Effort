@@ -151,8 +151,13 @@ def new_list(request, parent=None):
 @login_required
 def item_details(request, item_pk):
     item = ListItem.objects.get(pk=item_pk)
-    form = DetailedListItemForm(instance=item)
-    return render(request, 'lists/list-item-details.html', {
-        'item': item,
-        'form': form,
-    })
+    if request.method == 'POST':
+        form = DetailedListItemForm(request.POST, instance=item)
+        form.save()
+        return HttpResponseRedirect(reverse('list', args=[1]))
+    else: # as in, if request.method != 'POST':
+        form = DetailedListItemForm(instance=item)
+        return render(request, 'lists/list-item-details.html', {
+            'item': item,
+            'form': form,
+        })

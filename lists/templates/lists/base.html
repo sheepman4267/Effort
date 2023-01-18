@@ -4,8 +4,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link rel="stylesheet" type="text/css" href="{% static 'lists/style.css' %}">
-<script src="https://unpkg.com/htmx.org@1.6.1"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'core/core.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'lists/lists.css' %}">
+<script src="https://unpkg.com/htmx.org@1.8.4"></script>
 <script src="https://unpkg.com/hyperscript.org@0.9.7"></script>
 <script src="{% url 'jsi18n' %}"></script>
 
@@ -16,12 +17,12 @@
     </head>
 {% endblock %}
 
-<body id="body" class="main-body show-list" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-boost="false"  >
+<body id="body" class="main-body show-list" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-boost="true"  >
     {% block navbar %}
     {% endblock %}
     <div class="content-container">
         {% block body %}
         {% endblock %}
-    </>
+    </div>
 </body>
 </html>

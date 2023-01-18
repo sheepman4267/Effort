@@ -1,13 +1,16 @@
 {% load lists_extras %}
 {% load icon %}
-<div id="item-details-{{ item.pk }}" class="details-container">
+
+<form id="item-details-{{ item.pk }}" class="details-container" method="post" action="{% url 'item-details' item_pk=item.pk %}">
+    {% csrf_token %}
     {{ form.media }}
-    <div>
-        <div class="field-container">
-            <h4>Details:</h4>
-            {{ form.details }}
-        </div>
-    </div>
+{#    <div>#}
+{#        <div class="field-container">#}
+{#            <h4>Details:</h4>#}
+{#            {{ form.details }}#}
+{#        </div>#}
+{#    </div>#}
+{#    Removed Details; it was causing styling headaches and isn't very useful. TODO: Allow linking to a note instead.#}
     <div>
         <div class="field-container">
             <h4>Due Date:</h4>
@@ -16,5 +19,8 @@
         <div class="field-container">
             <h4>Configure repetition in admin due to bugs</h4>
         </div>
+        <div class="field-container">
+            <input type="submit" class="submit-button" value="Submit Item Edits">
+        </div>
     </div>
-</div>
+</form>

@@ -1,0 +1,13 @@
+{% extends 'core/base.html' %}
+
+{% block navbar %}
+    {% include 'core/navbar.html' %}
+{% endblock %}
+
+{% block body %}
+<div class="center-content">
+    <div class="app-button-container">
+        <a class="app-button" href="{% url 'lists-index' %}">Lists!</a>
+    </div>
+</div>
+{% endblock %}
