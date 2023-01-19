@@ -47,11 +47,6 @@ def toggle_item(request, item, list_pk):
          if (not item.completed) and item.parent.completed:
             toggle_item(request, item.parent.pk, list_pk)
     return HttpResponseRedirect(reverse('list', args=[list_pk]))
-    # return render(request, 'lists/list-item.html', {
-    #     'item': item,
-    #     'quick_access': request.user.starred.filter(),
-    #     'list_pk': list_pk,
-    # })
 
 @login_required
 def item_edit(request, item_pk=0):
