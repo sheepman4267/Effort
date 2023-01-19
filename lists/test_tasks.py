@@ -28,7 +28,7 @@ class AutoUncheckCase(TestCase):
         recurring_with_due_date = ListItem.objects.get(name='recurring_with_due_date')
         recurring_without_due_date = ListItem.objects.get(name='recurring_without_due_date')
         self.assertEqual(timezone.now().date() + datetime.timedelta(days=recurring_with_due_date.due_again_in),
-                         recurring_with_due_date.due_date.date())
+                         recurring_with_due_date.due_date)
         self.assertEqual(None, recurring_without_due_date.due_date)
         self.assertFalse(recurring_with_due_date.completed)
         self.assertFalse(recurring_without_due_date.completed)
