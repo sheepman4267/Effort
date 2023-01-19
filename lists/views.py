@@ -34,9 +34,9 @@ def display_list(request, list): #TODO: No folders, just parent lists. Any list 
 
 @login_required
 def toggle_item(request, item, list_pk):
+    item = ListItem.objects.get(pk=item)
     if not item.list.all() & request.user.lists.all():
         raise PermissionDenied()
-    item = ListItem.objects.get(pk=item)
     item.completed = not item.completed
     item.checked_date = datetime.datetime.now()
     item.save()
