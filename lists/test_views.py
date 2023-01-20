@@ -75,3 +75,29 @@ class ToggleItemCase(TestCase):
                                                         'list_pk': 1,
                                                     }))
         self.assertEqual(checking_our_item.status_code, 302)
+
+class ItemEditCase(TestCase):
+    def setUp(self) -> None:
+        self.client = Client()
+        self.user = User.objects.create_user(username='test_user', password='test_password')
+        self.client.login(username='test_user', password='test_password')
+        self.test_list = List.objects.create(title='test_list', owner=self.user)
+        self.test_item = ListItem.objects.create(name='Test Item')
+        self.test_item.list.add(self.test_list)
+
+    def test_http_response(self) -> None:
+        viewing_interface = self.client.get(reverse('item-edit',
+                                                    kwargs={
+                                                        'item_pk': self.test_item.pk
+                                                    }))
+        self.assertEqual(viewing_interface.status_code, 200)
+        submitting_changes = self.client.post(reverse('item-edit',
+                                                      kwargs={
+                                                          'item_pk': self.test_item.pk
+                                                      }
+                                                      ),
+                                              {
+                                                  'name': 'Edited Test Item'
+                                              }
+                                              )
+        self.assertEqual(submitting_changes.status_code, 302)
