@@ -32,7 +32,11 @@ class ListItemForm(forms.ModelForm):
         if commit:
             instance.save()
             self.save_m2m()
-        instance.list.add(List.objects.get(pk=self.cleaned_data.get('list_pk')))
+        print(f"{self.cleaned_data.get('list_pk')} listpk")
+        if self.cleaned_data.get('list_pk'):
+            instance.list.add(List.objects.get(pk=self.cleaned_data.get('list_pk')))
+        elif instance.parent:
+            instance.list.add(instance.parent.list.first()) #TODO: Use another field (ListItem.originating_list would be a good name) instead
         return instance
 
 class DetailedListItemForm(forms.ModelForm):

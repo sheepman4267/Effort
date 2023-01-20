@@ -10,7 +10,7 @@
                 {% icon "corner-down-left" %}
             </label>
             <input type="hidden" name="parent_pk" _="on load set my @value to @data-item-pk of closest parent <li/>">
-            <input type="hidden" name="list_pk" _="on load set my @value to @data-list-pk of #listdisplay">
+            <input type="hidden" name="list_pk" _="on load set my @value to @data-list-pk of closest #new-item-button-container">
             {{ form.errors }}
         </form>
     </div>
