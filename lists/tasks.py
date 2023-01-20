@@ -24,9 +24,10 @@ def collect_items(list_pk: int) -> None:
     for owned_list in list.owner.lists.all():
         potential_items += owned_list.items.all()
     for item in potential_items:
-        if item.due_date < due_cutoff:
-            item.list.add(list)
-            item.save()
+        if item.due_date:
+            if item.due_date < due_cutoff:
+                item.list.add(list)
+                item.save()
     Schedule.objects.create(
         func='lists.tasks.collect_items',
         args=list.pk,
