@@ -19,7 +19,9 @@
     {% endif %}
 </ul>
 {% if current_list %}
-    <button class="new-item-button" id="newitem" hx-trigger="click" hx-get="{% url 'item-edit' %}" hx-select="#newitem" hx-swap="outerHTML">
-        {% icon "plus" %}
-    </button>
+    <div class="new-item-button" id="new-item-button-container" data-list-pk="{{ current_list.pk }}">
+        <button class="new-item-button" id="newitem" hx-trigger="click" hx-get="{% url 'item-edit' %}" hx-select="#newitem" hx-swap="outerHTML">
+            {% icon "plus" %}
+        </button>
+    </div>
 {% endif %}
