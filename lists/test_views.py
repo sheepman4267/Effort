@@ -125,3 +125,23 @@ class ToggleListOnItemCase(TestCase):
             'current_list_pk': self.test_list.pk,
         })
         self.assertNotIn(self.test_other_list, self.test_item.list.all())
+
+
+class ToggleStarredCase(TestCase):
+    def setUp(self) -> None:
+        self.client = Client()
+        self.user = User.objects.create_user(username='test_user', password='test_password')
+        self.client.login(username='test_user', password='test_password')
+        self.test_list = List.objects.create(title='test_list', owner=self.user)
+
+    def test_star_list(self):
+        response = self.client.get(reverse('toggle-starred', kwargs={
+            'list': self.test_list.pk
+        }))
+        self.assertEqual(response.context['star_button_fill'], '#ffd500')
+        self.assertIn(self.user, self.test_list.starred.all())
+        response = self.client.get(reverse('toggle-starred', kwargs={
+            'list': self.test_list.pk
+        }))
+        self.assertEqual(response.context['star_button_fill'], 'transparent')
+        self.assertNotIn(self.user, self.test_list.starred.all())
