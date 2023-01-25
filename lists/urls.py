@@ -10,7 +10,6 @@ urlpatterns = [
     path('item/edit/<int:item_pk>', views.item_edit, name='item-edit'),
     path('item/<int:item_pk>/details', views.item_details, name='item-details'),
     path('item/toggle/<int:list_pk>/<int:item>', views.toggle_item, name='toggle-item'),
-    path('item/<int:current_list>/<int:item>/add/<int:list>', views.add_item_to_list, name='add-item-to-list'),
-    path('item/<int:current_list>/<int:item>/remove/<int:list>', views.remove_item_from_list, name='remove-item-from-list'),
+    path('item/toggle-list/', views.toggle_list_on_item, name='toggle-list-on-item'),
     path('list/star/<int:list>', views.toggle_starred, name='toggle-starred'),
 ]

@@ -1,11 +1,15 @@
 <!--Display a quick-access button to add a given item to another list-->
 {% load icon %}
-{% if enabled %}
-    <button id="addbutton" hx-trigger="click" hx-get="{% url "add-item-to-list" item=item.pk list=list.pk current_list=current_list %}" hx-swap="outerHTML">
-        {% icon "plus-circle" %} "{{ list.short_title }}"
+<form>
+    <input type="hidden" name="item_pk" _="on load set my @value to @data-item-pk of closest parent <li/>">
+    <input type="hidden" name="current_list_pk" _="on load set my @value to @data-list-pk of #listdisplay">
+    <input type="hidden" name="list_pk" value="{{ list.pk }}">
+    <button hx-trigger="click" hx-post="{% url 'toggle-list-on-item' %}" hx-swap="outerHTML" hx-select="button">
+        {% if enabled %}
+            {% icon "plus-circle" %}
+        {% else %}
+            {% icon "x-circle" class="red" %}
+        {% endif %}
+        {{ list.short_title }}
     </button>
-{% else %}
-    <button id="addbutton" hx-trigger="click" hx-get="{% url "remove-item-from-list" current_list=current_list item=item.pk list=list.pk %}" hx-swap="outerHTML">
-        {% icon "x-circle" class="red" %} "{{ list.short_title }}"
-    </button>
-{% endif %}
+</form>

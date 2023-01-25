@@ -101,3 +101,27 @@ class ItemEditCase(TestCase):
                                               }
                                               )
         self.assertEqual(submitting_changes.status_code, 302)
+
+class ToggleListOnItemCase(TestCase):
+    def setUp(self) -> None:
+        self.client = Client()
+        self.user = User.objects.create_user(username='test_user', password='test_password')
+        self.client.login(username='test_user', password='test_password')
+        self.test_list = List.objects.create(title='test_list', owner=self.user)
+        self.test_other_list = List.objects.create(title='test_other_list', owner=self.user)
+        self.test_item = ListItem.objects.create(name='Test Item')
+        self.test_item.list.add(self.test_list)
+
+    def test_toggle(self) -> None:
+        self.client.post(reverse('toggle-list-on-item'), {
+            'item_pk': self.test_item.pk,
+            'list_pk': self.test_other_list.pk,
+            'current_list_pk': self.test_list.pk,
+        })
+        self.assertIn(self.test_other_list, self.test_item.list.all())
+        self.client.post(reverse('toggle-list-on-item'), {
+            'item_pk': self.test_item.pk,
+            'list_pk': self.test_other_list.pk,
+            'current_list_pk': self.test_list.pk,
+        })
+        self.assertNotIn(self.test_other_list, self.test_item.list.all())

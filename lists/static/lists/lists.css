@@ -190,15 +190,15 @@ button {
     background: #e3e3e3;
 }
 
-.li-buttons-right > button {
+.li-buttons-right button {
     margin-left: 10px;
 }
 
-.li-buttons-right > button > svg.red {
+.li-buttons-right button > svg.red {
     color: #c50000;
 }
 
-.li-buttons-right > button > svg {
+.li-buttons-right button > svg {
     color: gray;
     height: 1.5em;
     vertical-align: middle;

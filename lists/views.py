@@ -2,7 +2,7 @@ import datetime
 
 from django.shortcuts import render, get_object_or_404, reverse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied, BadRequest
 
 from .models import List, ListItem
 from .forms import ListForm, ListItemForm, DetailedListItemForm
@@ -77,34 +77,25 @@ def list_edit(request, list=None): #for future use, see note in list-edit.html
         return render(request, 'lists/list-edit.html')
 
 @login_required()
-def add_item_to_list(request, item, list, current_list):
-    item = ListItem.objects.get(pk=item)
-    list = List.objects.get(pk=list)
-    item.list.add(list)
-    item.save()
+def toggle_list_on_item(request):
+    if request.method != 'POST':
+        raise BadRequest()
+    list = get_object_or_404(List, pk=request.POST['list_pk'])
+    item = get_object_or_404(ListItem, pk=request.POST['item_pk'])
+    current_list = get_object_or_404(List, pk=request.POST['current_list_pk'])
+    if list in item.list.all():
+        item.list.remove(list)
+        if len(item.list.all()) == 0:
+            item.list.add(current_list)
+        enabled = True
+    else:
+        item.list.add(list)
+        enabled = False
     return render(request, 'lists/quick-access-list-button.html', {
         'item': item,
         'list': list,
-        'enabled': False,
-        'current_list': current_list,
+        'enabled': enabled,
     })
-
-@login_required()
-def remove_item_from_list(request, item, list, current_list):
-    current_list = List.objects.get(pk=current_list)
-    item = ListItem.objects.get(pk=item)
-    list = List.objects.get(pk=list)
-    item.list.remove(list)
-    if len(item.list.all()) == 0:
-        item.list.add(current_list)
-    item.save()
-    return render(request, 'lists/quick-access-list-button.html', {
-        'item': item,
-        'list': list,
-        'enabled': True,
-        'current_list': current_list.pk
-    })
-
 @login_required()
 def toggle_starred(request, list):
     list = List.objects.get(pk=list)
