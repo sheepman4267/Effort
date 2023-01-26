@@ -2,7 +2,7 @@ import datetime
 
 from django.shortcuts import render, get_object_or_404, reverse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied, BadRequest
 
 from .models import List, ListItem
 from .forms import ListForm, ListItemForm, DetailedListItemForm
@@ -35,6 +35,8 @@ def display_list(request, list): #TODO: No folders, just parent lists. Any list 
 @login_required
 def toggle_item(request, item, list_pk):
     item = ListItem.objects.get(pk=item)
+    if not item.list.all() & request.user.lists.all():
+        raise PermissionDenied()
     item.completed = not item.completed
     item.checked_date = datetime.datetime.now()
     item.save()
@@ -45,11 +47,6 @@ def toggle_item(request, item, list_pk):
          if (not item.completed) and item.parent.completed:
             toggle_item(request, item.parent.pk, list_pk)
     return HttpResponseRedirect(reverse('list', args=[list_pk]))
-    # return render(request, 'lists/list-item.html', {
-    #     'item': item,
-    #     'quick_access': request.user.starred.filter(),
-    #     'list_pk': list_pk,
-    # })
 
 @login_required
 def item_edit(request, item_pk=0):
@@ -66,48 +63,43 @@ def item_edit(request, item_pk=0):
         })
 
 @login_required()
-def list_edit(request, list=None): #for future use, see note in list-edit.html
+def list_edit(request, list_pk=0):
     if request.method == 'POST':
-        form = ListForm(request.POST)
+        existing_list = List.objects.filter(pk=list_pk).first()
+        if existing_list and request.user != existing_list.owner:
+            raise PermissionDenied()
+        form = ListForm(request.POST, instance=existing_list)
         if form.is_valid():
-            form.save()
+            list = form.save()
+            list.save()
+            return HttpResponseRedirect(reverse('list', args=[list.pk]))
     else: #as in, if request.method != 'POST'...
-        if list:
-            list = List.objects.get(pk=list)
-            form = ListForm(instance=list)
-        else:
-            form = ListForm()
-        return render(request, 'lists/list-edit.html')
+        form = ListForm(instance=List.objects.filter(pk=list_pk).first())
+        return render(request, 'lists/list-edit.html', {
+            'form': form,
+            'list_pk': list_pk,
+        })
 
 @login_required()
-def add_item_to_list(request, item, list, current_list):
-    item = ListItem.objects.get(pk=item)
-    list = List.objects.get(pk=list)
-    item.list.add(list)
-    item.save()
+def toggle_list_on_item(request):
+    if request.method != 'POST':
+        raise BadRequest()
+    list = get_object_or_404(List, pk=request.POST['list_pk'])
+    item = get_object_or_404(ListItem, pk=request.POST['item_pk'])
+    current_list = get_object_or_404(List, pk=request.POST['current_list_pk'])
+    if list in item.list.all():
+        item.list.remove(list)
+        if len(item.list.all()) == 0:
+            item.list.add(current_list)
+        enabled = True
+    else:
+        item.list.add(list)
+        enabled = False
     return render(request, 'lists/quick-access-list-button.html', {
         'item': item,
         'list': list,
-        'enabled': False,
-        'current_list': current_list,
+        'enabled': enabled,
     })
-
-@login_required()
-def remove_item_from_list(request, item, list, current_list):
-    current_list = List.objects.get(pk=current_list)
-    item = ListItem.objects.get(pk=item)
-    list = List.objects.get(pk=list)
-    item.list.remove(list)
-    if len(item.list.all()) == 0:
-        item.list.add(current_list)
-    item.save()
-    return render(request, 'lists/quick-access-list-button.html', {
-        'item': item,
-        'list': list,
-        'enabled': True,
-        'current_list': current_list.pk
-    })
-
 @login_required()
 def toggle_starred(request, list):
     list = List.objects.get(pk=list)
@@ -122,31 +114,6 @@ def toggle_starred(request, list):
         'list': list,
         'star_button_fill': star_button_fill,
     })
-
-@login_required()
-def new_list(request, parent=None):
-    if request.method == 'POST':
-        form = ListForm(request.POST)
-        if form.is_valid():
-            list = List(
-                owner=request.user,
-                title=form.cleaned_data['title'],
-            )
-            if parent:
-                list.parent = List.objects.get(pk=parent)
-            list.save()
-            return HttpResponseRedirect(reverse('list', args=[list.pk]))
-    else: #as in, if request.method != 'POST'...
-        form = ListForm()
-        if parent:
-            action = 'new-sublist'
-        else:
-            action = 'new-list'
-        return render(request, 'lists/new-list.html', {
-            'form': form,
-            'action': action,
-            'parent': parent,
-        })
 
 @login_required
 def item_details(request, item_pk):

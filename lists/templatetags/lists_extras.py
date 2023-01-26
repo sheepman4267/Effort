@@ -34,20 +34,6 @@ def get_list_tree(list):
         list = list.parent
     return list_tree
 
-@register.inclusion_tag('lists/quick-access-list-button.html')
-def quick_access_list_button(request, item, list, current_list=None):
-    #item = ListItem.objects.get(item)
-    #list = List.objects.get(list)
-    if list in item.list.filter():
-        enabled = False
-    else:
-        enabled = True
-    return ({
-        'item': item,
-        'list': list,
-        'enabled': enabled,
-        'current_list': current_list,
-    })
 
 @register.inclusion_tag('lists/star.html')
 def star(request, list):
