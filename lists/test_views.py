@@ -1,3 +1,5 @@
+import datetime
+
 from django.test import TestCase
 from django.test import Client
 from django.shortcuts import reverse
@@ -209,3 +211,24 @@ class ListEditCase(TestCase):
         })
         self.assertEqual(response_edit_wrong_list.status_code, 403)
         self.assertEqual(List.objects.get(pk=new_list.pk).title, 'another persons list')
+
+
+class ItemDetailsCase(TestCase):
+    def setUp(self) -> None:
+        self.client = Client()
+        self.user = User.objects.create_user(username='test_user', password='test_password')
+        self.client.login(username='test_user', password='test_password')
+        self.test_list = List.objects.create(title='test_list', owner=self.user)
+        self.test_item = ListItem.objects.create(name='test_item')
+        self.test_item.list.add(self.test_list)
+
+    def test_http_response(self) -> None:
+        response_get_form = self.client.get(reverse('item-details', args=[self.test_item.pk]))
+        self.assertEqual(response_get_form.status_code, 200)
+
+    def test_post_item_changes(self) -> None:
+        response_post_changes = self.client.post(reverse('item-details', args=[self.test_item.pk]), {
+            'due_date': datetime.date(2023, 1, 25)
+        })
+        self.assertEqual(response_post_changes.status_code, 302)
+        self.assertEqual(ListItem.objects.get(pk=self.test_item.pk).due_date, datetime.date(2023, 1, 25))
