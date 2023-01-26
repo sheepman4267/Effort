@@ -228,7 +228,8 @@ class ItemDetailsCase(TestCase):
 
     def test_post_item_changes(self) -> None:
         response_post_changes = self.client.post(reverse('item-details', args=[self.test_item.pk]), {
-            'due_date': datetime.date(2023, 1, 25)
+            'due_date': datetime.date(2023, 1, 25),
+            'current_list_pk': 1,
         })
         self.assertEqual(response_post_changes.status_code, 302)
         self.assertEqual(ListItem.objects.get(pk=self.test_item.pk).due_date, datetime.date(2023, 1, 25))
