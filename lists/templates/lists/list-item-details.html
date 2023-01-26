@@ -3,6 +3,7 @@
 
 <form id="item-details-{{ item.pk }}" class="details-container" method="post" action="{% url 'item-details' item_pk=item.pk %}">
     {% csrf_token %}
+    <input type="hidden" name="current_list_pk" _="on load set my @value to @data-list-pk of #listdisplay">
     {{ form.media }}
 {#    <div>#}
 {#        <div class="field-container">#}

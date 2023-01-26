@@ -40,11 +40,13 @@ class ListItemForm(forms.ModelForm):
         return instance
 
 class DetailedListItemForm(forms.ModelForm):
+    current_list_pk = forms.IntegerField(required=False)
     class Meta:
         model = ListItem
         details = MarkdownxFormField
         fields = (
             'due_date',
+            'current_list_pk',
             # 'uncheck_every', #Disabled due to JS bugs in django-recurrence widget
         )
         widgets = {

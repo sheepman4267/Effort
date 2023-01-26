@@ -121,7 +121,7 @@ def item_details(request, item_pk):
     if request.method == 'POST':
         form = DetailedListItemForm(request.POST, instance=item)
         form.save()
-        return HttpResponseRedirect(reverse('list', args=[1]))
+        return HttpResponseRedirect(reverse('list', args=[form.cleaned_data['current_list_pk']]))
     else: # as in, if request.method != 'POST':
         form = DetailedListItemForm(instance=item)
         return render(request, 'lists/list-item-details.html', {
