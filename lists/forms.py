@@ -54,6 +54,12 @@ class DetailedListItemForm(forms.ModelForm):
         }
 
 class ListForm(forms.ModelForm):
+    #parent_pk = forms.IntegerField(required=False)
     class Meta:
         model = List
-        fields = ('title',)
+        fields = (
+            'title',
+            'owner',
+            'parent',
+        )
+

@@ -4,8 +4,8 @@ from . import views
 urlpatterns = [
     path('', views.index, name='lists-index'),
     path('list/<int:list>', views.display_list, name='list'),
-    path('list/new', views.new_list, name='new-list'),
-    path('list/new/<int:parent>', views.new_list, name='new-sublist'),
+    path('list/edit', views.list_edit, name='list-edit'),
+    path('list/edit/<int:list_pk>', views.list_edit, name='list-edit'),
     path('item/edit', views.item_edit, name='item-edit'),
     path('item/edit/<int:item_pk>', views.item_edit, name='item-edit'),
     path('item/<int:item_pk>/details', views.item_details, name='item-details'),

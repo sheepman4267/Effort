@@ -63,18 +63,22 @@ def item_edit(request, item_pk=0):
         })
 
 @login_required()
-def list_edit(request, list=None): #for future use, see note in list-edit.html
+def list_edit(request, list_pk=0):
     if request.method == 'POST':
-        form = ListForm(request.POST)
+        existing_list = List.objects.filter(pk=list_pk).first()
+        if existing_list and request.user != existing_list.owner:
+            raise PermissionDenied()
+        form = ListForm(request.POST, instance=existing_list)
         if form.is_valid():
-            form.save()
+            list = form.save()
+            list.save()
+            return HttpResponseRedirect(reverse('list', args=[list.pk]))
     else: #as in, if request.method != 'POST'...
-        if list:
-            list = List.objects.get(pk=list)
-            form = ListForm(instance=list)
-        else:
-            form = ListForm()
-        return render(request, 'lists/list-edit.html')
+        form = ListForm(instance=List.objects.filter(pk=list_pk).first())
+        return render(request, 'lists/list-edit.html', {
+            'form': form,
+            'list_pk': list_pk,
+        })
 
 @login_required()
 def toggle_list_on_item(request):
@@ -110,31 +114,6 @@ def toggle_starred(request, list):
         'list': list,
         'star_button_fill': star_button_fill,
     })
-
-@login_required()
-def new_list(request, parent=None):
-    if request.method == 'POST':
-        form = ListForm(request.POST)
-        if form.is_valid():
-            list = List(
-                owner=request.user,
-                title=form.cleaned_data['title'],
-            )
-            if parent:
-                list.parent = List.objects.get(pk=parent)
-            list.save()
-            return HttpResponseRedirect(reverse('list', args=[list.pk]))
-    else: #as in, if request.method != 'POST'...
-        form = ListForm()
-        if parent:
-            action = 'new-sublist'
-        else:
-            action = 'new-list'
-        return render(request, 'lists/new-list.html', {
-            'form': form,
-            'action': action,
-            'parent': parent,
-        })
 
 @login_required
 def item_details(request, item_pk):

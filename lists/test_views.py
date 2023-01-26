@@ -145,3 +145,67 @@ class ToggleStarredCase(TestCase):
         }))
         self.assertEqual(response.context['star_button_fill'], 'transparent')
         self.assertNotIn(self.user, self.test_list.starred.all())
+
+
+class ListEditCase(TestCase):
+    def setUp(self) -> None:
+        self.client = Client()
+        self.user = User.objects.create_user(username='test_user', password='test_password')
+        self.client.login(username='test_user', password='test_password')
+        self.test_list = List.objects.create(title='test_list', owner=self.user)
+
+
+    def test_http_response(self) -> None:
+        response_new_list = self.client.get(reverse('list-edit'))
+        self.assertEqual(response_new_list.status_code, 200)
+        response_edit_list = self.client.get(reverse('list-edit', kwargs={
+            'list_pk': self.test_list.pk
+        }))
+        self.assertEqual(response_edit_list.status_code, 200)
+
+    def test_new_list(self) -> None:
+        response_new_list = self.client.post(reverse('list-edit'), {
+            'title': 'a completely new list!',
+            'owner': self.user.pk,
+            'parent': '',
+        })
+        self.assertEqual(response_new_list.status_code, 302)
+        self.assertIsNotNone(List.objects.filter(title='a completely new list!').first())
+        new_list = List.objects.get(title='a completely new list!')
+        response_new_sublist = self.client.post(reverse('list-edit'), {
+            'title': 'a completely new sublist!',
+            'owner': self.user.pk,
+            'parent': new_list.pk,
+        })
+        self.assertEqual(response_new_sublist.status_code, 302)
+        self.assertIsNotNone(List.objects.filter(title='a completely new sublist!').first())
+        new_sublist = List.objects.get(title='a completely new sublist!')
+        self.assertEqual(new_sublist.parent, new_list)
+
+    def test_edit_existing_list(self) -> None:
+        new_list = List.objects.create(title='a toplevel list', owner=self.user)
+        response_edit_toplevel = self.client.post(reverse('list-edit', args=[new_list.pk]), {
+            'owner': self.user.pk,
+            'title': 'a slightly different toplevel list',
+        })
+        self.assertEqual(response_edit_toplevel.status_code, 302)
+        self.assertEqual(List.objects.get(pk=new_list.pk).title, 'a slightly different toplevel list')
+        new_sublist = List.objects.create(title='a sublist', owner=self.user)
+        response_edit_sublist = self.client.post(reverse('list-edit', args=[new_sublist.pk]), {
+            'owner': self.user.pk,
+            'title': 'a slightly different sublist',
+            'parent': new_list.pk,
+        })
+        self.assertEqual(response_edit_sublist.status_code, 302)
+        self.assertEqual(List.objects.get(pk=new_sublist.pk).title, 'a slightly different sublist')
+        self.assertEqual(List.objects.get(pk=new_sublist.pk).parent, new_list)
+
+    def test_edit_wrong_list(self) -> None:
+        other_user = User.objects.create_user(username='some_other_guy', password='someone_else')
+        new_list = List.objects.create(title='another persons list', owner=other_user)
+        response_edit_wrong_list = self.client.post(reverse('list-edit', args=[new_list.pk]), {
+            'owner': other_user.pk,
+            'title': 'but I can change the title!',
+        })
+        self.assertEqual(response_edit_wrong_list.status_code, 403)
+        self.assertEqual(List.objects.get(pk=new_list.pk).title, 'another persons list')

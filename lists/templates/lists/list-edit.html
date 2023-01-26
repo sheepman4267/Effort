@@ -1,10 +1,15 @@
-<div class="list-item edit" id="newitem">
-    <form method="post" action="{% url "new-list" parent_list_pk %}">{% csrf_token %}
-        title:{{ form.title }}<br>
-        {{ form.errors }}
-        <input type="submit" class="submit-button">
-    </form>
+{% load icon %}
+<div class="list-item">
+    <h2>New List</h2>
+    <div class="list-form-container">
+        <form method="post" action="{% url "list-edit" list_pk %}">{% csrf_token %}
+            <input type="hidden" name="parent" _="on load set my @value to @data-list-pk of closest parent <li/>">
+            <input type="hidden" name="owner" value="{{ request.user.pk }}">
+            {{ form.title }}
+            <label>
+                <input type="submit" value="Submit" hidden>
+                {% icon "corner-down-left" %}
+            </label>
+        </form>
+    </div>
 </div>
-
-<!--this file saved for future use, will be displayed in the lidt info div (not there yet) at the top of list-display.
-Using new-list.html for now, as the two are truly different enough to merit separate views.
