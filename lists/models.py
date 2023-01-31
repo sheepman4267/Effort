@@ -109,7 +109,17 @@ class ListItem(models.Model):
         super(ListItem, self).save(*args, **kwargs)
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+
+    def todo_lists(self):
+        todo_lists = self.user.todo_lists.exclude(starred=self.user)
+        toplevel_todo_lists = todo_lists.exclude(parent__in=todo_lists)
+        return toplevel_todo_lists
+
+    def starred_todo_lists(self):
+        starred_todo_lists = self.user.todo_lists.filter(starred=self.user)
+        toplevel_starred_todo_lists = starred_todo_lists.exclude(parent__in=starred_todo_lists)
+        return toplevel_starred_todo_lists
     #quick_access = models.ManyToManyField(List, related_name='quick_access')
 
 @receiver(post_save, sender=User)
