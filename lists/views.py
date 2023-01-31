@@ -31,16 +31,11 @@ def display_todo(request, todo_pk):
     todo = get_object_or_404(Todo, pk=todo_pk)
     if todo.owner != request.user:
         raise PermissionDenied()
-    starred_todo_lists = Todo.objects.filter(owner=request.user, starred=request.user)
-    todo_lists = Todo.objects.filter(owner=request.user, parent=None)
     return render(
         request,
         "lists/index.html",
         {
             "current_list": todo,
-            "todo_list_items": todo.unchecked(),
-            "completed_list_items": todo.checked(),
-            "quick_access": request.user.starred.filter(),
         },
     )
 

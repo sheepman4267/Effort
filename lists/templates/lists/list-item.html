@@ -7,7 +7,7 @@
             <div class="li-button-container">
                 <button hx-trigger="click" hx-get="{% url 'item-edit' %}" hx-select=".new-item-form-container" hx-swap="outerHTML">New sub-item</button>
                 <div class="li-buttons-right">
-                    {% for list in quick_access %}
+                    {% for list in request.user.starred.filter %}
                         {% if list in item.list.filter %}
                             {% include 'lists/quick-access-list-button.html' with enabled=False current_list=current_list.pk list=list item=item %}
                         {% else %}
