@@ -94,23 +94,23 @@ def list_edit(request, list_pk=0):
 def toggle_list_on_item(request):
     if request.method != "POST":
         raise BadRequest()
-    list = get_object_or_404(Todo, pk=request.POST["list_pk"])
+    todo = get_object_or_404(Todo, pk=request.POST["list_pk"])
     item = get_object_or_404(ListItem, pk=request.POST["item_pk"])
     current_list = get_object_or_404(Todo, pk=request.POST["current_list_pk"])
     if list in item.list.all():
-        item.list.remove(list)
+        item.list.remove(todo)
         if len(item.list.all()) == 0:
             item.list.add(current_list)
         enabled = True
     else:
-        item.list.add(list)
+        item.list.add(todo)
         enabled = False
     return render(
         request,
         "lists/quick-access-list-button.html",
         {
             "item": item,
-            "list": list,
+            "list": todo,
             "enabled": enabled,
         },
     )
