@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path, re_path
 from django.views.i18n import JavaScriptCatalog
-
+from lists import urls as listsUrls
 
 js_info_dict = {
     'packages': ('recurrence', ),
@@ -25,7 +25,7 @@ js_info_dict = {
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('core.urls')),
-    path('lists/', include('todo.urls')),
+    path('lists/', include('lists.urls')),
     path('notes/', include('notes.urls')),
     path('accounts/', include('allauth.urls')),
     path('markdownx/', include('markdownx.urls'))

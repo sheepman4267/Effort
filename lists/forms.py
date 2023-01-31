@@ -3,7 +3,7 @@ from django.db.models import fields
 
 from markdownx.fields import MarkdownxFormField
 
-from .models import Todo, ListItem
+from .models import List, ListItem
 
 
 class ListItemForm(forms.ModelForm):
@@ -34,7 +34,7 @@ class ListItemForm(forms.ModelForm):
             self.save_m2m()
         print(f"{self.cleaned_data.get('list_pk')} listpk")
         if self.cleaned_data.get('list_pk'):
-            instance.list.add(Todo.objects.get(pk=self.cleaned_data.get('list_pk')))
+            instance.list.add(List.objects.get(pk=self.cleaned_data.get('list_pk')))
         elif instance.parent:
             instance.list.add(instance.parent.list.first()) #TODO: Use another field (ListItem.originating_list would be a good name) instead
         return instance
@@ -58,7 +58,7 @@ class DetailedListItemForm(forms.ModelForm):
 class ListForm(forms.ModelForm):
     #parent_pk = forms.IntegerField(required=False)
     class Meta:
-        model = Todo
+        model = List
         fields = (
             'title',
             'owner',

@@ -1,6 +1,6 @@
 import datetime
 
-from lists.models import Todo,ListItem
+from lists.models import List,ListItem
 from django.utils import timezone
 
 from django_q.models import Schedule
@@ -17,7 +17,7 @@ def uncheck_recurring_item(item_pk: int) -> None:
 
 
 def collect_items(list_pk: int) -> None:
-    list = Todo.objects.get(pk=list_pk)
+    list = List.objects.get(pk=list_pk)
     due_cutoff = datetime.date.today() + datetime.timedelta(days=list.collect_next_days)
     # potential_items = ListItem.objects.filter(user=list.owner, completed=False)
     potential_items = []

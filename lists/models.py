@@ -14,11 +14,11 @@ import datetime
 
 import logging
 
-logger = logging.getLogger('effort.todo.models')
+logger = logging.getLogger('effort.lists.models')
 logger.setLevel(settings.LOG_LEVEL)
 print(settings.LOG_LEVEL)
 
-class Todo(models.Model):
+class List(models.Model):
     title = models.CharField(max_length=200)
     description = MarkdownxField(blank=True)
     owner = models.ForeignKey(User, unique=False, on_delete=models.CASCADE, related_name='lists')
@@ -40,7 +40,7 @@ class Todo(models.Model):
                                               )
                     )
             )
-        super(Todo, self).save(*args, **kwargs)
+        super(List, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.title
@@ -74,7 +74,7 @@ class ListItem(models.Model):
     created_date = models.DateTimeField(default=timezone.now, editable=False)
     checked_date = models.DateTimeField(default=timezone.now)
     completed = models.BooleanField(default=False)
-    list = models.ManyToManyField(Todo, unique=False, related_name='items')
+    list = models.ManyToManyField(List, unique=False, related_name='items')
     parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
     uncheck_every = RecurrenceField(null=True, blank=True)
     last_unchecked = models.DateTimeField(null=True, blank=True,)
