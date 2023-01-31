@@ -26,8 +26,8 @@ class DisplayListCase(TestCase):
         self.test_list = Todo.objects.create(title='test_list', owner=self.user)
 
     def test_http_response(self) -> None:
-        existing_list_response = self.client.get(reverse('list', args=[self.test_list.pk]))
-        nonexisting_list_response = self.client.get(reverse('list', args=[0]))
+        existing_list_response = self.client.get(reverse('todo', args=[self.test_list.pk]))
+        nonexisting_list_response = self.client.get(reverse('todo', args=[0]))
         self.assertEqual(existing_list_response.status_code, 200)
         self.assertEqual(nonexisting_list_response.status_code, 404)
 

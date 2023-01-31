@@ -27,9 +27,9 @@ def index(request):
 
 
 @login_required
-def display_list(request, list):
-    list = get_object_or_404(Todo, pk=list)
-    if list.owner != request.user:
+def display_todo(request, todo_pk):
+    todo = get_object_or_404(Todo, pk=todo_pk)
+    if todo.owner != request.user:
         raise PermissionDenied()
     starred_lists = Todo.objects.filter(owner=request.user, starred=request.user)
     lists = Todo.objects.filter(owner=request.user, parent=None)
@@ -37,12 +37,12 @@ def display_list(request, list):
         request,
         "lists/index.html",
         {
-            "current_list": list,
+            "current_list": todo,
             "lists": lists,
             "starred_lists": starred_lists,
-            "todo_list_items": ListItem.objects.filter(list=list, completed=False),
+            "todo_list_items": ListItem.objects.filter(list=todo, completed=False),
             "completed_list_items": ListItem.objects.filter(
-                list=list, completed=True
+                list=todo, completed=True
             ).order_by("-checked_date"),
             "quick_access": request.user.starred.filter(),
         },
@@ -63,7 +63,7 @@ def toggle_item(request, item, list_pk):
     if item.parent != None:
         if (not item.completed) and item.parent.completed:
             toggle_item(request, item.parent.pk, list_pk)
-    return HttpResponseRedirect(reverse("list", args=[list_pk]))
+    return HttpResponseRedirect(reverse("todo", args=[list_pk]))
 
 
 @login_required
@@ -75,7 +75,7 @@ def item_edit(request, item_pk=0):
         if form.is_valid():
             item = form.save()
             return HttpResponseRedirect(
-                reverse("list", args=[item.list.filter().first().pk])
+                reverse("todo", args=[item.list.filter().first().pk])
             )
     else:  # as in, if request.method != 'POST'...
         form = ListItemForm(instance=ListItem.objects.filter(pk=item_pk).first())
@@ -99,7 +99,7 @@ def list_edit(request, list_pk=0):
         if form.is_valid():
             list = form.save()
             list.save()
-            return HttpResponseRedirect(reverse("list", args=[list.pk]))
+            return HttpResponseRedirect(reverse("todo", args=[list.pk]))
     else:  # as in, if request.method != 'POST'...
         form = ListForm(instance=Todo.objects.filter(pk=list_pk).first())
         return render(
@@ -165,7 +165,7 @@ def item_details(request, item_pk):
         form = DetailedListItemForm(request.POST, instance=item)
         form.save()
         return HttpResponseRedirect(
-            reverse("list", args=[form.cleaned_data["current_list_pk"]])
+            reverse("todo", args=[form.cleaned_data["current_list_pk"]])
         )
     else:  # as in, if request.method != 'POST':
         form = DetailedListItemForm(instance=item)
