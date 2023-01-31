@@ -97,7 +97,7 @@ def toggle_list_on_item(request):
     todo = get_object_or_404(Todo, pk=request.POST["list_pk"])
     item = get_object_or_404(ListItem, pk=request.POST["item_pk"])
     current_list = get_object_or_404(Todo, pk=request.POST["current_list_pk"])
-    if list in item.list.all():
+    if todo in item.list.all():
         item.list.remove(todo)
         if len(item.list.all()) == 0:
             item.list.add(current_list)
