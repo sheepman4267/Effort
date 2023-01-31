@@ -4,18 +4,18 @@ from django.shortcuts import render, get_object_or_404, reverse, HttpResponseRed
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied, BadRequest
 
-from .models import List, ListItem
+from .models import Todo, ListItem
 from .forms import ListForm, ListItemForm, DetailedListItemForm
 
 
 @login_required
 def index(request):
-    starred_lists = List.objects.filter(
+    starred_lists = Todo.objects.filter(
         owner=request.user,
         parent=None,
         starred=request.user,
     )
-    lists = List.objects.filter(owner=request.user, parent=None)
+    lists = Todo.objects.filter(owner=request.user, parent=None)
     return render(
         request,
         "lists/index.html",
@@ -28,11 +28,11 @@ def index(request):
 
 @login_required
 def display_list(request, list):
-    list = get_object_or_404(List, pk=list)
+    list = get_object_or_404(Todo, pk=list)
     if list.owner != request.user:
         raise PermissionDenied()
-    starred_lists = List.objects.filter(owner=request.user, starred=request.user)
-    lists = List.objects.filter(owner=request.user, parent=None)
+    starred_lists = Todo.objects.filter(owner=request.user, starred=request.user)
+    lists = Todo.objects.filter(owner=request.user, parent=None)
     return render(
         request,
         "lists/index.html",
@@ -92,7 +92,7 @@ def item_edit(request, item_pk=0):
 @login_required()
 def list_edit(request, list_pk=0):
     if request.method == "POST":
-        existing_list = List.objects.filter(pk=list_pk).first()
+        existing_list = Todo.objects.filter(pk=list_pk).first()
         if existing_list and request.user != existing_list.owner:
             raise PermissionDenied()
         form = ListForm(request.POST, instance=existing_list)
@@ -101,7 +101,7 @@ def list_edit(request, list_pk=0):
             list.save()
             return HttpResponseRedirect(reverse("list", args=[list.pk]))
     else:  # as in, if request.method != 'POST'...
-        form = ListForm(instance=List.objects.filter(pk=list_pk).first())
+        form = ListForm(instance=Todo.objects.filter(pk=list_pk).first())
         return render(
             request,
             "lists/list-edit.html",
@@ -116,9 +116,9 @@ def list_edit(request, list_pk=0):
 def toggle_list_on_item(request):
     if request.method != "POST":
         raise BadRequest()
-    list = get_object_or_404(List, pk=request.POST["list_pk"])
+    list = get_object_or_404(Todo, pk=request.POST["list_pk"])
     item = get_object_or_404(ListItem, pk=request.POST["item_pk"])
-    current_list = get_object_or_404(List, pk=request.POST["current_list_pk"])
+    current_list = get_object_or_404(Todo, pk=request.POST["current_list_pk"])
     if list in item.list.all():
         item.list.remove(list)
         if len(item.list.all()) == 0:
@@ -140,7 +140,7 @@ def toggle_list_on_item(request):
 
 @login_required()
 def toggle_starred(request, list):
-    list = List.objects.get(pk=list)
+    list = Todo.objects.get(pk=list)
     if request.user in list.starred.filter():
         list.starred.remove(request.user)
         star_button_fill = "transparent"

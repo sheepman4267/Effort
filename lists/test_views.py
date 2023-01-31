@@ -5,7 +5,7 @@ from django.test import Client
 from django.shortcuts import reverse
 from django.contrib.auth.models import User
 
-from lists.models import List, ListItem
+from lists.models import Todo, ListItem
 
 
 class IndexCase(TestCase):
@@ -23,7 +23,7 @@ class DisplayListCase(TestCase):
         self.client = Client()
         self.user = User.objects.create_user(username='test_user', password='test_password')
         self.client.login(username='test_user', password='test_password')
-        self.test_list = List.objects.create(title='test_list', owner=self.user)
+        self.test_list = Todo.objects.create(title='test_list', owner=self.user)
 
     def test_http_response(self) -> None:
         existing_list_response = self.client.get(reverse('list', args=[self.test_list.pk]))
@@ -37,8 +37,8 @@ class ToggleItemCase(TestCase):
         self.user = User.objects.create_user(username='test_user', password='test_password')
         self.other_user = User.objects.create_user(username='some_other_guy', password='another_password')
         self.client.login(username='test_user', password='test_password')
-        self.test_list = List.objects.create(title='test_list', owner=self.user)
-        self.other_guys_list = List.objects.create(title='I dunno what all this testing is about', owner=self.other_user)
+        self.test_list = Todo.objects.create(title='test_list', owner=self.user)
+        self.other_guys_list = Todo.objects.create(title='I dunno what all this testing is about', owner=self.other_user)
         self.our_item = ListItem.objects.create(name='This Item is Checked', completed=False)
         self.our_item.list.add(self.test_list)
         self.other_guys_item = ListItem.objects.create(name='This Item is Unchecked', completed=False)
@@ -83,7 +83,7 @@ class ItemEditCase(TestCase):
         self.client = Client()
         self.user = User.objects.create_user(username='test_user', password='test_password')
         self.client.login(username='test_user', password='test_password')
-        self.test_list = List.objects.create(title='test_list', owner=self.user)
+        self.test_list = Todo.objects.create(title='test_list', owner=self.user)
         self.test_item = ListItem.objects.create(name='Test Item')
         self.test_item.list.add(self.test_list)
 
@@ -109,8 +109,8 @@ class ToggleListOnItemCase(TestCase):
         self.client = Client()
         self.user = User.objects.create_user(username='test_user', password='test_password')
         self.client.login(username='test_user', password='test_password')
-        self.test_list = List.objects.create(title='test_list', owner=self.user)
-        self.test_other_list = List.objects.create(title='test_other_list', owner=self.user)
+        self.test_list = Todo.objects.create(title='test_list', owner=self.user)
+        self.test_other_list = Todo.objects.create(title='test_other_list', owner=self.user)
         self.test_item = ListItem.objects.create(name='Test Item')
         self.test_item.list.add(self.test_list)
 
@@ -134,7 +134,7 @@ class ToggleStarredCase(TestCase):
         self.client = Client()
         self.user = User.objects.create_user(username='test_user', password='test_password')
         self.client.login(username='test_user', password='test_password')
-        self.test_list = List.objects.create(title='test_list', owner=self.user)
+        self.test_list = Todo.objects.create(title='test_list', owner=self.user)
 
     def test_star_list(self):
         response = self.client.get(reverse('toggle-starred', kwargs={
@@ -154,7 +154,7 @@ class ListEditCase(TestCase):
         self.client = Client()
         self.user = User.objects.create_user(username='test_user', password='test_password')
         self.client.login(username='test_user', password='test_password')
-        self.test_list = List.objects.create(title='test_list', owner=self.user)
+        self.test_list = Todo.objects.create(title='test_list', owner=self.user)
 
 
     def test_http_response(self) -> None:
@@ -172,45 +172,45 @@ class ListEditCase(TestCase):
             'parent': '',
         })
         self.assertEqual(response_new_list.status_code, 302)
-        self.assertIsNotNone(List.objects.filter(title='a completely new list!').first())
-        new_list = List.objects.get(title='a completely new list!')
+        self.assertIsNotNone(Todo.objects.filter(title='a completely new list!').first())
+        new_list = Todo.objects.get(title='a completely new list!')
         response_new_sublist = self.client.post(reverse('list-edit'), {
             'title': 'a completely new sublist!',
             'owner': self.user.pk,
             'parent': new_list.pk,
         })
         self.assertEqual(response_new_sublist.status_code, 302)
-        self.assertIsNotNone(List.objects.filter(title='a completely new sublist!').first())
-        new_sublist = List.objects.get(title='a completely new sublist!')
+        self.assertIsNotNone(Todo.objects.filter(title='a completely new sublist!').first())
+        new_sublist = Todo.objects.get(title='a completely new sublist!')
         self.assertEqual(new_sublist.parent, new_list)
 
     def test_edit_existing_list(self) -> None:
-        new_list = List.objects.create(title='a toplevel list', owner=self.user)
+        new_list = Todo.objects.create(title='a toplevel list', owner=self.user)
         response_edit_toplevel = self.client.post(reverse('list-edit', args=[new_list.pk]), {
             'owner': self.user.pk,
             'title': 'a slightly different toplevel list',
         })
         self.assertEqual(response_edit_toplevel.status_code, 302)
-        self.assertEqual(List.objects.get(pk=new_list.pk).title, 'a slightly different toplevel list')
-        new_sublist = List.objects.create(title='a sublist', owner=self.user)
+        self.assertEqual(Todo.objects.get(pk=new_list.pk).title, 'a slightly different toplevel list')
+        new_sublist = Todo.objects.create(title='a sublist', owner=self.user)
         response_edit_sublist = self.client.post(reverse('list-edit', args=[new_sublist.pk]), {
             'owner': self.user.pk,
             'title': 'a slightly different sublist',
             'parent': new_list.pk,
         })
         self.assertEqual(response_edit_sublist.status_code, 302)
-        self.assertEqual(List.objects.get(pk=new_sublist.pk).title, 'a slightly different sublist')
-        self.assertEqual(List.objects.get(pk=new_sublist.pk).parent, new_list)
+        self.assertEqual(Todo.objects.get(pk=new_sublist.pk).title, 'a slightly different sublist')
+        self.assertEqual(Todo.objects.get(pk=new_sublist.pk).parent, new_list)
 
     def test_edit_wrong_list(self) -> None:
         other_user = User.objects.create_user(username='some_other_guy', password='someone_else')
-        new_list = List.objects.create(title='another persons list', owner=other_user)
+        new_list = Todo.objects.create(title='another persons list', owner=other_user)
         response_edit_wrong_list = self.client.post(reverse('list-edit', args=[new_list.pk]), {
             'owner': other_user.pk,
             'title': 'but I can change the title!',
         })
         self.assertEqual(response_edit_wrong_list.status_code, 403)
-        self.assertEqual(List.objects.get(pk=new_list.pk).title, 'another persons list')
+        self.assertEqual(Todo.objects.get(pk=new_list.pk).title, 'another persons list')
 
 
 class ItemDetailsCase(TestCase):
@@ -218,7 +218,7 @@ class ItemDetailsCase(TestCase):
         self.client = Client()
         self.user = User.objects.create_user(username='test_user', password='test_password')
         self.client.login(username='test_user', password='test_password')
-        self.test_list = List.objects.create(title='test_list', owner=self.user)
+        self.test_list = Todo.objects.create(title='test_list', owner=self.user)
         self.test_item = ListItem.objects.create(name='test_item')
         self.test_item.list.add(self.test_list)
 
