@@ -21,7 +21,7 @@ print(settings.LOG_LEVEL)
 class Todo(models.Model):
     title = models.CharField(max_length=200)
     description = MarkdownxField(blank=True)
-    owner = models.ForeignKey(User, unique=False, on_delete=models.CASCADE, related_name='lists')
+    owner = models.ForeignKey(User, unique=False, on_delete=models.CASCADE, related_name='todo_lists')
     parent = models.ForeignKey('self', null=True, blank=True, unique=False, on_delete=models.CASCADE, related_name="children")
     starred = models.ManyToManyField(User, unique=False, related_name='starred')
     collect_items = models.BooleanField(default=False)

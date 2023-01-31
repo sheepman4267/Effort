@@ -52,7 +52,7 @@ def display_list(request, list):
 @login_required
 def toggle_item(request, item, list_pk):
     item = ListItem.objects.get(pk=item)
-    if not item.list.all() & request.user.lists.all():
+    if not item.list.all() & request.user.todo_lists.all():
         raise PermissionDenied()
     item.completed = not item.completed
     item.checked_date = datetime.datetime.now()
