@@ -10,20 +10,7 @@ from .forms import ListForm, ListItemForm, DetailedListItemForm
 
 @login_required
 def index(request):
-    starred_todo_lists = Todo.objects.filter(
-        owner=request.user,
-        parent=None,
-        starred=request.user,
-    )
-    todo_lists = Todo.objects.filter(owner=request.user, parent=None)
-    return render(
-        request,
-        "lists/index.html",
-        {
-            "starred_todo_lists": starred_todo_lists,
-            "todo_lists": todo_lists,
-        },
-    )
+    return render(request, "lists/index.html",)
 
 
 @login_required
