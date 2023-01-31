@@ -38,8 +38,6 @@ def display_todo(request, todo_pk):
         "lists/index.html",
         {
             "current_list": todo,
-            "todo_lists": todo_lists,
-            "starred_todo_lists": starred_todo_lists,
             "todo_list_items": todo.unchecked(),
             "completed_list_items": todo.checked(),
             "quick_access": request.user.starred.filter(),

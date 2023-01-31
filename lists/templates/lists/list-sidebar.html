@@ -1,13 +1,14 @@
 {% load lists_extras %}
 {% load icon %}
 <ul class="sidebar" id="sidebar">
-    {% for todo in starred_todo_lists %}
-        {% list_selection_display todo current_list request %}
+    {% for todo in request.user.todo_lists.all %}
+        {% if request.user in todo.starred.all and not todo.parent %}
+            {% list_selection_display todo current_list request %}
+        {% endif %}
     {% endfor %}
     <hr>
-    {% for todo in todo_lists %}
-        {% if todo in starred_todo_lists %}
-        {% else %}
+    {% for todo in request.user.todo_lists.all %}
+        {% if request.user not in todo.starred.all and not todo.parent %}
             {% list_selection_display todo current_list request %}
         {% endif %}
     {% endfor %}
