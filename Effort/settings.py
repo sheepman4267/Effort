@@ -35,7 +35,7 @@ CSRF_TRUSTED_ORIGINS = ['https://'+host for host in ALLOWED_HOSTS]
 
 INSTALLED_APPS = [
     'core',
-    'lists',
+    'todo',
     'notes',
     'django.contrib.admin',
     'django.contrib.auth',

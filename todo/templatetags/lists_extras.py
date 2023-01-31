@@ -1,7 +1,7 @@
 from django import template
 
-from lists.models import List
-from lists.models import ListItem
+from todo.models import Todo
+from todo.models import ListItem
 
 register = template.Library()
 
@@ -27,7 +27,7 @@ def list_selection_display(list, selected_list, request):
 #Return a list of all parents of a passed List object
 def get_list_tree(list):
     list_tree = []
-    if type(list) != List:
+    if type(list) != Todo:
         return [] #this is awful, but should work
     while list.parent:
         list_tree.append(list.parent)
