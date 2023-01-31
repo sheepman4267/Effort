@@ -21,7 +21,7 @@ def collect_items(list_pk: int) -> None:
     due_cutoff = datetime.date.today() + datetime.timedelta(days=list.collect_next_days)
     # potential_items = ListItem.objects.filter(user=list.owner, completed=False)
     potential_items = []
-    for owned_list in list.owner.lists.all():
+    for owned_list in list.owner.todo_lists.all():
         potential_items += owned_list.items.all()
     for item in potential_items:
         if item.due_date:
