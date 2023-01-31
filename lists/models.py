@@ -27,7 +27,13 @@ class Todo(models.Model):
     collect_items = models.BooleanField(default=False)
     collect_next_days = models.IntegerField(default=1)
     collect_on = RecurrenceField(null=True, blank=True)
-    
+
+    def checked(self):
+        return self.items.filter(completed=True).order_by("-checked_date")
+
+    def unchecked(self):
+        return self.items.filter(completed=False)
+
     def save(self, *args, **kwargs):
         if self.collect_items:
             Schedule.objects.create(

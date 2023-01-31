@@ -1,14 +1,14 @@
 {% load lists_extras %}
 {% load icon %}
 <ul class="sidebar" id="sidebar">
-    {% for list in starred_lists %}
-        {% list_selection_display list current_list request %}
+    {% for todo in starred_todo_lists %}
+        {% list_selection_display todo current_list request %}
     {% endfor %}
     <hr>
-    {% for list in lists %}
-        {% if list in starred_lists %}
+    {% for todo in todo_lists %}
+        {% if todo in starred_todo_lists %}
         {% else %}
-            {% list_selection_display list current_list request %}
+            {% list_selection_display todo current_list request %}
         {% endif %}
     {% endfor %}
     <button class="list-item add-button" value="New Sublist" hx-trigger="click" hx-get="{% url "list-edit" %}" hx-swap="outerHTML">

@@ -10,18 +10,18 @@ from .forms import ListForm, ListItemForm, DetailedListItemForm
 
 @login_required
 def index(request):
-    starred_lists = Todo.objects.filter(
+    starred_todo_lists = Todo.objects.filter(
         owner=request.user,
         parent=None,
         starred=request.user,
     )
-    lists = Todo.objects.filter(owner=request.user, parent=None)
+    todo_lists = Todo.objects.filter(owner=request.user, parent=None)
     return render(
         request,
         "lists/index.html",
         {
-            "starred_lists": starred_lists,
-            "lists": lists,
+            "starred_todo_lists": starred_todo_lists,
+            "todo_lists": todo_lists,
         },
     )
 
@@ -31,19 +31,17 @@ def display_todo(request, todo_pk):
     todo = get_object_or_404(Todo, pk=todo_pk)
     if todo.owner != request.user:
         raise PermissionDenied()
-    starred_lists = Todo.objects.filter(owner=request.user, starred=request.user)
-    lists = Todo.objects.filter(owner=request.user, parent=None)
+    starred_todo_lists = Todo.objects.filter(owner=request.user, starred=request.user)
+    todo_lists = Todo.objects.filter(owner=request.user, parent=None)
     return render(
         request,
         "lists/index.html",
         {
             "current_list": todo,
-            "lists": lists,
-            "starred_lists": starred_lists,
-            "todo_list_items": ListItem.objects.filter(list=todo, completed=False),
-            "completed_list_items": ListItem.objects.filter(
-                list=todo, completed=True
-            ).order_by("-checked_date"),
+            "todo_lists": todo_lists,
+            "starred_todo_lists": starred_todo_lists,
+            "todo_list_items": todo.unchecked(),
+            "completed_list_items": todo.checked(),
             "quick_access": request.user.starred.filter(),
         },
     )
