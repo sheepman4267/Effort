@@ -13,14 +13,10 @@
                         {% else %}
                             {% include 'lists/quick-access-list-button.html' with enabled=True current_list=current_list.pk list=list item=item %}
                         {% endif %}
-{#                    {% quick_access_list_button request=request list=list item=item current_list=list.pk %}#}
                 {% endfor %}
                 </div>
             </div>
         </div>
-{#        <button id="list-details-button{{ item.pk }}" class="check" hx-trigger="click" hx-get="{% url 'item-details' item_pk=item.pk list_pk=list_pk %}" hx-target="closest .li-internal" hx-swap="afterend">#}
-{#            {% icon "menu" %}#}
-{#        </button>#}
         <button class="check" _="on click toggle .details on #list-item-{{ item.pk }}">
             {% icon "menu" %}
         </button>
