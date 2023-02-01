@@ -12,12 +12,6 @@ from django_q.models import Schedule
 
 import datetime
 
-import logging
-
-logger = logging.getLogger("effort.lists.models")
-logger.setLevel(settings.LOG_LEVEL)
-print(settings.LOG_LEVEL)
-
 
 class Todo(models.Model):
     title = models.CharField(max_length=200)
@@ -73,7 +67,6 @@ class Todo(models.Model):
             return False
 
     def short_title(self):
-        logger.debug(len(self.title))
         if len(self.title) <= 6:
             return self.title
         else:
