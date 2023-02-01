@@ -86,11 +86,15 @@ class TodoItem(models.Model):
     details = MarkdownxField(null=True, blank=True)
     due_date = models.DateField(null=True, blank=True)
     created_date = models.DateTimeField(default=timezone.now, editable=False)
-    checked_date = models.DateTimeField(default=timezone.now)
+    checked_date = models.DateTimeField(default=timezone.now, editable=False)
     completed = models.BooleanField(default=False)
     list = models.ManyToManyField(Todo, unique=False, related_name="items")
     parent = models.ForeignKey(
-        "self", on_delete=models.CASCADE, null=True, blank=True, related_name="children"
+        to="self",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="children"
     )
     uncheck_every = RecurrenceField(null=True, blank=True)
     last_unchecked = models.DateTimeField(
