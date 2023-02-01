@@ -3,6 +3,7 @@ import datetime
 from django.shortcuts import render, get_object_or_404, reverse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied, BadRequest
+from django.utils import timezone
 
 from .models import Todo, ListItem
 from .forms import ListForm, ListItemForm, DetailedListItemForm
@@ -33,7 +34,7 @@ def toggle_item(request, item, list_pk):
     if not item.list.all() & request.user.todo_lists.all():
         raise PermissionDenied()
     item.completed = not item.completed
-    item.checked_date = datetime.datetime.now()
+    item.checked_date = timezone.now()
     item.save()
     for child_item in item.children.all():
         if item.completed and not child_item.completed:
