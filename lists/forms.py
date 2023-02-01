@@ -39,7 +39,6 @@ class ListItemForm(forms.ModelForm):
         if commit:
             instance.save()
             self.save_m2m()
-        print(f"{self.cleaned_data.get('list_pk')} listpk")
         if self.cleaned_data.get("list_pk"):
             instance.list.add(Todo.objects.get(pk=self.cleaned_data.get("list_pk")))
         elif instance.parent:
