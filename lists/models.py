@@ -17,17 +17,17 @@ class Todo(models.Model):
     title = models.CharField(max_length=200)
     description = MarkdownxField(blank=True)
     owner = models.ForeignKey(
-        User, unique=False, on_delete=models.CASCADE, related_name="todo_lists"
+        to=User, unique=False, on_delete=models.CASCADE, related_name="todo_lists"
     )
     parent = models.ForeignKey(
-        "self",
+        to="self",
         null=True,
         blank=True,
         unique=False,
         on_delete=models.CASCADE,
         related_name="children",
     )
-    starred = models.ManyToManyField(User, unique=False, related_name="starred")
+    starred = models.ManyToManyField(to=User, unique=False, related_name="starred")
     collect_items = models.BooleanField(default=False)
     collect_next_days = models.IntegerField(default=1)
     collect_on = RecurrenceField(null=True, blank=True)
@@ -88,7 +88,7 @@ class TodoItem(models.Model):
     created_date = models.DateTimeField(default=timezone.now, editable=False)
     checked_date = models.DateTimeField(default=timezone.now, editable=False)
     completed = models.BooleanField(default=False)
-    list = models.ManyToManyField(Todo, unique=False, related_name="items")
+    list = models.ManyToManyField(to=Todo, unique=False, related_name="items")
     parent = models.ForeignKey(
         to="self",
         on_delete=models.CASCADE,
@@ -125,7 +125,7 @@ class TodoItem(models.Model):
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
+    user = models.OneToOneField(to=User, on_delete=models.CASCADE, related_name="profile")
 
     def todo_lists(self):
         todo_lists = self.user.todo_lists.exclude(starred=self.user)
