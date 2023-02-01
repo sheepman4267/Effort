@@ -138,12 +138,12 @@ class ToggleStarredCase(TestCase):
 
     def test_star_list(self):
         response = self.client.get(reverse('toggle-starred', kwargs={
-            'list': self.test_list.pk
+            'todo_pk': self.test_list.pk
         }))
         self.assertEqual(response.context['star_button_fill'], '#ffd500')
         self.assertIn(self.user, self.test_list.starred.all())
         response = self.client.get(reverse('toggle-starred', kwargs={
-            'list': self.test_list.pk
+            'todo_pk': self.test_list.pk
         }))
         self.assertEqual(response.context['star_button_fill'], 'transparent')
         self.assertNotIn(self.user, self.test_list.starred.all())

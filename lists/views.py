@@ -118,20 +118,20 @@ def toggle_list_on_item(request):
 
 
 @login_required()
-def toggle_starred(request, list):
-    list = Todo.objects.get(pk=list)
-    if request.user in list.starred.filter():
-        list.starred.remove(request.user)
+def toggle_starred(request, todo_pk):
+    todo = Todo.objects.get(pk=todo_pk)
+    if request.user in todo.starred.filter():
+        todo.starred.remove(request.user)
         star_button_fill = "transparent"
     else:
-        list.starred.add(request.user)
+        todo.starred.add(request.user)
         star_button_fill = "#ffd500"
-    list.save()
+    todo.save()
     return render(
         request,
         "lists/star.html",
         {
-            "list": list,
+            "todo": todo,
             "star_button_fill": star_button_fill,
         },
     )

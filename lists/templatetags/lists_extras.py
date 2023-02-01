@@ -36,14 +36,14 @@ def get_list_tree(list):
 
 
 @register.inclusion_tag('lists/star.html')
-def star(request, list):
-    if request.user in list.starred.filter():
+def star(request, todo):
+    if request.user in todo.starred.filter():
         star_button_fill = '#ffd500'
     else:
         star_button_fill = 'transparent'
     return({
         'star_button_fill': star_button_fill,
-        'list': list,
+        'todo': todo,
     })
 
 
