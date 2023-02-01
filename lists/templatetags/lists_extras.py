@@ -1,8 +1,5 @@
 from django import template
 
-from lists.models import Todo
-from lists.models import TodoItem
-
 register = template.Library()
 
 # 'list' is the one we're providing a button for.
