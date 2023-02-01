@@ -19,8 +19,6 @@ def list_selection_display(list, selected_list, request):
         'request': request,
     })
 
-#if expand_tree, htmx set whole tree visible on load, else htmx set visible on button click
-
 
 @register.inclusion_tag('lists/star.html')
 def star(request, todo):
