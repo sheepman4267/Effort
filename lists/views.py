@@ -39,7 +39,7 @@ def toggle_item(request, item, list_pk):
     for child_item in item.children.all():
         if item.completed and not child_item.completed:
             toggle_item(request, child_item.pk, list_pk)
-    if item.parent != None:
+    if item.parent is not None:
         if (not item.completed) and item.parent.completed:
             toggle_item(request, item.parent.pk, list_pk)
     return HttpResponseRedirect(reverse("todo", args=[list_pk]))
