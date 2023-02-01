@@ -108,11 +108,9 @@ def toggle_list_on_item(request):
         enabled = False
     return render(
         request,
-        "lists/quick-access-list-button.html",
+        "lists/list-display.html",
         {
-            "item": item,
-            "list": todo,
-            "enabled": enabled,
+            "current_list": current_list
         },
     )
 

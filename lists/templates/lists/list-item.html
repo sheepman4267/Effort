@@ -8,12 +8,20 @@
                 <button hx-trigger="click" hx-get="{% url 'item-edit' %}" hx-select=".new-item-form-container" hx-swap="outerHTML">New sub-item</button>
                 <div class="li-buttons-right">
                     {% for list in request.user.starred.filter %}
-                        {% if list in item.list.filter %}
-                            {% include 'lists/quick-access-list-button.html' with enabled=False current_list=current_list.pk list=list item=item %}
-                        {% else %}
-                            {% include 'lists/quick-access-list-button.html' with enabled=True current_list=current_list.pk list=list item=item %}
-                        {% endif %}
-                {% endfor %}
+                        <form>
+                            <input type="hidden" name="item_pk" _="on load set my @value to @data-item-pk of closest parent <li/>">
+                            <input type="hidden" name="current_list_pk" _="on load set my @value to @data-list-pk of #listdisplay">
+                            <input type="hidden" name="list_pk" value="{{ list.pk }}">
+                            <button hx-trigger="click" hx-post="{% url 'toggle-list-on-item' %}" hx-swap="outerHTML" hx-select="#list-item-{{ item.pk }}" hx-target="#list-item-{{ item.pk }}">
+                                {% if list in item.list.filter %}
+                                    {% icon "x-circle" class="red" %}
+                                {% else %}
+                                    {% icon "plus-circle" %}
+                                {% endif %}
+                                {{ list.short_title }}
+                            </button>
+                        </form>
+                    {% endfor %}
                 </div>
             </div>
         </div>
