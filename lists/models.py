@@ -73,12 +73,12 @@ class Todo(models.Model):
             return f"{self.title[:5]}..."
 
     def tree(self):
-        list_tree = []
-        list = self
-        while list.parent:
-            list_tree.append(list.parent)
-            list = list.parent
-        return list_tree
+        tree = []
+        todo = self
+        while todo.parent:
+            tree.append(todo.parent)
+            todo = todo.parent
+        return tree
 
 
 class ListItem(models.Model):
