@@ -2,6 +2,7 @@ from django import template
 
 register = template.Library()
 
+
 # 'list' is the one we're providing a button for.
 # 'selected_list' is the list that is currently being displayed.
 @register.inclusion_tag("lists/list-selection-display.html")
