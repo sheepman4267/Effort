@@ -9,7 +9,7 @@ register = template.Library()
 # 'selected_list' is the list that is currently being displayed.
 @register.inclusion_tag('lists/list-selection-display.html')
 def list_selection_display(list, selected_list, request):
-    if list in get_list_tree(selected_list):
+    if list in list.tree():
         expand_tree = True
     elif list == selected_list:
         expand_tree = True
@@ -23,16 +23,6 @@ def list_selection_display(list, selected_list, request):
     })
 
 #if expand_tree, htmx set whole tree visible on load, else htmx set visible on button click
-
-#Return a list of all parents of a passed List object
-def get_list_tree(list):
-    list_tree = []
-    if type(list) != Todo:
-        return [] #this is awful, but should work
-    while list.parent:
-        list_tree.append(list.parent)
-        list = list.parent
-    return list_tree
 
 
 @register.inclusion_tag('lists/star.html')
