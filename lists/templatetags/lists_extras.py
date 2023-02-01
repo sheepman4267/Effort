@@ -9,7 +9,7 @@ register = template.Library()
 # 'selected_list' is the list that is currently being displayed.
 @register.inclusion_tag('lists/list-selection-display.html')
 def list_selection_display(list, selected_list, request):
-    if list in list.tree():
+    if list in selected_list.tree():
         expand_tree = True
     elif list == selected_list:
         expand_tree = True
