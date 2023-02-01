@@ -2,7 +2,6 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.dispatch import receiver
 from django.db.models.signals import post_save
-from django.conf import settings
 from recurrence.fields import RecurrenceField
 from markdownx.models import MarkdownxField
 
