@@ -81,7 +81,7 @@ class Todo(models.Model):
         return tree
 
 
-class ListItem(models.Model):
+class TodoItem(models.Model):
     name = models.CharField(max_length=500)
     details = MarkdownxField(null=True, blank=True)
     due_date = models.DateField(null=True, blank=True)
@@ -117,7 +117,7 @@ class ListItem(models.Model):
                         )
                     ),
                 )
-        super(ListItem, self).save(*args, **kwargs)
+        super(TodoItem, self).save(*args, **kwargs)
 
 
 class Profile(models.Model):

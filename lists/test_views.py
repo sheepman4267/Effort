@@ -5,7 +5,7 @@ from django.test import Client
 from django.shortcuts import reverse
 from django.contrib.auth.models import User
 
-from lists.models import Todo, ListItem
+from lists.models import Todo, TodoItem
 
 
 class IndexCase(TestCase):
@@ -39,9 +39,9 @@ class ToggleItemCase(TestCase):
         self.client.login(username='test_user', password='test_password')
         self.test_list = Todo.objects.create(title='test_list', owner=self.user)
         self.other_guys_list = Todo.objects.create(title='I dunno what all this testing is about', owner=self.other_user)
-        self.our_item = ListItem.objects.create(name='This Item is Checked', completed=False)
+        self.our_item = TodoItem.objects.create(name='This Item is Checked', completed=False)
         self.our_item.list.add(self.test_list)
-        self.other_guys_item = ListItem.objects.create(name='This Item is Unchecked', completed=False)
+        self.other_guys_item = TodoItem.objects.create(name='This Item is Unchecked', completed=False)
         self.other_guys_item.list.add(self.other_guys_list)
 
     def test_permissions(self) -> None:
@@ -53,7 +53,7 @@ class ToggleItemCase(TestCase):
                                                        }
                                                        )) # Deliberately use bogus list_pk to make sure the function isn't using it for anything important
         self.assertEqual(checking_random_item.status_code, 403)
-        self.assertEqual(random_item_completed_before, ListItem.objects.get(pk=self.other_guys_item.pk).completed)
+        self.assertEqual(random_item_completed_before, TodoItem.objects.get(pk=self.other_guys_item.pk).completed)
 
     def test_checking_and_unchecking(self) -> None:
         our_item_completed_before = self.our_item.completed
@@ -62,13 +62,13 @@ class ToggleItemCase(TestCase):
                                                         'item': self.our_item.pk,
                                                         'list_pk': 1,
                                                     }))
-        self.assertNotEqual(ListItem.objects.get(pk=self.our_item.pk).completed, our_item_completed_before)
+        self.assertNotEqual(TodoItem.objects.get(pk=self.our_item.pk).completed, our_item_completed_before)
         unchecking_our_item = self.client.get(reverse('toggle-item',
                                                     kwargs={
                                                         'item': self.our_item.pk,
                                                         'list_pk': 1,
                                                     }))
-        self.assertEqual(ListItem.objects.get(pk=self.our_item.pk).completed, our_item_completed_before)
+        self.assertEqual(TodoItem.objects.get(pk=self.our_item.pk).completed, our_item_completed_before)
 
     def test_http_response(self) -> None:
         checking_our_item = self.client.get(reverse('toggle-item',
@@ -84,7 +84,7 @@ class ItemEditCase(TestCase):
         self.user = User.objects.create_user(username='test_user', password='test_password')
         self.client.login(username='test_user', password='test_password')
         self.test_list = Todo.objects.create(title='test_list', owner=self.user)
-        self.test_item = ListItem.objects.create(name='Test Item')
+        self.test_item = TodoItem.objects.create(name='Test Item')
         self.test_item.list.add(self.test_list)
 
     def test_http_response(self) -> None:
@@ -111,7 +111,7 @@ class ToggleListOnItemCase(TestCase):
         self.client.login(username='test_user', password='test_password')
         self.test_list = Todo.objects.create(title='test_list', owner=self.user)
         self.test_other_list = Todo.objects.create(title='test_other_list', owner=self.user)
-        self.test_item = ListItem.objects.create(name='Test Item')
+        self.test_item = TodoItem.objects.create(name='Test Item')
         self.test_item.list.add(self.test_list)
 
     def test_toggle(self) -> None:
@@ -219,7 +219,7 @@ class ItemDetailsCase(TestCase):
         self.user = User.objects.create_user(username='test_user', password='test_password')
         self.client.login(username='test_user', password='test_password')
         self.test_list = Todo.objects.create(title='test_list', owner=self.user)
-        self.test_item = ListItem.objects.create(name='test_item')
+        self.test_item = TodoItem.objects.create(name='test_item')
         self.test_item.list.add(self.test_list)
 
     def test_http_response(self) -> None:
@@ -232,4 +232,4 @@ class ItemDetailsCase(TestCase):
             'current_list_pk': 1,
         })
         self.assertEqual(response_post_changes.status_code, 302)
-        self.assertEqual(ListItem.objects.get(pk=self.test_item.pk).due_date, datetime.date(2023, 1, 25))
+        self.assertEqual(TodoItem.objects.get(pk=self.test_item.pk).due_date, datetime.date(2023, 1, 25))

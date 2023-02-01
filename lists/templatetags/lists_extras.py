@@ -1,7 +1,7 @@
 from django import template
 
 from lists.models import Todo
-from lists.models import ListItem
+from lists.models import TodoItem
 
 register = template.Library()
 

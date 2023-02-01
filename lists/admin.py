@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.models import User
 
-from .models import Profile, Todo, ListItem
+from .models import Profile, Todo, TodoItem
 
 from notes import models
 
@@ -17,5 +17,5 @@ class UserAdmin(BaseUserAdmin):
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 admin.site.register(Todo)
-admin.site.register(ListItem)
+admin.site.register(TodoItem)
 # Register your models here.

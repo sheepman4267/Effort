@@ -1,13 +1,13 @@
 import datetime
 
-from lists.models import Todo,ListItem
+from lists.models import Todo,TodoItem
 from django.utils import timezone
 
 from django_q.models import Schedule
 
 
 def uncheck_recurring_item(item_pk: int) -> None:
-    item = ListItem.objects.get(pk=item_pk)
+    item = TodoItem.objects.get(pk=item_pk)
     item.completed = False
     if item.due_again_in:
         item.due_date = timezone.now() + datetime.timedelta(days=item.due_again_in)

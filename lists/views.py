@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied, BadRequest
 from django.utils import timezone
 
-from .models import Todo, ListItem
+from .models import Todo, TodoItem
 from .forms import ListForm, ListItemForm, DetailedListItemForm
 
 
@@ -30,7 +30,7 @@ def display_todo(request, todo_pk):
 
 @login_required
 def toggle_item(request, item, list_pk):
-    item = ListItem.objects.get(pk=item)
+    item = TodoItem.objects.get(pk=item)
     if not item.list.all() & request.user.todo_lists.all():
         raise PermissionDenied()
     item.completed = not item.completed
@@ -49,7 +49,7 @@ def toggle_item(request, item, list_pk):
 def item_edit(request, item_pk=0):
     if request.method == "POST":
         form = ListItemForm(
-            request.POST, instance=ListItem.objects.filter(pk=item_pk).first()
+            request.POST, instance=TodoItem.objects.filter(pk=item_pk).first()
         )
         if form.is_valid():
             item = form.save()
@@ -57,7 +57,7 @@ def item_edit(request, item_pk=0):
                 reverse("todo", args=[item.list.filter().first().pk])
             )
     else:  # as in, if request.method != 'POST'...
-        form = ListItemForm(instance=ListItem.objects.filter(pk=item_pk).first())
+        form = ListItemForm(instance=TodoItem.objects.filter(pk=item_pk).first())
         return render(
             request,
             "lists/item-edit.html",
@@ -96,7 +96,7 @@ def toggle_list_on_item(request):
     if request.method != "POST":
         raise BadRequest()
     todo = get_object_or_404(Todo, pk=request.POST["list_pk"])
-    item = get_object_or_404(ListItem, pk=request.POST["item_pk"])
+    item = get_object_or_404(TodoItem, pk=request.POST["item_pk"])
     current_list = get_object_or_404(Todo, pk=request.POST["current_list_pk"])
     if todo in item.list.all():
         item.list.remove(todo)
@@ -139,7 +139,7 @@ def toggle_starred(request, list):
 
 @login_required
 def item_details(request, item_pk):
-    item = ListItem.objects.get(pk=item_pk)
+    item = TodoItem.objects.get(pk=item_pk)
     if request.method == "POST":
         form = DetailedListItemForm(request.POST, instance=item)
         form.save()

@@ -3,7 +3,7 @@ from django.db.models import fields
 
 from markdownx.fields import MarkdownxFormField
 
-from .models import Todo, ListItem
+from .models import Todo, TodoItem
 
 
 class ListItemForm(forms.ModelForm):
@@ -11,7 +11,7 @@ class ListItemForm(forms.ModelForm):
     list_pk = forms.IntegerField(required=False)
 
     class Meta:
-        model = ListItem
+        model = TodoItem
         # name = MarkdownxFormField
         name = forms.TextInput()
         fields = (
@@ -33,7 +33,7 @@ class ListItemForm(forms.ModelForm):
     def save(self, commit=True, *args, **kwargs):
         instance = super(ListItemForm, self).save(commit=False, *args, **kwargs)
         if not instance.parent:
-            instance.parent = ListItem.objects.filter(
+            instance.parent = TodoItem.objects.filter(
                 pk=self.cleaned_data.get("parent_pk")
             ).first()
         if commit:
@@ -52,7 +52,7 @@ class DetailedListItemForm(forms.ModelForm):
     current_list_pk = forms.IntegerField(required=False)
 
     class Meta:
-        model = ListItem
+        model = TodoItem
         details = MarkdownxFormField
         fields = (
             "due_date",
