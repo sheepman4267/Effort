@@ -10,11 +10,6 @@ from .forms import ListForm, ListItemForm, DetailedListItemForm
 
 
 @login_required
-def index(request):
-    return render(request, "lists/index.html",)
-
-
-@login_required
 def display_todo(request, todo_pk):
     todo = get_object_or_404(Todo, pk=todo_pk)
     if todo.owner != request.user:

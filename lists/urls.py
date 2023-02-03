@@ -1,8 +1,9 @@
 from django.urls import path
+from django.views.generic.base import TemplateView
 from . import views
 
 urlpatterns = [
-    path('', views.index, name='lists-index'),
+    path('', TemplateView.as_view(template_name="lists/index.html"), name='lists-index'),
     path('list/<int:todo_pk>', views.display_todo, name='todo'),
     path('list/edit', views.list_edit, name='list-edit'),
     path('list/edit/<int:list_pk>', views.list_edit, name='list-edit'),
