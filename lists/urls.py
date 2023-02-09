@@ -4,7 +4,7 @@ from . import views
 
 urlpatterns = [
     path('', TemplateView.as_view(template_name="lists/index.html"), name='lists-index'),
-    path('list/<int:todo_pk>', views.display_todo, name='todo'),
+    path('list/<int:pk>', views.TodoListView.as_view(), name='todo'),
     path('list/edit', views.list_edit, name='list-edit'),
     path('list/edit/<int:list_pk>', views.list_edit, name='list-edit'),
     path('item/edit', views.item_edit, name='item-edit'),

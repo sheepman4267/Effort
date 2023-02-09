@@ -2,25 +2,25 @@ import datetime
 
 from django.shortcuts import render, get_object_or_404, reverse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied, BadRequest
 from django.utils import timezone
+from django.views.generic import DetailView
 
 from .models import Todo, TodoItem
 from .forms import ListForm, ListItemForm, DetailedListItemForm
 
 
-@login_required
-def display_todo(request, todo_pk):
-    todo = get_object_or_404(Todo, pk=todo_pk)
-    if todo.owner != request.user:
-        raise PermissionDenied()
-    return render(
-        request,
-        "lists/index.html",
-        {
-            "current_list": todo,
-        },
-    )
+class TodoListView(LoginRequiredMixin, DetailView):
+    model = Todo
+    template_name = "lists/index.html"
+
+    def get_object(self, queryset=None):
+        todo = super().get_object()
+        if todo.owner != self.request.user:
+            raise PermissionDenied()
+        else:
+            return todo
 
 
 @login_required
@@ -104,9 +104,7 @@ def toggle_list_on_item(request):
     return render(
         request,
         "lists/list-display.html",
-        {
-            "current_list": current_list
-        },
+        {"current_list": current_list},
     )
 
 
