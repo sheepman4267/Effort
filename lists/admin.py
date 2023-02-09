@@ -6,13 +6,16 @@ from .models import Profile, Todo, TodoItem
 
 from notes import models
 
+
 class ProfileInline(admin.StackedInline):
     model = Profile
     can_delete = False
-    verbose_name_plural = 'profile'
+    verbose_name_plural = "profile"
+
 
 class UserAdmin(BaseUserAdmin):
-    inlines = (ProfileInline, )
+    inlines = (ProfileInline,)
+
 
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)

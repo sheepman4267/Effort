@@ -16,10 +16,7 @@ class Todo(models.Model):
     title = models.CharField(max_length=200)
     description = MarkdownxField(blank=True)
     owner = models.ForeignKey(
-        to=User,
-        unique=False,
-        on_delete=models.CASCADE,
-        related_name="todo_lists"
+        to=User, unique=False, on_delete=models.CASCADE, related_name="todo_lists"
     )
     parent = models.ForeignKey(
         to="self",
@@ -30,10 +27,7 @@ class Todo(models.Model):
         related_name="children",
     )
     starred = models.ManyToManyField(
-        to=User,
-        unique=False,
-        related_name="starred",
-        blank=True
+        to=User, unique=False, related_name="starred", blank=True
     )
     collect_items = models.BooleanField(default=False)
     collect_next_days = models.IntegerField(default=1)

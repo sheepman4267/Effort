@@ -1,6 +1,6 @@
 import datetime
 
-from lists.models import Todo,TodoItem
+from lists.models import Todo, TodoItem
 from django.utils import timezone
 
 from django_q.models import Schedule
@@ -29,13 +29,13 @@ def collect_items(list_pk: int) -> None:
                 item.list.add(list)
                 item.save()
     Schedule.objects.create(
-        func='lists.tasks.collect_items',
+        func="lists.tasks.collect_items",
         args=list.pk,
         schedule_type=Schedule.ONCE,
-        next_run=timezone.make_aware(datetime.datetime.combine(list.collect_on.after(datetime.datetime.now()).date(),
-                                                               datetime.time(hour=0, minute=1
-                                                                                    )
-                                                               )
-                                     )
+        next_run=timezone.make_aware(
+            datetime.datetime.combine(
+                list.collect_on.after(datetime.datetime.now()).date(),
+                datetime.time(hour=0, minute=1),
+            )
+        ),
     )
-
