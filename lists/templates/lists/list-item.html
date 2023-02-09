@@ -7,20 +7,24 @@
             <div class="li-button-container">
                 <button hx-trigger="click" hx-get="{% url 'item-edit' %}" hx-select=".new-item-form-container" hx-swap="outerHTML">New sub-item</button>
                 <div class="li-buttons-right">
-                    {% for list in quick_access %}
-                        {% if list in item.list.filter %}
-                            {% include 'lists/quick-access-list-button.html' with enabled=False current_list=current_list.pk list=list item=item %}
-                        {% else %}
-                            {% include 'lists/quick-access-list-button.html' with enabled=True current_list=current_list.pk list=list item=item %}
-                        {% endif %}
-{#                    {% quick_access_list_button request=request list=list item=item current_list=list.pk %}#}
-                {% endfor %}
+                    {% for list in request.user.starred.filter %}
+                        <form>
+                            <input type="hidden" name="item_pk" _="on load set my @value to @data-item-pk of closest parent <li/>">
+                            <input type="hidden" name="current_list_pk" _="on load set my @value to @data-list-pk of #listdisplay">
+                            <input type="hidden" name="list_pk" value="{{ list.pk }}">
+                            <button hx-trigger="click" hx-post="{% url 'toggle-list-on-item' %}" hx-swap="outerHTML" hx-select="#list-item-{{ item.pk }}" hx-target="#list-item-{{ item.pk }}">
+                                {% if list in item.list.filter %}
+                                    {% icon "x-circle" class="red" %}
+                                {% else %}
+                                    {% icon "plus-circle" %}
+                                {% endif %}
+                                {{ list.short_title }}
+                            </button>
+                        </form>
+                    {% endfor %}
                 </div>
             </div>
         </div>
-{#        <button id="list-details-button{{ item.pk }}" class="check" hx-trigger="click" hx-get="{% url 'item-details' item_pk=item.pk list_pk=list_pk %}" hx-target="closest .li-internal" hx-swap="afterend">#}
-{#            {% icon "menu" %}#}
-{#        </button>#}
         <button class="check" _="on click toggle .details on #list-item-{{ item.pk }}">
             {% icon "menu" %}
         </button>

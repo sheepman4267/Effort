@@ -2,129 +2,148 @@ import datetime
 
 from django.shortcuts import render, get_object_or_404, reverse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied, BadRequest
+from django.utils import timezone
+from django.views.generic import DetailView
 
-from .models import List, ListItem
+from .models import Todo, TodoItem
 from .forms import ListForm, ListItemForm, DetailedListItemForm
 
-@login_required
-def index(request):
-    starred_lists = List.objects.filter(owner=request.user, parent=None, starred=request.user)
-    lists = List.objects.filter(owner=request.user, parent=None)
-    return render(request, 'lists/index.html', {
-        'starred_lists': starred_lists,
-        'lists': lists,
-    })
 
-@login_required
-def display_list(request, list): #TODO: No folders, just parent lists. Any list can have any number of child lists, and items can be promoted up the chain of lists.
-    list = get_object_or_404(List, pk=list)
-    if list.owner != request.user:
-        raise PermissionDenied()
-    starred_lists = List.objects.filter(owner=request.user, starred=request.user)
-    lists = List.objects.filter(owner=request.user, parent=None)
-    return render(request, 'lists/index.html', {
-        'current_list': list,
-        'lists': lists,
-        'starred_lists': starred_lists,
-        'todo_list_items': ListItem.objects.filter(list=list, completed=False),
-        'completed_list_items': ListItem.objects.filter(list=list, completed=True).order_by("-checked_date"),
-        'quick_access': request.user.starred.filter()
-    })
+class TodoListView(LoginRequiredMixin, DetailView):
+    model = Todo
+    template_name = "lists/index.html"
+
+    def get_object(self, queryset=None):
+        todo = super().get_object()
+        if todo.owner != self.request.user:
+            raise PermissionDenied()
+        else:
+            return todo
+
 
 @login_required
 def toggle_item(request, item, list_pk):
-    item = ListItem.objects.get(pk=item)
-    if not item.list.all() & request.user.lists.all():
+    item = TodoItem.objects.get(pk=item)
+    if not item.list.all() & request.user.todo_lists.all():
         raise PermissionDenied()
     item.completed = not item.completed
-    item.checked_date = datetime.datetime.now()
+    item.checked_date = timezone.now()
     item.save()
     for child_item in item.children.all():
         if item.completed and not child_item.completed:
             toggle_item(request, child_item.pk, list_pk)
-    if item.parent != None:
-         if (not item.completed) and item.parent.completed:
+    if item.parent is not None:
+        if (not item.completed) and item.parent.completed:
             toggle_item(request, item.parent.pk, list_pk)
-    return HttpResponseRedirect(reverse('list', args=[list_pk]))
+    return HttpResponseRedirect(reverse("todo", args=[list_pk]))
+
 
 @login_required
 def item_edit(request, item_pk=0):
-    if request.method == 'POST':
-        form = ListItemForm(request.POST, instance=ListItem.objects.filter(pk=item_pk).first())
+    if request.method == "POST":
+        form = ListItemForm(
+            request.POST, instance=TodoItem.objects.filter(pk=item_pk).first()
+        )
         if form.is_valid():
             item = form.save()
-            return HttpResponseRedirect(reverse('list', args=[item.list.filter().first().pk]))
-    else: #as in, if request.method != 'POST'...
-        form = ListItemForm(instance=ListItem.objects.filter(pk=item_pk).first())
-        return render(request, 'lists/item-edit.html', {
-            'form': form,
-            'item_pk': item_pk,
-        })
+            return HttpResponseRedirect(
+                reverse("todo", args=[item.list.filter().first().pk])
+            )
+    else:  # as in, if request.method != 'POST'...
+        form = ListItemForm(instance=TodoItem.objects.filter(pk=item_pk).first())
+        return render(
+            request,
+            "lists/item-edit.html",
+            {
+                "form": form,
+                "item_pk": item_pk,
+            },
+        )
+
 
 @login_required()
 def list_edit(request, list_pk=0):
-    if request.method == 'POST':
-        existing_list = List.objects.filter(pk=list_pk).first()
+    if request.method == "POST":
+        existing_list = Todo.objects.filter(pk=list_pk).first()
         if existing_list and request.user != existing_list.owner:
             raise PermissionDenied()
         form = ListForm(request.POST, instance=existing_list)
         if form.is_valid():
             list = form.save()
             list.save()
-            return HttpResponseRedirect(reverse('list', args=[list.pk]))
-    else: #as in, if request.method != 'POST'...
-        form = ListForm(instance=List.objects.filter(pk=list_pk).first())
-        return render(request, 'lists/list-edit.html', {
-            'form': form,
-            'list_pk': list_pk,
-        })
+            return HttpResponseRedirect(reverse("todo", args=[list.pk]))
+    else:  # as in, if request.method != 'POST'...
+        form = ListForm(instance=Todo.objects.filter(pk=list_pk).first())
+        return render(
+            request,
+            "lists/list-edit.html",
+            {
+                "form": form,
+                "list_pk": list_pk,
+            },
+        )
+
 
 @login_required()
 def toggle_list_on_item(request):
-    if request.method != 'POST':
+    if request.method != "POST":
         raise BadRequest()
-    list = get_object_or_404(List, pk=request.POST['list_pk'])
-    item = get_object_or_404(ListItem, pk=request.POST['item_pk'])
-    current_list = get_object_or_404(List, pk=request.POST['current_list_pk'])
-    if list in item.list.all():
-        item.list.remove(list)
+    todo = get_object_or_404(Todo, pk=request.POST["list_pk"])
+    item = get_object_or_404(TodoItem, pk=request.POST["item_pk"])
+    current_list = get_object_or_404(Todo, pk=request.POST["current_list_pk"])
+    if todo in item.list.all():
+        item.list.remove(todo)
         if len(item.list.all()) == 0:
             item.list.add(current_list)
         enabled = True
     else:
-        item.list.add(list)
+        item.list.add(todo)
         enabled = False
-    return render(request, 'lists/quick-access-list-button.html', {
-        'item': item,
-        'list': list,
-        'enabled': enabled,
-    })
+    return render(
+        request,
+        "lists/list-display.html",
+        {"current_list": current_list},
+    )
+
+
 @login_required()
-def toggle_starred(request, list):
-    list = List.objects.get(pk=list)
-    if request.user in list.starred.filter():
-        list.starred.remove(request.user)
-        star_button_fill = 'transparent'
+def toggle_starred(request, todo_pk):
+    todo = Todo.objects.get(pk=todo_pk)
+    if request.user in todo.starred.filter():
+        todo.starred.remove(request.user)
+        star_button_fill = "transparent"
     else:
-        list.starred.add(request.user)
-        star_button_fill = '#ffd500'
-    list.save()
-    return render(request, 'lists/star.html', {
-        'list': list,
-        'star_button_fill': star_button_fill,
-    })
+        todo.starred.add(request.user)
+        star_button_fill = "#ffd500"
+    todo.save()
+    return render(
+        request,
+        "lists/star.html",
+        {
+            "todo": todo,
+            "star_button_fill": star_button_fill,
+        },
+    )
+
 
 @login_required
 def item_details(request, item_pk):
-    item = ListItem.objects.get(pk=item_pk)
-    if request.method == 'POST':
+    item = TodoItem.objects.get(pk=item_pk)
+    if request.method == "POST":
         form = DetailedListItemForm(request.POST, instance=item)
         form.save()
-        return HttpResponseRedirect(reverse('list', args=[form.cleaned_data['current_list_pk']]))
-    else: # as in, if request.method != 'POST':
+        return HttpResponseRedirect(
+            reverse("todo", args=[form.cleaned_data["current_list_pk"]])
+        )
+    else:  # as in, if request.method != 'POST':
         form = DetailedListItemForm(instance=item)
-        return render(request, 'lists/list-item-details.html', {
-            'item': item,
-            'form': form,
-        })
+        return render(
+            request,
+            "lists/list-item-details.html",
+            {
+                "item": item,
+                "form": form,
+            },
+        )

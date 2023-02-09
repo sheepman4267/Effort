@@ -2,19 +2,19 @@
 <li class="list-item" id="list-selection-display-{{ list.pk }}" data-list-pk="{{ list.pk }}">
     <div class="li-internal">
         <div class="li-left">
-            <a href="{% url 'list' list.pk %}">
+            <a href="{% url 'todo' list.pk %}">
                 <h2>{{ list.title }}</h2>
             </a>
             <button value="New Sublist" hx-trigger="click" hx-get="{% url "list-edit" %}" hx-select="form"  hx-target="this" hx-swap="outerHTML">
                 New Sublist
             </button>
         </div>
-        {% star request=request list=list %}
+        {% star request=request todo=list %}
     </div>
     {% if expand_tree %}
         <ul>
         {% for list in list.children.all %}
-            {% list_selection_display list=list selected_list=selected_list request=request %}
+            {% list_selection_display list=list current_list=current_list request=request %}
         {% endfor %}
         </ul>
     {% endif %}
