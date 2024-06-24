@@ -5,10 +5,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied, BadRequest
 from django.utils import timezone
-from django.views.generic import DetailView
+from django.views.generic import DetailView, CreateView, UpdateView
 
 from .models import Todo, TodoItem
-from .forms import ListForm, ListItemForm, DetailedListItemForm
+from .forms import ListForm, ListItemForm, DetailedListItemForm, CreateTodoItemForm
 
 
 class TodoListView(LoginRequiredMixin, DetailView):
@@ -21,6 +21,26 @@ class TodoListView(LoginRequiredMixin, DetailView):
             raise PermissionDenied()
         else:
             return todo
+
+
+class TodoItemCreateView(LoginRequiredMixin, CreateView):
+    model = TodoItem
+    form_class = CreateTodoItemForm
+    template_name = 'lists/item-create.html'
+
+    def get_success_url(self):
+        return reverse('todo', kwargs={'pk': self.object.list.first().pk})
+
+
+class TodoItemUpdateView(LoginRequiredMixin, UpdateView):
+    model = TodoItem
+    template_name = 'lists/item-update.html'
+    fields = [
+        'name'
+    ]
+
+    def get_success_url(self):
+        return reverse('todo', kwargs={'pk': self.object.list.first().pk})
 
 
 @login_required
@@ -38,29 +58,6 @@ def toggle_item(request, item, list_pk):
         if (not item.completed) and item.parent.completed:
             toggle_item(request, item.parent.pk, list_pk)
     return HttpResponseRedirect(reverse("todo", args=[list_pk]))
-
-
-@login_required
-def item_edit(request, item_pk=0):
-    if request.method == "POST":
-        form = ListItemForm(
-            request.POST, instance=TodoItem.objects.filter(pk=item_pk).first()
-        )
-        if form.is_valid():
-            item = form.save()
-            return HttpResponseRedirect(
-                reverse("todo", args=[item.list.filter().first().pk])
-            )
-    else:  # as in, if request.method != 'POST'...
-        form = ListItemForm(instance=TodoItem.objects.filter(pk=item_pk).first())
-        return render(
-            request,
-            "lists/item-edit.html",
-            {
-                "form": form,
-                "item_pk": item_pk,
-            },
-        )
 
 
 @login_required()

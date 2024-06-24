@@ -1,0 +1,24 @@
+{% load icon %}
+<div class="new-item-button expanded" id="newitem">
+    <h2>New Item</h2>
+    <div class="new-item-form-container">
+        <form method="post" action="{% url 'item-create' %}">{% csrf_token %}
+            {{ list.pk }}
+            {{ form.name }}
+            <label>
+                <input type="submit" value="Submit" hidden>
+                {% icon "corner-down-left" %}
+            </label>    
+            <input type="hidden" name="parent" _="on load set my @value to @data-item-pk of closest parent <li/>">
+            <input type="hidden" name="list" _="
+            on load
+            if I match <.new-item-button */>
+                set my @value to @data-list-pk of closest #new-item-button-container
+            else
+                set my @value to @data-list-pk of closest .list-item
+            "
+            >
+            {{ form.errors }}
+        </form>
+    </div>
+</div>

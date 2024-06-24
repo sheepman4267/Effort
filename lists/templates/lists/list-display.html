@@ -2,11 +2,11 @@
 <ul class="list" id="listdisplay" data-list-pk="{{ todo.pk }}">
     {% if todo %}
         {% for item in todo.unchecked %}
-            {% include 'lists/list-item.html' with item=item list_pk=todo.pk %}
+            {% include 'lists/list-item.html' with item=item list_pk=item.list.first.pk %}
         {% endfor %}
             <div id="newitem" hidden></div>
         {% for item in todo.checked %}
-            {% include 'lists/list-item.html' with item=item list_pk=todo.pk %}
+            {% include 'lists/list-item.html' with item=item list_pk=item.list.first.pk %}
         {% endfor %}
     {% else %}
         <div class="list-item">Select a List to get started</div>
@@ -14,7 +14,7 @@
 </ul>
 {% if todo %}
     <div class="new-item-button" id="new-item-button-container" data-list-pk="{{ todo.pk }}">
-        <button class="new-item-button" id="newitem" hx-trigger="click" hx-get="{% url 'item-edit' %}" hx-select="#newitem" hx-swap="outerHTML">
+        <button class="new-item-button" id="newitem" hx-trigger="click" hx-get="{% url 'item-create' %}" hx-select="#newitem" hx-swap="outerHTML">
             {% icon "plus" %}
         </button>
     </div>

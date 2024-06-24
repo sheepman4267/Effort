@@ -6,6 +6,27 @@ from markdownx.fields import MarkdownxFormField
 from .models import Todo, TodoItem
 
 
+class CreateTodoItemForm(forms.ModelForm):
+    class Meta:
+        model = TodoItem
+        name = forms.TextInput()
+        fields = (
+            "name",
+            "parent",
+            "list",
+        )
+        widgets = {
+            "name": forms.TextInput(
+                attrs={
+                    "placeholder": "What do you need to do?",
+                    "class": "new-item-input",
+                    "autofocus": True,
+                    "autocomplete": "off",
+                }
+            )
+        }
+
+
 class ListItemForm(forms.ModelForm):
     parent_pk = forms.IntegerField(required=False)
     list_pk = forms.IntegerField(required=False)
@@ -33,6 +54,9 @@ class ListItemForm(forms.ModelForm):
     def save(self, commit=True, *args, **kwargs):
         instance = super(ListItemForm, self).save(commit=False, *args, **kwargs)
         if not instance.parent:
+            # TODO: This is why toplevel items vanish when you edit them. instance.parent gets set to instance.pk, which
+            # TODO: obviously doesn't work. Rewriting this to use class based views should fix the problem, moving this
+            # TODO: logic into CreateView and removing it all from EditView.
             instance.parent = TodoItem.objects.filter(
                 pk=self.cleaned_data.get("parent_pk")
             ).first()

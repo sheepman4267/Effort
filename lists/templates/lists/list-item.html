@@ -3,9 +3,9 @@
 <li id="list-item-{{ item.pk }}" data-item-pk="{{ item.pk }}" data-list-pk="{{ list_pk }}" class="list-item {% if item.completed %}completed{% endif %}">
     <div class="li-internal">
         <div class="li-left">
-            <h2>{{ item.name }}<button class="edit-button" hx-get="{% url 'item-edit' item_pk=item.pk %}" hx-select="form" hx-target="closest h2" hx-swap="outerHTML">{% icon "edit-3" %}</button></h2>
+            <h2>{{ item.name }}<button class="edit-button" hx-get="{% url 'item-update' pk=item.pk %}" hx-select="form" hx-target="closest h2" hx-swap="outerHTML">{% icon "edit-3" %}</button></h2>
             <div class="li-button-container">
-                <button hx-trigger="click" hx-get="{% url 'item-edit' %}" hx-select=".new-item-form-container" hx-swap="outerHTML">New sub-item</button>
+                <button hx-trigger="click" hx-get="{% url 'item-create' %}" hx-select=".new-item-form-container" hx-swap="outerHTML">New sub-item</button>
                 <div class="li-buttons-right">
                     {% for list in request.user.starred.filter %}
                         <form>
@@ -28,7 +28,7 @@
         <button class="check" _="on click toggle .details on #list-item-{{ item.pk }}">
             {% icon "menu" %}
         </button>
-        <button class="check" hx-trigger="click" hx-get="{% url 'toggle-item' item=item.pk list_pk=list_pk %}" hx-select="#listdisplay" hx-target="closest #listdisplay" hx-swap="outerHTML">
+        <button class="check" hx-trigger="click" hx-get="{% url 'toggle-item' item=item.pk list_pk=todo.pk %}" hx-select="#listdisplay" hx-target="closest #listdisplay" hx-swap="outerHTML">
             {% if item.completed %}
                 {% icon "check-square" %}
             {% else %}

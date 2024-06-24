@@ -1,0 +1,13 @@
+{% load icon %}
+<div class="new-item-button expanded" id="newitem">
+    <div class="new-item-form-container">
+        <form method="post" action="{% url 'item-update' pk=todoitem.pk %}">{% csrf_token %}
+            {{ form.name }}
+            <label>
+                <input type="submit" value="Submit" hidden>
+                {% icon "corner-down-left" %}
+            </label>
+            {{ form.errors }}
+        </form>
+    </div>
+</div>

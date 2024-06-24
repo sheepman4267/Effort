@@ -119,7 +119,7 @@ class ToggleItemCase(TestCase):
         self.assertEqual(checking_our_item.status_code, 302)
 
 
-class ItemEditCase(TestCase):
+class ItemCreateCase(TestCase):
     def setUp(self) -> None:
         self.client = Client()
         self.user = User.objects.create_user(
@@ -132,11 +132,46 @@ class ItemEditCase(TestCase):
 
     def test_http_response(self) -> None:
         viewing_interface = self.client.get(
-            reverse("item-edit", kwargs={"item_pk": self.test_item.pk})
+            reverse("item-create")
+        )
+        self.assertEqual(viewing_interface.status_code, 200)
+        submit_toplevel_item = self.client.post(
+            reverse("item-create"),
+            {
+                "name": "New Toplevel Item",
+                "list": self.test_list.pk,
+            },
+        )
+        self.assertEqual(submit_toplevel_item.status_code, 302)
+        submit_child_item = self.client.post(
+            reverse("item-create"),
+            {
+                "name": "New Child Item",
+                "list": self.test_list.pk,
+                "parent": self.test_item.pk,
+            },
+        )
+        self.assertEqual(submit_child_item.status_code, 302)
+
+
+class ItemUpdateCase(TestCase):
+    def setUp(self) -> None:
+        self.client = Client()
+        self.user = User.objects.create_user(
+            username="test_user", password="test_password"
+        )
+        self.client.login(username="test_user", password="test_password")
+        self.test_list = Todo.objects.create(title="test_list", owner=self.user)
+        self.test_item = TodoItem.objects.create(name="Test Item")
+        self.test_item.list.add(self.test_list)
+
+    def test_http_response(self) -> None:
+        viewing_interface = self.client.get(
+            reverse("item-update", kwargs={"pk": self.test_item.pk})
         )
         self.assertEqual(viewing_interface.status_code, 200)
         submitting_changes = self.client.post(
-            reverse("item-edit", kwargs={"item_pk": self.test_item.pk}),
+            reverse("item-update", kwargs={"pk": self.test_item.pk}),
             {"name": "Edited Test Item"},
         )
         self.assertEqual(submitting_changes.status_code, 302)
