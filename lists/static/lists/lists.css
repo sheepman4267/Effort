@@ -4,50 +4,47 @@ h2 {
 
 .sidebar {
     display: inline-block;
-    background: aqua;
+    background: #c1c8df;
     /*height: 100vh;*/
     width: 30%;
     overflow: scroll;
-    padding: 6px;
+    padding: 0.5rem;
 }
-
 .sidebar .list-item button:not(.check) {
     margin-top: auto;
     margin-bottom: 0;
     width: fit-content;
 }
 
-.sidebar a {
-    color: black;
-    text-decoration: 0;
-}
-
 .list {
-    display: inline-block;
+    display: flex;
     flex-direction: column;
-    background: #d3bfe0;
+    background: #c1c8df;
     width: 100%;
-    padding: 6px;
+    padding: 0.5rem;
     margin: 0;
     overflow: scroll;
+    gap: 0.5rem;
 }
 
 .list-item {
-    background: aliceblue;
+    background: #e7e3e8;
     min-height: fit-content;
     margin: 0;
-    margin-bottom: 5px;
-    border: 2px solid gray;
+    /*margin-bottom: 5px;*/
+    border: 1px solid gray;
     padding: 5px;
-    padding-left: 10px;
+    padding-left: 1rem;
     padding-bottom: 0;
     padding-right: 0;
-    border-radius: 10px;
+    border-radius: 1.5rem;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 0;
     margin-top: 5px;
     list-style: none;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 0 2px 0 #000000;
+    /*box-shadow: 0 0 2px 0 #000000;*/
 }
 
 .list-item  .li-internal {
@@ -56,16 +53,25 @@ h2 {
     flex: 1;
 }
 
-.list-item > :nth-child(2).li-internal,
-.list-item .edit-button {
+.list-item > :nth-child(2).li-internal {
     display: none;
 }
 
-.list-item.details > :nth-child(2),
-.list-item.details .edit-button,
-h2:hover .edit-button {
+.list-item.details > :nth-child(2){
     display: flex;
 }
+
+.list-item .edit-button {
+    opacity: 0;
+    transition: opacity 100ms;
+}
+
+.list-item.details .edit-button,
+h2:hover .edit-button {
+    opacity: 1;
+    transition: opacity 100ms;
+}
+
 
 .list-item .li-left {
     display: flex;
@@ -88,6 +94,7 @@ h2:hover .edit-button {
 .list-item .li-button-container {
     display: flex;
     flex-direction: row;
+    margin-bottom: 0.5rem;
 }
 
 .list-item .li-buttons-right {
@@ -120,7 +127,9 @@ h2:hover .edit-button {
     font-size: x-large;
     width: 100%;
     align-self: center;
-    background: yellow;
+    display: inline-block;
+    padding: 1rem;
+    height: fit-content;
 }
 
 .main-body {
@@ -184,10 +193,17 @@ button {
     padding-right: 10px;
     border-radius: 10px;
     height: 30px;
-    border: 2px solid gray;
+    border: 1px solid gray;
     display: block;
     white-space: nowrap;
-    background: #e3e3e3;
+    background: #dad3e8;
+    transition: background-color 100ms;
+}
+
+.field-container > input:hover,
+button:hover {
+    background: #cbbfd5;
+    transition: background-color 100ms;
 }
 
 .li-buttons-right button {
@@ -282,4 +298,12 @@ button {
     color: gray;
 }
 
+li:has(.htmx-request) {
+    opacity: 60%;
+    transition: opacity 200ms;
+}
 
+li:not(:has(.htmx-request)) {
+    opacity: 1;
+    transition: opacity 200ms;
+}
