@@ -87,8 +87,8 @@ h2:hover .edit-button {
 }
 
 .list-item.completed {
-    background: darkgrey;
-    color: grey;
+    background-color: #c2bdca;
+    color: #4b4a67;
 }
 
 .list-item .li-button-container {
@@ -226,10 +226,10 @@ button:hover {
     right: 40px;
     height: 80px;
     width: 80px;
-    background: lightgray;
-    border: 2px solid gray;
-    border-radius: 10px;
-    box-shadow: 0 0 2px 0 #000000;
+    background: #dad3e8;
+    border: 1px solid gray;
+    border-radius: 1.5rem;
+    /*box-shadow: 0 0 2px 0 #000000;*/
 }
 
 .new-item-form-container svg {
