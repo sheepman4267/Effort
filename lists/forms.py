@@ -81,7 +81,7 @@ class DetailedListItemForm(forms.ModelForm):
         fields = (
             "due_date",
             "current_list_pk",
-            # 'uncheck_every', #Disabled due to JS bugs in django-recurrence widget
+            'uncheck_every',
         )
         widgets = {
             "due_date": forms.DateInput(

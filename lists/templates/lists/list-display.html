@@ -1,5 +1,5 @@
 {% load icon %}
-<ul class="list" id="listdisplay" data-list-pk="{{ todo.pk }}">
+<ul class="list" id="listdisplay" data-list-pk="{{ todo.pk }}" _="on load js function thing() {initRecurrenceWidget();}; thing() end">
     {% if todo %}
         {% for item in todo.unchecked %}
             {% include 'lists/list-item.html' with item=item list_pk=item.list.first.pk %}

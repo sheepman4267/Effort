@@ -2,6 +2,8 @@ from django import template
 
 from lists.models import Todo
 
+from lists.forms import DetailedListItemForm
+
 register = template.Library()
 
 
@@ -34,4 +36,12 @@ def star(request, todo):
     return {
         "star_button_fill": star_button_fill,
         "todo": todo,
+    }
+
+
+@register.inclusion_tag('lists/list-item-details.html')
+def item_details_form(item):
+    return {
+        "item": item,
+        "form": DetailedListItemForm(instance=item),
     }

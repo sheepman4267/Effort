@@ -125,6 +125,24 @@ def toggle_starred(request, todo_pk):
     )
 
 
+class ItemDetailsUpdateView(LoginRequiredMixin, UpdateView):
+    model = TodoItem
+    template_name = 'lists/list-item-details.html'
+    form_class = DetailedListItemForm
+    context_object_name = "item"
+
+    def __init__(self):
+        super(self.__class__).__init__()
+        self.current_list_pk = None
+
+    def form_valid(self, form):
+        self.current_list_pk = form.cleaned_data[f"current_list_pk"]
+        form.save()
+        return self.get_success_url()
+
+    def get_success_url(self):
+        return HttpResponseRedirect(reverse("todo", args=[self.current_list_pk]))
+
 @login_required
 def item_details(request, item_pk):
     item = TodoItem.objects.get(pk=item_pk)

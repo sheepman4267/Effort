@@ -2,7 +2,7 @@
 <li class="list-item" id="list-selection-display-{{ list.pk }}" data-list-pk="{{ list.pk }}">
     <div class="li-internal">
         <div class="li-left">
-            <a href="{% url 'todo' list.pk %}">
+            <a href="{% url 'todo' list.pk %}" _="on click wait for load from body then add .show-list to body then remove .show-sidebar from body">
                 <h2>{{ list.title }}</h2>
             </a>
             <button value="New Sublist" hx-trigger="click" hx-get="{% url "list-edit" %}" hx-select="form"  hx-target="this" hx-swap="outerHTML">
