@@ -126,6 +126,10 @@ h2:hover .edit-button {
     box-shadow: none;
 }
 
+.list-item .list-item:not(:last-child) {
+    border-bottom-right-radius: 0;
+}
+
 .list-item .list-item ~ .list-item {
     border-top-left-radius: 0;
 }
