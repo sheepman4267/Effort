@@ -36,8 +36,8 @@
             {% endif %}
         </button>
     </div>
-    <div id="item-details-{{ item.pk }}" class="li-internal" hx-trigger="revealed" hx-get="{% url "item-details" item_pk=item.pk %}">
-    <h2>Item Details</h2>
+    <div class="li-internal" id="item-details-{{ item.pk }}">
+        {% item_details_form item %}
     </div>
     <ul>
     {% for child_item in item.children.filter %}
