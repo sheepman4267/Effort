@@ -91,6 +91,14 @@ h2:hover .edit-button {
     color: #4b4a67;
 }
 
+.list-item.completed h2 {
+    margin-bottom: 0;
+}
+
+.list-item.completed .li-button-container {
+    display: none;
+}
+
 .list-item .li-button-container {
     display: flex;
     flex-direction: row;
