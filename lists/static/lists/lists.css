@@ -199,11 +199,6 @@ h2:hover .edit-button {
     }
 }
 
-.field-container > input {
-    margin-left: auto;
-    margin-right: 0;
-}
-
 .field-container > input,
 button {
     width: fit-content;
@@ -291,26 +286,22 @@ button:hover {
 }
 
 .details-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-    padding: 0;
-    grid-gap: 0;
-    align-items: start;
-    width: 100%;
-}
-
-.details-container > div {
-    height: 100%;
-    max-width: fit-content;
-}
-
-.details-container .field-container {
-    margin-bottom: 5px;
-    margin-top: 5px;
-    width: 100%;
-    gap: 5px;
     display: flex;
     flex-direction: row;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 1rem;
+    align-items: start;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.field-container {
+    margin-bottom: 5px;
+    margin-top: 5px;
+    /*width: 100%;*/
+    gap: 5px;
+    display: flex;
+    flex-direction: column;
 }
 
 .field-container > h4 {
