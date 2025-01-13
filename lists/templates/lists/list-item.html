@@ -25,7 +25,7 @@
                 </div>
             </div>
         </div>
-        <button class="check" _="on click toggle .details on #list-item-{{ item.pk }}">
+        <button class="check" _="on click toggle .details on #list-item-{{ item.pk }}" id="details-button-item-{{ item.pk }}">
             {% icon "menu" %}
         </button>
         <button class="check" hx-trigger="click" hx-get="{% url 'toggle-item' item=item.pk list_pk=todo.pk %}" hx-select="#listdisplay" hx-target="closest #listdisplay" hx-swap="outerHTML">
@@ -36,8 +36,7 @@
             {% endif %}
         </button>
     </div>
-    <div class="li-internal">
-        {% item_details_form item %}
+    <div class="li-internal" hx-get="{% url 'item-details' item.pk %}" hx-swap="innerHTML" hx-trigger="click from:#details-button-item-{{ item.pk }}">
     </div>
     <ul>
     {% for child_item in item.children.filter %}
