@@ -34,12 +34,12 @@ class Todo(models.Model):
     collect_on = RecurrenceField(null=True, blank=True)
 
     def checked(self):
-        checked_items = self.items.filter(completed=True)
+        checked_items = self.items.select_related().filter(completed=True)
         checked_toplevel_items = checked_items.exclude(parent__in=checked_items)
         return checked_toplevel_items.order_by("-checked_date")
 
     def unchecked(self):
-        unchecked_items = self.items.filter(completed=False)
+        unchecked_items = self.items.select_related().filter(completed=False)
         unchecked_toplevel_items = unchecked_items.exclude(parent__in=unchecked_items)
         return unchecked_toplevel_items
 
