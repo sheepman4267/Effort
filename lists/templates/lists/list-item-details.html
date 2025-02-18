@@ -17,7 +17,7 @@
     </div>
     <div class="field-container">
         <h4>Uncheck on a schedule:</h4>
-        <textarea name="uncheck_every" cols="40" rows="10" class="recurrence-widget" id="id_uncheck_every{{ item.pk }}">{{ form.uncheck_every.value }}</textarea>
+        <textarea name="uncheck_every" cols="40" rows="10" class="recurrence-widget" id="id_uncheck_every{{ item.pk }}">{% if form.uncheck_every.value %}{{ form.uncheck_every.value }}{% endif %}</textarea>
     </div>
     <div class="field-container">
         <input type="submit" class="submit-button" value="Submit Item Edits">
