@@ -106,7 +106,7 @@ def toggle_list_on_item(request):
     return render(
         request,
         "lists/list-display.html",
-        {"current_list": current_list},
+        {"todo": current_list},
     )
 
 
