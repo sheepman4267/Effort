@@ -15,6 +15,11 @@ class TodoListView(LoginRequiredMixin, DetailView):
     model = Todo
     template_name = "lists/index.html"
 
+    def get_context_data(self, **kwargs):
+        context = super(self.__class__, self).get_context_data( **kwargs)
+        context["show_checked"] = bool(self.request.GET.get('showchecked', False))
+        return context
+
     def get_object(self, queryset=None):
         todo = super().get_object()
         if todo.owner != self.request.user:
