@@ -62,7 +62,7 @@ def toggle_item(request, item, list_pk):
     if item.parent is not None:
         if (not item.completed) and item.parent.completed:
             toggle_item(request, item.parent.pk, list_pk)
-    return HttpResponseRedirect(reverse("todo", args=[list_pk]))
+    return TodoListView.as_view()(request, pk=list_pk)
 
 
 @login_required()
