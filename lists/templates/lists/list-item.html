@@ -28,7 +28,7 @@
         <button class="check" _="on click toggle .details on #list-item-{{ item.pk }}" id="details-button-item-{{ item.pk }}">
             {% icon "menu" %}
         </button>
-        <button class="check" hx-trigger="click" hx-get="{% url 'toggle-item' item=item.pk list_pk=todo.pk %}" hx-select="#listdisplay" hx-target="closest #listdisplay" hx-swap="outerHTML">
+        <button class="check" hx-trigger="click" hx-get="{% url 'toggle-item' item=item.pk list_pk=todo.pk %}{% if show_checked %}?showchecked=1{% endif %}" hx-select="#listdisplay" hx-target="#listdisplay" hx-swap="morph:outerHTML">
             {% if item.completed %}
                 {% icon "check-square" %}
             {% else %}
