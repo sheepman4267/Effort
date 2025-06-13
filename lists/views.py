@@ -17,7 +17,10 @@ class TodoListView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(self.__class__, self).get_context_data( **kwargs)
-        context["show_checked"] = bool(self.request.GET.get('showchecked', False))
+        try:
+            context["show_checked"] = bool(int(self.request.GET.get('showchecked', 0)))
+        except ValueError:
+            context["show_checked"] = None
         return context
 
     def get_object(self, queryset=None):
