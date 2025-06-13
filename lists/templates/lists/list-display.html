@@ -6,6 +6,11 @@
         {% endfor %}
             <div id="newitem" hidden></div>
         {% if show_checked %}
+            <a href="?showchecked=0">Hide Checked Items</a>
+        {% else %}
+            <a href="?showchecked=1">Show Checked Items</a>
+        {% endif %}
+        {% if show_checked %}
             {% for item in todo.checked %}
                 {% include 'lists/list-item.html' with item=item list_pk=item.list.first.pk %}
             {% endfor %}
