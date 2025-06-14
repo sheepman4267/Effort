@@ -17,6 +17,7 @@ class TodoListView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(self.__class__, self).get_context_data( **kwargs)
+        context['todo_is_starred'] = self.object.is_starred(user=self.request.user)
         try:
             context["show_checked"] = bool(int(self.request.GET.get('showchecked', 0)))
         except ValueError:
