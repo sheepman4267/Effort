@@ -62,7 +62,7 @@ class Todo(models.Model):
         return self.title
 
     def is_starred(self, user):
-        if user in self.starred:
+        if user in self.starred.all():
             return True
         else:
             return False
