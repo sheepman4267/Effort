@@ -2,7 +2,7 @@
 <div class="new-item-button expanded" id="newitem">
     <h2>New Item</h2>
     <div class="new-item-form-container">
-        <form method="post" action="{% url 'item-create' %}">{% csrf_token %}
+        <form method="post" action="{% url 'item-create' %}" hx-post="{% url 'item-create' %}" hx-swap="morph:outerHTML" hx-select="#listdisplay" hx-target="#listdisplay">{% csrf_token %}
             {{ list.pk }}
             {{ form.name }}
             <label>
