@@ -28,6 +28,7 @@ urlpatterns = [
     path('lists/', include('lists.urls')),
     path('notes/', include('notes.urls')),
     path('accounts/', include('allauth.urls')),
+    path('accounts/', include("allauth_ui.urls")),
     path('markdownx/', include('markdownx.urls'))
 ]
 

@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'markdownx',
     # for allauth
     'django.contrib.sites',
+    'django_bootstrap5',
+    'allauth_ui',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -57,6 +59,14 @@ INSTALLED_APPS = [
 
 SOCIALACCOUNT_PROVIDERS = {} | allauth_settings.SOCIALACCOUNT_PROVIDERS
 
+ALLAUTH_UI = dict(
+   LOGIN_URL="/accounts/login/",
+   LOGIN_REDIRECT_URL="/",
+   LOGOUT_REDIRECT_URL="/",
+   SITE_TITLE='Effort',
+   SITE_HEADER='Effort',
+)
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -65,6 +75,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'Effort.urls'

@@ -1,6 +1,8 @@
 Django==5.1.4
 django-markdownx==4.0.0b1
-django-allauth==0.51.0
+django-allauth==65.9.0
+django-allauth-simple-ui==0.1.2
+django-bootstrap5
 django-feather==0.3.0
 django-recurrence==1.11.1
 django-q2==1.7.6
