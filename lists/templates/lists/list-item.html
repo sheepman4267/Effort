@@ -9,10 +9,10 @@
                 <div class="li-buttons-right">
                     {% for list in request.user.starred.filter %}
                         <form>
-                            <input type="hidden" name="item_pk" _="on load set my @value to @data-item-pk of closest parent <li/>">
-                            <input type="hidden" name="current_list_pk" _="on load set my @value to @data-list-pk of #listdisplay">
+                            <input type="hidden" name="item_pk">
+                            <input type="hidden" name="current_list_pk">
                             <input type="hidden" name="list_pk" value="{{ list.pk }}">
-                            <button hx-trigger="click" hx-post="{% url 'toggle-list-on-item' %}" hx-swap="outerHTML" hx-select="#list-item-{{ item.pk }}" hx-target="#list-item-{{ item.pk }}">
+                            <button _="on click set @value of <[name=item_pk]/> to @data-item-pk of closest parent <li/> then set @value of <[name=current_list_pk]/> to @data-list-pk of #listdisplay then send toggleitem to me then halt" hx-trigger="toggleitem" hx-post="{% url 'toggle-list-on-item' %}" hx-swap="morph:outerHTML" hx-select="#list-item-{{ item.pk }}" hx-target="#list-item-{{ item.pk }}">
                                 {% if list in item.list.filter %}
                                     {% icon "x-circle" class="red" %}
                                 {% else %}
