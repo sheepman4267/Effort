@@ -1,6 +1,6 @@
-Django==5.1.4
-django-markdownx==4.0.0b1
-django-allauth==65.9.0
+Django==5.2.3
+django-markdownx==4.0.3
+django-allauth[socialaccount]==65.9.0
 django-allauth-simple-ui==0.1.2
 django-bootstrap5
 django-feather==0.3.0
