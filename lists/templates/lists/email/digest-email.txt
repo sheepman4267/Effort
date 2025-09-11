@@ -1,0 +1,2 @@
+Items added today:{% for item in items %}
+- {{ item }}{% endfor %}

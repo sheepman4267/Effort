@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'recurrence',
     'django_q',
     'herald',
+    'anymail',
 ] + allauth_settings.INSTALLED_APPS
 
 SOCIALACCOUNT_PROVIDERS = {} | allauth_settings.SOCIALACCOUNT_PROVIDERS
@@ -189,3 +190,12 @@ Q_CLUSTER = {
     "retry": 10,
     "timeout": 5,
 }
+
+ANYMAIL = {
+    "MAILGUN_API_KEY": os.environ.get('EFFORT_MAILGUN_API_KEY', None),
+    "MAILGUN_SENDER_DOMIAIN": os.environ.get('EFFORT_MAILGUN_SENDER_DOMIAIN', None),
+}
+
+EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
+DEFAULT_FROM_EMAIL = os.environ.get('EFFORT_DEFAULT_FROM_EMAIL', 'dev@stupid.frickin.website')
+SERVER_EMAIL = os.environ.get('EFFORT_SERVER_EMAIL', 'dev-server@stupid.frickin.website')

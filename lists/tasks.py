@@ -5,6 +5,8 @@ from django.utils import timezone
 
 from django_q.models import Schedule
 
+from lists.notifications import DigestEmail
+
 
 def uncheck_recurring_item(item_pk: int) -> None:
     item = TodoItem.objects.get(pk=item_pk)
@@ -23,11 +25,16 @@ def collect_items(list_pk: int) -> None:
     potential_items = []
     for owned_list in list.owner.todo_lists.all():
         potential_items += owned_list.items.all()
+    added_items = []
     for item in potential_items:
         if item.due_date:
             if item.due_date < due_cutoff:
+                if list not in item.list.all():
+                    added_items.append(item)
                 item.list.add(list)
                 item.save()
+    if added_items and list.owner.email:
+        DigestEmail(user=list.owner, todo=list, items=added_items).send()
     Schedule.objects.create(
         func="lists.tasks.collect_items",
         args=list.pk,

@@ -7,7 +7,7 @@ django-feather==0.3.0
 django-recurrence==1.11.1
 django-q2==1.7.6
 django-heralder>=0.4.1,<=0.5.0
-django-anymail~=13.0
+django-anymail[mailgun]~=13.0
 uvicorn
 gunicorn
 honcho

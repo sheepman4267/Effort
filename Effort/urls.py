@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import include, path, re_path
 from django.views.i18n import JavaScriptCatalog
 from lists import urls as listsUrls
+from django.conf import settings
 
 js_info_dict = {
     'packages': ('recurrence', ),
@@ -38,3 +39,8 @@ urlpatterns += [
 urlpatterns += [
     path('jsi18n.js', JavaScriptCatalog.as_view(packages=['recurrence']), name='jsi18n'),
 ]
+
+if settings.DEBUG:
+    urlpatterns = [
+        re_path(r'^herald/', include('herald.urls')),
+] + urlpatterns
