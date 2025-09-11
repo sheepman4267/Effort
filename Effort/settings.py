@@ -23,13 +23,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['EFFORT_SECRET_KEY']
+SECRET_KEY = os.environ.get('EFFORT_SECRET_KEY', 'please-set-a-secret-key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = {'False': False, 'True': True}[os.environ['EFFORT_DEBUG']]
+DEBUG = {'False': False, 'True': True}[os.environ.get('EFFORT_DEBUG')]
 LOG_LEVEL = logging.DEBUG
 
-ALLOWED_HOSTS = os.environ['EFFORT_ALLOWED_HOSTS'].split(',')
+if SECRET_KEY == 'please-set-a-secret-key':
+    if DEBUG:
+        print('WARNING: No secret key set.')
+    else:
+        del SECRET_KEY  # Unset the secret key if it is set to the development default while in production
+
+ALLOWED_HOSTS = os.environ.get('EFFORT_ALLOWED_HOSTS', 'localhost').split(',')
 CSRF_TRUSTED_ORIGINS = ['https://'+host for host in ALLOWED_HOSTS]
 
 # Application definition
@@ -104,20 +110,20 @@ WSGI_APPLICATION = 'Effort.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-if os.environ['EFFORT_DATABASE_ENGINE'] == 'sqlite3':
+if os.environ.get('EFFORT_DATABASE_ENGINE', 'sqlite3') == 'sqlite3':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.environ['EFFORT_SQLITE3_PATH'],
+            'NAME': os.environ.get('EFFORT_SQLITE3_PATH', 'db.sqlite3'),
         }
     }
-elif os.environ['EFFORT_DATABASE_ENGINE'] == 'postgres':
+elif os.environ.get('EFFORT_DATABASE_ENGINE') == 'postgres':
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
             'OPTIONS': {
-                'service': os.environ['EFFORT_POSTGRES_SERVICE'],
-                'passfile': os.environ['EFFORT_POSTGRES_PASSFILE'],
+                'service': os.environ.get('EFFORT_POSTGRES_SERVICE'),
+                'passfile': os.environ.get('EFFORT_POSTGRES_PASSFILE'),
             },
         }
     }
@@ -175,7 +181,7 @@ AUTHENTICATION_BACKENDS = [
 
 SITE_ID = 1
 
-STATIC_ROOT = pathlib.Path(os.environ['EFFORT_STATIC_ROOT'])
+STATIC_ROOT = pathlib.Path(os.environ.get('EFFORT_STATIC_ROOT', './static'))
 
 Q_CLUSTER = {
     "name": "effort",
