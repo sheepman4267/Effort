@@ -12,6 +12,14 @@ h2 {
     margin-right: 5px;
 }
 
+.li-button-container button {
+    align-self: center;
+}
+
+.li-buttons-right form {
+    display: flex;
+}
+
 .sidebar {
     display: inline-block;
     background: #c1c8df;
@@ -61,6 +69,7 @@ h2 {
     display: flex;
     flex-direction: row;
     flex: 1;
+    padding-bottom: 5px;
 }
 
 .list-item > :nth-child(2).li-internal {
@@ -113,7 +122,6 @@ h2:hover .edit-button {
 .list-item .li-button-container {
     display: flex;
     flex-direction: row;
-    margin-bottom: 5px;
 }
 
 .list-item .li-buttons-right {
