@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'django_feather',
     'recurrence',
     'django_q',
+    'herald',
 ] + allauth_settings.INSTALLED_APPS
 
 SOCIALACCOUNT_PROVIDERS = {} | allauth_settings.SOCIALACCOUNT_PROVIDERS
