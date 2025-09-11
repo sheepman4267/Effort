@@ -1,5 +1,16 @@
+h1 {
+    font-family: "Junction Bold", sans-serif;
+}
 h2 {
+    margin-bottom: 0;
+    font-family: "Junction Bold", sans-serif;
+    font-size: 1.4rem;
+}
+
+.item-title {
+    flex-grow: 1;
     margin-bottom: 5px;
+    margin-right: 5px;
 }
 
 .sidebar {
@@ -64,6 +75,7 @@ h2 {
 .list-item .edit-button {
     opacity: 0;
     transition: opacity 100ms;
+    display: inline;
 }
 
 .list-item.details .edit-button,
@@ -102,7 +114,7 @@ h2:hover .edit-button {
 .list-item .li-button-container {
     display: flex;
     flex-direction: row;
-    margin-bottom: 0.5rem;
+    margin-bottom: 5px;
 }
 
 .list-item .li-buttons-right {
@@ -209,6 +221,18 @@ h2:hover .edit-button {
         transform: translateX(0%);
         transition: transform 300ms;
     }
+
+    .li-internal {
+        flex-wrap: wrap;
+    }
+
+    .li-button-container {
+        margin-left: auto;
+    }
+
+    button.check {
+        margin-left: 0;
+    }
 }
 
 .field-container > input,
@@ -218,6 +242,7 @@ button {
     padding-left: 10px;
     padding-right: 10px;
     border-radius: 10px;
+    padding-top: 3px;
     height: 30px;
     border: 1px solid gray;
     display: block;
@@ -302,7 +327,6 @@ button:hover {
     flex-direction: row;
     grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
     gap: 1rem;
-    align-items: start;
     width: 100%;
     flex-wrap: wrap;
 }
@@ -316,10 +340,6 @@ button:hover {
     flex-direction: column;
 }
 
-.field-container > h4 {
-    color: gray;
-}
-
 li:has(.htmx-request) {
     opacity: 60%;
     transition: opacity 200ms;
@@ -328,4 +348,12 @@ li:has(.htmx-request) {
 li:not(:has(.htmx-request)) {
     opacity: 1;
     transition: opacity 200ms;
+}
+
+li .submit-button {
+    margin-left: auto;
+    margin-top: auto;
+    display: block;
+    margin-bottom: 5px;
+    margin-right: 5px;
 }

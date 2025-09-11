@@ -2,7 +2,25 @@
     box-sizing: border-box;
     padding: 0;
     margin: 0;
-    font-family: "sans-serif";
+    font-family: "Junction Regular", sans-serif;
+}
+
+@font-face {
+  font-family: 'Junction Light';
+  src: url('/static/core/junction-light.woff') format('woff');
+  font-weight: 200 900;
+}
+
+@font-face {
+  font-family: 'Junction Regular';
+  src: url('/static/core/junction-regular.woff') format('woff');
+  font-weight: 200 900;
+}
+
+@font-face {
+  font-family: 'Junction Bold';
+  src: url('/static/core/junction-bold.woff') format('woff');
+  font-weight: 200 900;
 }
 
 .navbar {
