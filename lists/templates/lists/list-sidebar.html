@@ -8,7 +8,7 @@
     {% for selectable_todo in request.user.profile.todo_lists %}
         {% list_selection_display list=selectable_todo request=request current_list=todo %}
     {% endfor %}
-    <button class="list-item add-button" value="New Sublist" hx-trigger="click" hx-get="{% url "list-edit" %}" hx-swap="outerHTML">
+    <button class="list-item add-button" value="New Sublist" hx-trigger="click" hx-get="{% url "list-create" %}" hx-swap="outerHTML">
         {% icon "plus" %}
     </button>
 </ul>

@@ -1,0 +1,15 @@
+{% load icon %}
+<div class="list-item">
+    <h2>New List</h2>
+    <div class="list-form-container">
+        <form method="post" action="{% url "list-create" %}">{% csrf_token %}
+            <input type="hidden" name="parent" _="on load set my @value to @data-list-pk of closest parent <li/>">
+            <input type="hidden" name="owner" value="{{ request.user.pk }}">
+            {{ form.title }}
+            <label>
+                <input type="submit" value="Submit" hidden>
+                {% icon "corner-down-left" %}
+            </label>
+        </form>
+    </div>
+</div>

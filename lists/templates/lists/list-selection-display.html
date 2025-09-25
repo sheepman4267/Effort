@@ -5,7 +5,7 @@
             <a href="{% url 'todo' list.pk %}" _="on click wait for load from body then add .show-list to body then remove .show-sidebar from body">
                 <h2>{{ list.title }}</h2>
             </a>
-            <button value="New Sublist" hx-trigger="click" hx-get="{% url "list-edit" %}" hx-select="form"  hx-target="this" hx-swap="outerHTML">
+            <button value="New Sublist" hx-trigger="click" hx-get="{% url "list-create" %}" hx-select="form"  hx-target="this" hx-swap="outerHTML">
                 New Sublist
             </button>
         </div>

@@ -4,6 +4,7 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from recurrence.fields import RecurrenceField
 from markdownx.models import MarkdownxField
+from django.shortcuts import reverse
 
 from django.utils import timezone
 
@@ -32,6 +33,9 @@ class Todo(models.Model):
     collect_items = models.BooleanField(default=False)
     collect_next_days = models.IntegerField(default=1)
     collect_on = RecurrenceField(null=True, blank=True)
+
+    def get_absolute_url(self):
+        return reverse('todo', kwargs={'pk': self.pk})
 
     def checked(self):
         checked_items = self.items.select_related().prefetch_related("children").filter(completed=True)
