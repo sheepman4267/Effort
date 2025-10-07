@@ -1,15 +1,8 @@
-{% load icon %}
-<div class="list-item">
-    <h2>New List</h2>
-    <div class="list-form-container">
-        <form method="post" action="{% url "list-edit" list_pk %}">{% csrf_token %}
-            <input type="hidden" name="parent" _="on load set my @value to @data-list-pk of closest parent <li/>">
-            <input type="hidden" name="owner" value="{{ request.user.pk }}">
-            {{ form.title }}
-            <label>
-                <input type="submit" value="Submit" hidden>
-                {% icon "corner-down-left" %}
-            </label>
-        </form>
-    </div>
+<div id="container">
+    <form method="POST" action="{% url 'list-edit' object.pk %}">
+        {% csrf_token %}
+        {{ form }}
+{#        <textarea id="collectevery" class="recurrence-widget" name="collect_on"></textarea>#}
+        <button type="submit">Submit</button>
+    </form>
 </div>

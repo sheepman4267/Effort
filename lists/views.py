@@ -32,6 +32,18 @@ class TodoListView(LoginRequiredMixin, DetailView):
             return todo
 
 
+class TodoListEditView(LoginRequiredMixin, UpdateView):
+    model = Todo
+    template_name = "lists/list-edit.html"
+    fields = [
+        'title',
+        'description',
+        'collect_items',
+        'collect_next_days',
+        'collect_on',
+    ]
+
+
 class TodoListCreateView(LoginRequiredMixin, CreateView):
     model = Todo
     template_name = "lists/list-create.html"
@@ -77,29 +89,6 @@ def toggle_item(request, item, list_pk):
         if (not item.completed) and item.parent.completed:
             toggle_item(request, item.parent.pk, list_pk)
     return TodoListView.as_view()(request, pk=list_pk)
-
-
-@login_required()
-def list_edit(request, list_pk=0):
-    if request.method == "POST":
-        existing_list = Todo.objects.filter(pk=list_pk).first()
-        if existing_list and request.user != existing_list.owner:
-            raise PermissionDenied()
-        form = ListForm(request.POST, instance=existing_list)
-        if form.is_valid():
-            list = form.save()
-            list.save()
-            return HttpResponseRedirect(reverse("todo", args=[list.pk]))
-    else:  # as in, if request.method != 'POST'...
-        form = ListForm(instance=Todo.objects.filter(pk=list_pk).first())
-        return render(
-            request,
-            "lists/list-edit.html",
-            {
-                "form": form,
-                "list_pk": list_pk,
-            },
-        )
 
 
 @login_required()

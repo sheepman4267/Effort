@@ -5,9 +5,9 @@ from . import views
 urlpatterns = [
     path("", TemplateView.as_view(template_name="lists/index.html"), name="lists-index"),
     path("list/<int:pk>", views.TodoListView.as_view(), name="todo"),
-    path("list/edit", views.list_edit, name="list-edit"),
+    # path("list/edit", views.TodoListC, name="list-edit"),
     path("list/create", views.TodoListCreateView.as_view(), name="list-create"),
-    path("list/edit/<int:list_pk>", views.list_edit, name="list-edit"),
+    path("list/edit/<int:pk>", views.TodoListEditView.as_view(), name="list-edit"),
     path("item/create", views.TodoItemCreateView.as_view(), name="item-create"),
     path("item/<int:pk>/update", views.TodoItemUpdateView.as_view(), name="item-update"),
     path("item/<int:pk>/details", views.ItemDetailsUpdateView.as_view(), name="item-details"),
