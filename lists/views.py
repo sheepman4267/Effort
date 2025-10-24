@@ -8,7 +8,7 @@ from django.utils import timezone
 from django.views.generic import DetailView, CreateView, UpdateView
 
 from .models import Todo, TodoItem
-from .forms import ListForm, ListItemForm, DetailedListItemForm, CreateTodoItemForm
+from .forms import ListForm, DetailedListItemForm, CreateTodoItemForm
 
 
 class TodoListView(LoginRequiredMixin, DetailView):
