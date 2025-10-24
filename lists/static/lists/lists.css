@@ -242,7 +242,8 @@ h2:hover .edit-button {
     }
 }
 
-.field-container > input,
+.field-container textarea,
+.field-container input,
 button {
     width: fit-content;
     min-width: fit-content;
@@ -258,7 +259,29 @@ button {
     transition: background-color 100ms;
 }
 
-.field-container > input:hover,
+.field-container textarea {
+    height: 5rem;
+}
+
+.field-container input[type=checkbox] {
+    /*height: 1.5rem;*/
+    /*width: 1.5rem;*/
+    accent-color: #cbbfd5;
+}
+
+.recurrence-widget:not(#specificity-hack) {
+    max-width: fit-content;
+    background: #e7e3e8;
+    border-top-left-radius: 1.5rem;
+    border-bottom-right-radius: 1.5rem;
+    border: 1px solid gray;
+}
+
+.recurrence-widget input {
+    display: inline;
+}
+
+.field-container input:hover,
 button:hover {
     background: #cbbfd5;
     transition: background-color 100ms;
