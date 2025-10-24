@@ -7,7 +7,7 @@
     </div>
     <div class="nav-container center">
         <h1>Effort</h1>
-        <h4>lists/{% for parent_todo in todo.tree %}{{ parent_todo.title }}/{% endfor %}{{ todo.title }}</h4>
+        <h4 hx-swap-oob="true" id="list-title">lists/{% for parent_todo in todo.tree %}{{ parent_todo.title }}/{% endfor %}{{ todo.title }}</h4>
     </div>
     <div class="nav-container right">
 
