@@ -101,6 +101,12 @@ h2:hover .edit-button {
     height: inherit;
 }
 
+.list-item .li-left .buttons {
+    display: flex;
+    margin-top: .5rem;
+    gap: .5rem;
+}
+
 .li-left > h2 {
     display: flex;
     flex-direction: row;
