@@ -70,6 +70,7 @@ h2 {
     flex-direction: row;
     flex: 1;
     padding-bottom: 5px;
+    gap: .5rem;
 }
 
 .list-item > :nth-child(2).li-internal {
@@ -235,7 +236,7 @@ h2:hover .edit-button {
         transition: transform 300ms;
     }
 
-    .li-internal {
+    #listdisplay .li-internal {
         flex-wrap: wrap;
     }
 
