@@ -394,3 +394,7 @@ li .submit-button {
     margin-bottom: 5px;
     margin-right: 5px;
 }
+
+#listdisplay {
+    padding-bottom: 10rem;
+}
