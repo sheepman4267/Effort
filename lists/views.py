@@ -45,13 +45,8 @@ class TodoListEditView(LoginRequiredMixin, UpdateView):
 
 
 class TodoListCreateView(LoginRequiredMixin, CreateView):
-    model = Todo
     template_name = "lists/list-create.html"
-    fields = [
-        'title',
-        'owner',
-        'parent',
-    ]
+    form_class = ListForm
 
 
 class TodoItemCreateView(LoginRequiredMixin, CreateView):

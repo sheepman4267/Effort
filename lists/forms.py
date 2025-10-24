@@ -56,3 +56,10 @@ class ListForm(forms.ModelForm):
             "owner",
             "parent",
         )
+        widgets = {
+            "title": forms.TextInput(
+                attrs={
+                    'autofocus': True,
+                }
+            )
+        }
