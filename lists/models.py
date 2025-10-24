@@ -30,9 +30,9 @@ class Todo(models.Model):
     starred = models.ManyToManyField(
         to=User, unique=False, related_name="starred", blank=True
     )
-    collect_items = models.BooleanField(default=False)
-    collect_next_days = models.IntegerField(default=1)
-    collect_on = RecurrenceField(null=True, blank=True)
+    collect_items = models.BooleanField(default=False, verbose_name="Automatically collect items from other lists")
+    collect_next_days = models.IntegerField(default=1, verbose_name="Collect items which are due in the next X days")
+    collect_on = RecurrenceField(null=True, blank=True, verbose_name="Collect items on this schedule")
 
     def get_absolute_url(self):
         return reverse('todo', kwargs={'pk': self.pk})

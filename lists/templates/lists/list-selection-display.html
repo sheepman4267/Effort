@@ -8,7 +8,7 @@
             <button value="New Sublist" hx-trigger="click" hx-get="{% url "list-create" %}" hx-select="form"  hx-target="this" hx-swap="outerHTML">
                 New Sublist
             </button>
-            <button value="Edit" hx-trigger="click" hx-get="{% url 'list-edit' pk=list.pk %}" hx-target="#listdisplay"></button>
+            <button value="Edit" hx-trigger="click" hx-get="{% url 'list-edit' pk=list.pk %}" hx-target="#listdisplay" hx-swap="innerHTML"></button>
         </div>
         {% star request=request todo=list %}
     </div>

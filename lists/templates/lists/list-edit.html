@@ -1,8 +1,21 @@
-<div id="container">
+<div id="container" _="on load js function thing() {initRecurrenceWidget();}; thing() end">
     <form method="POST" action="{% url 'list-edit' object.pk %}">
         {% csrf_token %}
-        {{ form }}
-{#        <textarea id="collectevery" class="recurrence-widget" name="collect_on"></textarea>#}
+        <div class="field-container">
+            {{ form.title.as_field_group }}
+        </div>
+        <div class="field-container">
+        {{ form.description.as_field_group }}
+        </div>
+        <div class="field-container">
+        {{ form.collect_items.as_field_group }}
+        </div>
+        <div class="field-container">
+        {{ form.collect_next_days.as_field_group }}
+        </div>
+        <div class="field-container">
+        {{ form.collect_on.as_field_group }}
+        </div>
         <button type="submit">Submit</button>
     </form>
 </div>
