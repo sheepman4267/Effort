@@ -18,11 +18,11 @@
     {% else %}
         <div class="list-item">Select a List to get started</div>
     {% endif %}
+    {% if todo and not todo_is_starred %}
+        <div class="new-item-button" id="new-item-button-container" data-list-pk="{{ todo.pk }}">
+            <button class="new-item-button" id="newitem" hx-trigger="click" hx-get="{% url 'item-create' %}" hx-select="#newitem" hx-swap="outerHTML">
+                {% icon "plus" %}
+            </button>
+        </div>
+    {% endif %}
 </ul>
-{% if todo and not todo_is_starred %}
-    <div class="new-item-button" id="new-item-button-container" data-list-pk="{{ todo.pk }}">
-        <button class="new-item-button" id="newitem" hx-trigger="click" hx-get="{% url 'item-create' %}" hx-select="#newitem" hx-swap="outerHTML">
-            {% icon "plus" %}
-        </button>
-    </div>
-{% endif %}
