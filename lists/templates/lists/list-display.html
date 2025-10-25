@@ -6,9 +6,9 @@
         {% endfor %}
             <div id="newitem" hidden></div>
         {% if show_checked %}
-            <a href="?showchecked=0">Hide Checked Items</a>
+            <a href="?showchecked=0" hx-get="?showchecked=0" hx-select="#listdisplay" hx-target="#listdisplay" hx-swap="morph:outerHTML">Hide Checked Items</a>
         {% else %}
-            <a href="?showchecked=1">Show Checked Items</a>
+            <a href="?showchecked=1" hx-get="?showchecked=1" hx-select="#listdisplay" hx-target="#listdisplay" hx-swap="morph:outerHTML">Show Checked Items</a>
         {% endif %}
         {% if show_checked %}
             {% for item in todo.checked %}
