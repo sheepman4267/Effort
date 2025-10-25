@@ -28,7 +28,8 @@ class DigestEmail(EmailNotification):
 
     def get_subject(self):
         count = len(self.context['items'])
-        subject = f'{count} item{pluralize(count)} added to list "{self.context['todo']}"!'
+        todo = self.context['todo']
+        subject = f'{count} item{pluralize(count)} added to list "{todo}"!'
         return subject
 
 registry.register(DigestEmail)
