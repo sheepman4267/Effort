@@ -204,9 +204,6 @@ h2:hover .edit-button {
     .content-container {
         display: block;
     }
-    .list-item .li-buttons-right {
-        display: none;
-    }
     .list-item.details .li-buttons-right {
         display: flex;
         flex-wrap: wrap;
@@ -246,6 +243,12 @@ h2:hover .edit-button {
 
     button.check {
         margin-left: 0;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .list-item .li-buttons-right {
+        display: none;
     }
 }
 
