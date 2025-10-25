@@ -22,14 +22,14 @@
                     </form>
                 {% endfor %}
             </div>
+            <button class="check" hx-trigger="click" hx-get="{% url 'toggle-item' item=item.pk list_pk=todo.pk %}{% if show_checked %}?showchecked=1{% endif %}" hx-select="#listdisplay" hx-target="#listdisplay" hx-swap="morph:outerHTML">
+                {% if item.completed %}
+                    {% icon "check-square" %}
+                {% else %}
+                    {% icon "square" %}
+                {% endif %}
+            </button>
         </div>
-        <button class="check" hx-trigger="click" hx-get="{% url 'toggle-item' item=item.pk list_pk=todo.pk %}{% if show_checked %}?showchecked=1{% endif %}" hx-select="#listdisplay" hx-target="#listdisplay" hx-swap="morph:outerHTML">
-            {% if item.completed %}
-                {% icon "check-square" %}
-            {% else %}
-                {% icon "square" %}
-            {% endif %}
-        </button>
     </div>
     <div class="li-internal" hx-get="{% url 'item-details' item.pk %}" hx-swap="innerHTML" hx-trigger="click from:#h2-item-{{ item.pk }}">
     </div>
