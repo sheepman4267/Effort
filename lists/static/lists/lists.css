@@ -232,7 +232,7 @@ h2:hover .edit-button {
         transition: transform 300ms;
     }
     #body.show-list .list {
-        transform: translateX(0%);
+        transform: none;
         transition: transform 300ms;
     }
 
