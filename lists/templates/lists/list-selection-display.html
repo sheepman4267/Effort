@@ -1,5 +1,5 @@
 {% load lists_extras %}
-<li class="list-item" id="list-selection-display-{{ list.pk }}" data-list-pk="{{ list.pk }}">
+<li class="list-item" id="list-selection-display-{{ list.pk }}" data-list-pk="{{ list.pk }}" hx-swap-oob="true">
     <div class="li-internal">
         <div class="li-left">
             <a
