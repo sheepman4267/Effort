@@ -18,6 +18,14 @@
                 set my @value to @data-list-pk of closest .list-item
             "
             >
+            <input type="hidden" name="originating_todo" _="
+            on load
+            if I match <.new-item-button */>
+                set my @value to @data-list-pk of closest #new-item-button-container
+            else
+                set my @value to @data-list-pk of closest .list-item
+            "
+            >
             {{ form.errors }}
         </form>
     </div>

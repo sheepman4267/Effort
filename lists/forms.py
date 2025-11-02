@@ -14,6 +14,7 @@ class CreateTodoItemForm(forms.ModelForm):
             "name",
             "parent",
             "list",
+            "originating_todo",
         )
         widgets = {
             "name": forms.TextInput(

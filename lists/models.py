@@ -107,6 +107,12 @@ class TodoItem(models.Model):
         blank=True,
     )
     due_again_in = models.IntegerField(null=True, blank=True)
+    originating_todo = models.ForeignKey(
+        to=Todo,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
 
     def __str__(self):
         return self.name
