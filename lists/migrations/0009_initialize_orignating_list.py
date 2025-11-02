@@ -5,7 +5,6 @@ from django.db import migrations
 def forward_func(apps, schema_editor):
     todo_item_model = apps.get_model('lists', 'TodoItem')
     for todo_item in todo_item_model.objects.all():
-        print(todo_item.originating_todo.title)
         if not todo_item.originating_todo:
             todo_item.originating_todo = todo_item.list.all().first()
             todo_item.save()
