@@ -4,6 +4,13 @@
         {% for item in todo.unchecked %}
             {% include 'lists/list-item.html' with item=item list_pk=item.list.first.pk %}
         {% endfor %}
+        {% if todo.children.all %}
+            {% for child_list in todo.children.all %}
+                {% for item in child_list.unchecked %}
+                    {% include 'lists/list-item.html' with item=item list_pk=item.list.first.pk %}
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
             <div id="newitem" hidden></div>
         {% if show_checked %}
             <a href="?showchecked=0" hx-get="?showchecked=0" hx-select="#listdisplay" hx-target="#listdisplay" hx-swap="morph:outerHTML">Hide Checked Items</a>
