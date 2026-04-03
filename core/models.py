@@ -17,3 +17,6 @@ from django.contrib.auth.models import User
 #                               )
 
 
+class Category(models.Model):
+    # A Category which can be linked to by other models. This is mostly for reporting right now.
+    name = models.CharField(max_length=100)
