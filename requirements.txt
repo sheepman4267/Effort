@@ -1,13 +1,14 @@
-Django==5.2.3
-django-markdownx==4.0.3
-django-allauth[socialaccount]==65.9.0
-django-allauth-simple-ui==0.1.2
-django-bootstrap5
+Django==6.0.3
+django-markdownx==4.0.9
+django-allauth[socialaccount]==65.15.1
+# django-allauth-simple-ui==0.1.2
+git+https://github.com/sheepman4267/django-allauth-simple-ui@9a77c9660be4bbee71da267b7bc5db5ddd923ba5
+django-bootstrap5==26.2
 django-feather==0.3.0
 django-recurrence==1.11.1
-django-q2==1.7.6
+django-q2==1.9.0
 django-heralder>=0.4.1,<=0.5.0
-django-anymail[mailgun]~=13.0
+django-anymail[mailgun]~=14.0
 uvicorn
 gunicorn
 honcho
