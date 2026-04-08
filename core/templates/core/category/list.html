@@ -1,0 +1,17 @@
+{% extends 'core/base.html' %}
+
+{% block navbar-title %}Categories{% endblock %}
+
+{% block content %}
+    {% if not categories %}
+        <span class="box">There are no categories yet!</span>
+    {% endif %}
+    <ul>
+        {% for category in categories %}
+            <li class="box">
+                <a href="{% url 'core-category-detail' category.pk %}">{{ category }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'core-category-create' %}">New Category</a>
+{% endblock %}

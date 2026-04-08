@@ -1,0 +1,9 @@
+{% extends 'core/base.html' %}
+
+{% block navbar-title %}Category "{{ category }}"{% endblock %}
+
+{% block content %}
+    <a href="{% url 'core-category-update' category.pk %}">Edit</a>
+    <a href="{% url 'core-category-delete' category.pk %}">Delete</a>
+    <span class="box">{{ category.todo_items.count }} Todo Items are in this category.</span>
+{% endblock %}

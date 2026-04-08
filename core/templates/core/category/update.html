@@ -1,0 +1,11 @@
+{% extends 'core/base.html' %}
+
+{% block navbar-title %}Editing Category "{{ category }}"{% endblock %}
+
+{% block content %}
+    <form method='POST' action="{% url 'core-category-update' pk=category.pk %}">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">Submit</button>
+    </form>
+{% endblock %}

@@ -4,6 +4,8 @@
     margin: 0;
     font-family: "Junction Regular", sans-serif;
     --accent-color: #ceb6df;
+    --standard-background: #d8dfe4;
+    --standard-gap: 0.5rem;
 }
 
 @font-face {
@@ -55,6 +57,10 @@
     margin-left: auto;
     background: #87b9d3;
     height: calc(100vh - 75px);
+    display: flex;
+    flex-direction: column;
+    padding: var(--standard-gap);
+    gap: var(--standard-gap);
 }
 
 .app-button-container {
@@ -102,4 +108,18 @@
     border: 1px solid black;
     padding: 0.2rem 0.3rem 0.1rem 0.3rem;
     border-radius: 1rem;
+}
+
+.center-content ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--standard-gap);
+}
+
+.box {
+    padding: var(--standard-gap);
+    border: 1px solid black;
+    border-radius: 1rem;
+    background-color: var(--standard-background);
+    display: block;
 }

@@ -1,0 +1,11 @@
+{% extends 'core/base.html' %}
+
+{% block navbar-title %}New Category{% endblock %}
+
+{% block content %}
+    <form method='POST' action="{% url 'core-category-create' %}">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">Submit</button>
+    </form>
+{% endblock %}
