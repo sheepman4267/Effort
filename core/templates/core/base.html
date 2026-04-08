@@ -17,6 +17,22 @@
 
 <body id="core-body" class="main-body" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     {% block navbar %}
+    <div class="navbar" id="navbar">
+        <div class="nav-container left">
+            {% block navbar-left %}
+            {% endblock %}
+        </div>
+        <div class="nav-container center">
+            {% block navbar-center %}
+                <h1>Effort</h1>
+                <h4>{% block navbar-title %}Hello! :){% endblock %}</h4>
+            {% endblock %}
+        </div>
+        <div class="nav-container right">
+            {% block navbar-right %}
+            {% endblock %}
+        </div>
+    </div>
     {% endblock %}
     <div class="content-container">
         {% block body %}
