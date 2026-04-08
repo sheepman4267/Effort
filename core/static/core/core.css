@@ -110,6 +110,10 @@
     border-radius: 1rem;
 }
 
+.pill.category {
+    background-color: #9ec1f4;
+}
+
 .center-content ul {
     display: flex;
     flex-direction: column;

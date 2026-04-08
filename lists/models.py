@@ -5,6 +5,7 @@ from django.db.models.signals import post_save
 from recurrence.fields import RecurrenceField
 from markdownx.models import MarkdownxField
 from django.shortcuts import reverse
+from core.models import Category
 
 from django.utils import timezone
 
@@ -33,6 +34,13 @@ class Todo(models.Model):
     collect_items = models.BooleanField(default=False, verbose_name="Automatically collect items from other lists")
     collect_next_days = models.IntegerField(default=1, verbose_name="Collect items which are due in the next X days")
     collect_on = RecurrenceField(null=True, blank=True, verbose_name="Collect items on this schedule")
+    category = models.ForeignKey(
+        to=Category,
+        on_delete=models.SET_NULL,
+        related_name="todo_lists",
+        null=True,
+        blank=True,
+    )
 
     def get_absolute_url(self):
         return reverse('todo', kwargs={'pk': self.pk})
@@ -113,6 +121,14 @@ class TodoItem(models.Model):
         null=True,
         blank=True,
     )
+    category = models.ForeignKey(
+        to=Category,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="todo_items",
+    )
+
 
     def __str__(self):
         return self.name
@@ -132,6 +148,8 @@ class TodoItem(models.Model):
                         )
                     ),
                 )
+        if not self.pk and self.originating_todo.category:
+            self.category = self.originating_todo.category
         super(TodoItem, self).save(*args, **kwargs)
 
 

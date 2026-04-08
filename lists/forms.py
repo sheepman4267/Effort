@@ -38,6 +38,7 @@ class DetailedListItemForm(forms.ModelForm):
             "due_date",
             "current_list_pk",
             'uncheck_every',
+            'category',
         )
         widgets = {
             "due_date": forms.DateInput(
